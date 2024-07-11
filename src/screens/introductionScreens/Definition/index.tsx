@@ -1,0 +1,133 @@
+import React, { useRef, useState } from 'react';
+import { I18nManager, Image, ImageBackground, ImageSourcePropType, TouchableOpacity, View } from 'react-native';
+import styles from './styles';
+import AppText from '../../../components/AppText';
+import { Trans } from '../../../translation';
+import { IMAGES } from '../../../assets/Images';
+import { COLORS, FONTS } from '../../../utils/theme';
+import PagerView from 'react-native-pager-view';
+import { calcFont, calcHeight } from '../../../utils/sizes';
+import { useNavigation } from '@react-navigation/native';
+
+const Definition: React.FC = () => {
+  const navigation = useNavigation<any>();
+  const viewPagerRef = useRef<PagerView>(null);
+  const [viewPagerIndex, setViewPagerIndex] = useState<number>(0);
+
+  const languageSection = () => {
+    return (
+      <View style={styles.languageLangContainer}>
+        <TouchableOpacity
+          style={styles.languageSkipView}
+          onPress={() => navigation.navigate('LetsStart')}
+        >
+          <AppText
+            title={Trans('skip')}
+            fontFamily={FONTS.medium}
+            fontSize={calcFont(16)}
+            color={COLORS.white}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.languageLangView}>
+          <AppText
+            title={Trans('switchLanguage')}
+            fontFamily={FONTS.medium}
+            fontSize={calcFont(16)}
+            color={COLORS.white}
+          />
+          <Image source={IMAGES.languageEn} style={styles.languageLangImage}/>
+        </TouchableOpacity>
+      </View>
+    )
+  };
+
+  const messageSection = (title: string, description: string) => {
+    return (
+      <View style={styles.messageContainer}>
+        <AppText
+          title={title}
+          fontFamily={FONTS.extra_bold}
+          fontSize={calcFont(32)}
+          color={COLORS.white}
+          lineHeight={calcHeight(42)}
+          marginBottom={calcHeight(8)}
+        />
+        <AppText
+          title={description}
+          fontFamily={FONTS.light}
+          fontSize={calcFont(18)}
+          color={COLORS.white}
+          lineHeight={calcHeight(20)}
+        />
+      </View>
+    )
+  };
+  const onNext = () => {
+    if (viewPagerIndex < 2) {
+      setViewPagerIndex(viewPagerIndex + 1);
+      viewPagerRef.current.setPage(viewPagerIndex + 1);
+    } else {
+      navigation.navigate('LetsStart');
+    }
+  };
+  const nextSection = () => {
+    return (
+      <View style={styles.nextContainer}>
+        <View style={styles.nextView}>
+          {[1,2,3].map((item: any) => {
+            return (
+              <View style={(viewPagerIndex + 1) >= item ? styles.nextStapActive : styles.nextStapUnActive}/>
+            )
+          })}
+        </View>
+        <TouchableOpacity onPress={() => onNext()}>
+          <Image source={IMAGES.nextDark} style={styles.nextImage}/>
+        </TouchableOpacity>
+      </View>
+    )
+  };
+
+  const dataSection = () => {
+    return (
+      <View style={styles.dataContainer}>
+        {languageSection()}
+        {nextSection()}
+      </View>
+    )
+  }
+  const page = () => {
+    const item = (image: ImageSourcePropType, title: string, description: string): React.ReactNode => {
+      return (
+        <ImageBackground source={image}  style={styles.item_container} imageStyle={styles.item_container}>
+          {messageSection(title, description)}
+        </ImageBackground>
+      )
+    };
+
+    return (
+      <PagerView
+        layoutDirection={I18nManager.isRTL ? 'ltr' : 'ltr'}
+        style={styles.page_container}
+        scrollEnabled={true}
+        ref={viewPagerRef}
+        initialPage={viewPagerIndex}
+        onPageSelected={(event) => setViewPagerIndex(event.nativeEvent.position)} useNext={false}
+      >
+        {item(IMAGES.definition1, Trans('weHelpReachNewCustomers'), Trans('notOnlyOrganizeReservations'))}
+        {item(IMAGES.definition2, Trans('weDealWithAllSpecialtie'), Trans('notOnlyOrganizeReservations'))}
+        {item(IMAGES.definition3, Trans('weHappyToCooperate'), Trans('notOnlyOrganizeReservations'))}
+      </PagerView>
+    )
+  };
+  
+  return (
+    <View style={styles.container} >
+      {page()}
+      {dataSection()}
+    </View>
+  );
+};
+
+export default Definition;
+
+
