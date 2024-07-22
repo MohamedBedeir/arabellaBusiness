@@ -27,6 +27,7 @@ export const styles = StyleSheet.create({
   profileImage: {
     width: calcHeight(36),
     height: calcHeight(36),
+    borderRadius: calcHeight(18),
     alignItems: 'flex-start',
     justifyContent: 'flex-end',
     marginEnd: calcWidth(8),

@@ -1,24 +1,54 @@
 import React, { useEffect, useState } from 'react';
-import {I18nManager, View,} from 'react-native';
+import { View } from 'react-native';
 import styles from './styles';
 import { COLORS, FONTS } from '../../../utils/theme';
 import AppText from '../../../components/AppText';
 import { IMAGES } from '../../../assets/Images';
-import I18n, { Trans } from '../../../translation';
+import { Trans } from '../../../translation';
 import { calcFont, calcHeight } from '../../../utils/sizes';
 import AppButtonDefault from '../../../components/AppButtonDefault';
 import AuthHeader from '../../../components/AuthHeader';
 import AppInputPhone from '../../../components/AppInputPhone';
+import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch } from '../../../redux/store/store';
+import { forgotPassword } from '../../../middleware/authentication/forgotPassword';
 
-const ForgotPassword: React.FC<{}> = (params: any) => {
+const ForgotPassword: React.FC<{}> = () => {
+  const dispatch = useAppDispatch();
+  const navigation = useNavigation<any>();
   const [phone, setPhone] = useState<string>('');
+  const [checkPhone, setCheckPhone] = useState<boolean>(false);
 
-  useEffect(() => {
-    const _lang = 'ar';
-    I18n.locale = _lang;
-    I18nManager.allowRTL(_lang === 'ar');
-    I18nManager.forceRTL(_lang === 'ar');
-  }, []);
+  useEffect(() => {}, []);
+
+  const onChangePhone = (text: string) => {
+    {setPhone(text)}
+    phone != '' ? setCheckPhone(false) : null;
+  };
+
+  // navigation.navigate('VerficationOTP')
+  const onForgotPassword = () => {
+    if (phone == '') {
+      // _toast('danger', Trans('pleaseEnterRequiredData'));
+      setCheckPhone(true);
+    } else {
+      setCheckPhone(false);
+      const data = {
+        navigation,
+        phone,
+      };
+      dispatch(forgotPassword(data));
+    }
+  };
+
+  const headerSection = () => {
+    return (
+      <AuthHeader
+        image={IMAGES.frame}
+        icon={IMAGES.logoWhite}
+      />
+    )
+  };
 
   const dataSection = () => {
     const titleSection = () => {
@@ -41,44 +71,42 @@ const ForgotPassword: React.FC<{}> = (params: any) => {
         </View>
       )
     };
+
+    const forgotPasswordSection = () => {
+      return (
+        <>
+          <AppInputPhone
+            containerStyle={{marginTop: calcHeight(20)}}
+            title={Trans('mobileNumber')}
+            image={IMAGES.authPhone}
+            placeholder={Trans('mobileNumber')}
+            value={phone}
+            keyboardType={'number-pad'}
+            onChangeText={(text: string) => onChangePhone(text)}
+            inputContainer={{borderColor: checkPhone ? COLORS.red : COLORS.gray}}
+          />
+          <AppButtonDefault
+            title={Trans('send')}
+            onPress={() => onForgotPassword()}
+            colorStart={COLORS.primaryGradient}
+            colorEnd={COLORS.secondGradient}
+            buttonStyle={{marginTop: calcHeight(20)}}
+          />
+        </>
+      )
+    };
   
     return (
       <View style={styles.dataContainer}>
         {titleSection()}
-        <AppInputPhone
-          containerStyle={{marginTop: calcHeight(20)}}
-          title={Trans('mobileNumber')}
-          value={phone}
-          image={IMAGES.authPhone}
-          placeholder={Trans('mobileNumber')}
-          // keyboardType={}
-          onChangeText={(text: string) => setPhone(text)}
-          // onFocus={}
-          // onEndEditing={}
-          // numberOfLines={}
-          // maxLength={}
-          // editable={}
-          // _textAligne={}
-          // inputStyle={}
-          // error={}
-        />
-        <AppButtonDefault
-          title={Trans('send')}
-          onPress={() => console.log('---')}
-          colorStart={COLORS.primaryGradient}
-          colorEnd={COLORS.secondGradient}
-          buttonStyle={{marginTop: calcHeight(20)}}
-        />
+        {forgotPasswordSection()}
       </View>
     )
   };
 
   return (
     <View style={styles.container}>
-      <AuthHeader
-        image={IMAGES.frame}
-        icon={IMAGES.logoWhite}
-      />
+      {headerSection()}
       {dataSection()}
     </View>
   );

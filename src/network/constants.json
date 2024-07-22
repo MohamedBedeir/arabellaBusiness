@@ -1,0 +1,5 @@
+{
+  "ENV_CONSTANTS": {
+    "production_mode": false
+  }
+}

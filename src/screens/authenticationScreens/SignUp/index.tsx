@@ -1,31 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import {I18nManager, Image, ScrollView, TouchableOpacity, View,} from 'react-native';
+import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { COLORS, FONTS } from '../../../utils/theme';
 import AppText from '../../../components/AppText';
 import { IMAGES } from '../../../assets/Images';
 import AppInput from '../../../components/AppInput';
-import I18n, { Trans } from '../../../translation';
+import { Trans } from '../../../translation';
 import { calcFont, calcHeight } from '../../../utils/sizes';
 import AppButtonDefault from '../../../components/AppButtonDefault';
 import AuthHeader from '../../../components/AuthHeader';
 import AppPickerSelect from '../../../components/AppPickerSelect';
 import AppInputPhone from '../../../components/AppInputPhone';
+import { useNavigation } from '@react-navigation/native';
 
 const SignUp: React.FC<{}> = (params: any) => {
+  const navigation = useNavigation<any>();
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [accept, setAccept] = useState<boolean>(false);
 
-  useEffect(() => {
-    const _lang = 'ar';
-    I18n.locale = _lang;
-    I18nManager.allowRTL(_lang === 'ar');
-    I18nManager.forceRTL(_lang === 'ar');
-  }, []);
+  useEffect(() => {}, []);
 
+  const headerSection = () => {
+    return (
+      <AuthHeader
+        image={IMAGES.frame}
+        icon={IMAGES.logoWhite}
+      />
+    )
+  };
+  
   const titleSection = () => {
     return (
       <View style={styles.border}>
@@ -63,12 +69,16 @@ const SignUp: React.FC<{}> = (params: any) => {
             fontSize={calcFont(14)}
             fontFamily={FONTS.medium}
           />
-          <AppText
-            title={`${Trans('termsAndConditions')} `}
-            color={COLORS.primaryGradient}
-            fontSize={calcFont(14)}
-            fontFamily={FONTS.medium}
-          />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('TermsAndConditions')}
+          >
+            <AppText
+              title={`${Trans('termsAndConditions')} `}
+              color={COLORS.primaryGradient}
+              fontSize={calcFont(14)}
+              fontFamily={FONTS.medium}
+            />
+          </TouchableOpacity>
           <AppText
             title={Trans('arabellaApplication')}
             color={COLORS.textDark}
@@ -79,22 +89,24 @@ const SignUp: React.FC<{}> = (params: any) => {
       )
     };
   
-    const dontHaveAccountSection = () => {
+    const doHaveAccountSection = () => {
       return (
         <View style={styles.dontHaveAccountView}>
           <AppText
-            title={Trans('dontHaveAccount')}
+            title={Trans('doHaveAccount')}
             color={COLORS.textDark}
             fontFamily={FONTS.medium}
             fontSize={calcFont(14)}
           />
-          <TouchableOpacity style={styles.dontHaveAccountTouch}>
+          <TouchableOpacity
+            style={styles.dontHaveAccountTouch}
+            onPress={() => navigation.navigate('Login')}
+          >
             <AppText
-              title={Trans('createAccount')}
+              title={Trans('logIn')}
               fontFamily={FONTS.medium}
               fontSize={calcFont(14)}
               color={COLORS.primaryGradient}
-              // colorEnd={COLORS.primaryGradient}
             />
           </TouchableOpacity>
         </View>
@@ -168,7 +180,7 @@ const SignUp: React.FC<{}> = (params: any) => {
             buttonStyle={{marginTop: calcHeight(20)}}
           />
           {termsAndConditionsSection()}
-          {dontHaveAccountSection()}
+          {doHaveAccountSection()}
         </View>
       </ScrollView>
     )
@@ -176,10 +188,7 @@ const SignUp: React.FC<{}> = (params: any) => {
 
   return (
     <View style={styles.container}>
-      <AuthHeader
-        image={IMAGES.frame}
-        icon={IMAGES.logoWhite}
-      />
+      {headerSection()}
       {titleSection()}
       {dataSection()}
     </View>

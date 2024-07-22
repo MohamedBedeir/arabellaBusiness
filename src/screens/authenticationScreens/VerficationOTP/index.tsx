@@ -4,24 +4,50 @@ import styles from './styles';
 import { COLORS, FONTS } from '../../../utils/theme';
 import AppText from '../../../components/AppText';
 import { IMAGES } from '../../../assets/Images';
-import I18n, { Trans } from '../../../translation';
+import { Trans } from '../../../translation';
 import { calcFont, calcHeight } from '../../../utils/sizes';
 import AppButtonDefault from '../../../components/AppButtonDefault';
 import AuthHeader from '../../../components/AuthHeader';
 import OtpInputs from 'react-native-otp-inputs';
+import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch } from '../../../redux/store/store';
+import { confirmationCode } from '../../../middleware/authentication/verificationCode';
 
 const VerficationOTP: React.FC<{}> = (params: any) => {
+  const navigation = useNavigation<any>();
+  const dispatch = useAppDispatch();
   const [OTPCode, setOTPCode] = useState<string>('');
   const [errors, setErrors] = useState<any>();
-
   const [focused, setFocused] = useState<boolean>(false);
 
-  useEffect(() => {
-    const _lang = 'ar';
-    I18n.locale = _lang;
-    I18nManager.allowRTL(_lang === 'ar');
-    I18nManager.forceRTL(_lang === 'ar');
-  }, []);
+  useEffect(() => {}, []);
+  console.log('params------->>', params.route.params);
+  
+  const onSubmit = () => {
+    if (OTPCode == '') {
+      // _toast('danger', Trans('pleaseEnterRequiredData'));
+      // setCheckPhone(true);
+    } else {
+      // setCheckPhone(false);
+      const data = {
+        navigation: params.navigation,
+        phone: params.route.params.phone,
+        otp: OTPCode,
+      };
+      console.log('data-----?>>>>', data);
+      
+      dispatch(confirmationCode(data));
+    }
+  };
+
+  const headerSection = () => {
+    return (
+      <AuthHeader
+        image={IMAGES.frame}
+        icon={IMAGES.logoWhite}
+      />
+    )
+  };
 
   const dataSection = () => {
     const titleSection = () => {
@@ -78,6 +104,18 @@ const VerficationOTP: React.FC<{}> = (params: any) => {
       )
     };
 
+    const sendSection = () => {
+      return (
+        <AppButtonDefault
+          title={Trans('send')}
+          onPress={() => onSubmit()}
+          colorStart={COLORS.primaryGradient}
+          colorEnd={COLORS.secondGradient}
+          buttonStyle={{marginTop: calcHeight(20)}}
+        />
+      )
+    };
+
     const dontSendOTPSection = () => {
       return (
         <View style={styles.dontHaveAccountView}>
@@ -93,7 +131,6 @@ const VerficationOTP: React.FC<{}> = (params: any) => {
               fontFamily={FONTS.medium}
               fontSize={calcFont(14)}
               color={COLORS.primaryGradient}
-              // colorEnd={COLORS.primaryGradient}
             />
           </TouchableOpacity>
         </View>
@@ -104,13 +141,7 @@ const VerficationOTP: React.FC<{}> = (params: any) => {
       <View style={styles.dataContainer}>
         {titleSection()}
         {codeSection()}
-        <AppButtonDefault
-          title={Trans('send')}
-          onPress={() => console.log('---')}
-          colorStart={COLORS.primaryGradient}
-          colorEnd={COLORS.secondGradient}
-          buttonStyle={{marginTop: calcHeight(20)}}
-        />
+        {sendSection()}
         {dontSendOTPSection()}
       </View>
     )
@@ -118,12 +149,10 @@ const VerficationOTP: React.FC<{}> = (params: any) => {
 
   return (
     <View style={styles.container}>
-      <AuthHeader
-        image={IMAGES.frame}
-        icon={IMAGES.logoWhite}
-      />
+      {headerSection()}
       {dataSection()}
     </View>
   );
 };
+
 export default VerficationOTP;

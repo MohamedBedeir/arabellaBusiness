@@ -8,6 +8,8 @@ export const styles = StyleSheet.create({
     height: calcHeight(93),
     backgroundColor: COLORS.white,
     justifyContent: 'flex-end',
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.borderLight,
   },
   view: {
     flexDirection: 'row',

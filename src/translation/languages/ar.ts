@@ -1,5 +1,6 @@
 export default {
-  switchLanguage: 'English',
+  switchLanguage: 'العربية',
+  selectLanguage: 'اختر اللغة',
   skip:'تخطى',
   weHelpReachNewCustomers: 'نساعدك بالوصول لعملاء جدد وندبل لك العدد',
   notOnlyOrganizeReservations: 'مو بس ننظم لك الحجوزات، ارابيلا عنده أدوات تساعدك مثل زيادة العملاء والتسويق ونقاط الولاء لعملائك',
@@ -99,13 +100,12 @@ export default {
   ratings: 'التقييمات',
   tickets: 'التذاكر',
   accounts: 'الحسابات',
-  coupon: 'الكوبون',
+  coupons: 'الكوبونات',
   notifications: 'الاشعارات',
   arabellaPolicies: 'سياسات ارابيلا',
   settings: 'الاعدادات',
   signOut: 'تسجيل الخروج',
   profilePersonly: 'الملف الشخصى',
-  availableServices: 'الخدمات المتاحة',
   blockAppointments: 'حجب المواعيد',
   language: 'اللغة',
   name: 'الاسم',
@@ -148,8 +148,8 @@ export default {
   salonType: 'نوع الصالون',
   distinct: 'مميز',
   addSalon: 'اضافة صالون',
-  titleArabic: 'العنوان بالعربية',
-  titleEnglish: 'العنوان بالانجليزية',
+  addressArabic: 'العنوان بالعربية',
+  addressEnglish: 'العنوان بالانجليزية',
   chooseTypeSalon: 'اختر نوع الصالون',
   costOfHomeService: 'تكلفة الخدمة المنزلية',
   longTimeAgo: 'من وقت',
@@ -177,7 +177,7 @@ export default {
   category: 'الفئة',
   orderStatus: 'حالة الطلب',
   price: 'السعر',
-  estimatedTime: 'الوقت المقدر',
+  estimatedTime: 'الوقت المقدر (بالدقيقه)',
   hasBeenApproved: 'تمت الموافقة',
   active: 'نشط',
   homeService: 'الخدمة المنزلية',
@@ -194,6 +194,7 @@ export default {
   latitude: 'خط العرض',
   description: 'الوصف',
   addBranch: 'اضافة فرع',
+  editBranch: 'تعديل فرع',
   country: 'الدولة',
   nameOfCountry: 'اسم الدولة',
   cityName: 'اسم المدينة',
@@ -342,11 +343,17 @@ export default {
   selectCategory: 'اختر الفئة',
   editService: 'تعديل خدمة',
   editBlockingAppointment: 'تعديل حجب ميعاد',
-
-
-
-
-
+  doDeleteSectionFromSectionsList: 'هل تريد حذف القسم من قائمة الاقسام ؟',
+  doDeleteServiceFromServicesList: 'هل تريد حذف الخدمة من قائمة الخدمات ؟',
+  doDeleteBranchFromBranchesList: 'هل تريد حذف الفرع من قائمة الأفرع ؟',
+  doDeleteEmployeeFromEmployeesList: 'هل تريد حذف الموظف من قائمة الموظفين ؟',
+  editSection: 'تعديل قسم',
+  Implementation: 'تطبيق',
+  chooseServiveState: 'اختر حالة الخدمة',
+  chooseEmployeeState: 'اختر حالة الموظف',
+  editEmployee: 'تعديل موظف',
+  selectBlockingPeriod: 'حدد فترة الحجب (بداية - نهاية)',
+  selectBlockingDate: 'حدد تاريخ الحجب',
 
 
 

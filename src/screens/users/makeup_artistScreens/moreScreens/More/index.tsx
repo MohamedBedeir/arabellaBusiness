@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
-import AppText from '../../../../../components/AppText';
 import { Trans } from '../../../../../translation';
-import { calcFont, calcWidth } from '../../../../../utils/sizes';
-import { COLORS, FONTS } from '../../../../../utils/theme';
+import { calcWidth } from '../../../../../utils/sizes';
 import AppHeaderDefault from '../../../../../components/AppHeaderDefault';
 import { IMAGES } from '../../../../../assets/Images';
 import MoreItem from '../../../../../components/MoreItem';
@@ -15,14 +13,19 @@ const More: React.FC = () => {
   const navigation = useNavigation<any>();
   const [notification, setNotification] = useState<boolean>(false);
 
-  return (
-    <View style={styles.container}>
+  const headerSection = () => {
+    return (
       <AppHeaderDefault
         onPress={() => navigation.goBack()}
         icon={IMAGES.back}
         title={Trans('more')}
         logo={IMAGES.logoColors}
       />
+    )
+  };
+
+  const bodySection = () => {
+    return (
       <View style={styles.body}>
         <MoreItem
           onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_Profile'})}
@@ -32,17 +35,9 @@ const More: React.FC = () => {
           iconStyle={{}}
         />
         <MoreItem
-          onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_AvailableServices'})}
+          onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_Services'})}
           image={IMAGES.moreService}
-          title={Trans('availableServices')}
-          icon={IMAGES.dropDown}
-          containerStyle={styles.moreItemContainer}
-          iconStyle={{}}
-        />
-        <MoreItem
-          onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_AvailableServices'})}
-          image={IMAGES.moreService}
-          title={Trans('availableServices')}
+          title={Trans('services')}
           icon={IMAGES.dropDown}
           containerStyle={styles.moreItemContainer}
           iconStyle={{}}
@@ -72,7 +67,7 @@ const More: React.FC = () => {
           iconStyle={{}}
         />
         <MoreItem
-          onPress={() => {}}
+          onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_TermsAndConditions'})}
           image={IMAGES.morePolicy}
           title={Trans('arabellaPolicies')}
           icon={IMAGES.dropDown}
@@ -86,6 +81,13 @@ const More: React.FC = () => {
         title={Trans('signOut')}
         />
       </View>
+    )
+  };
+  
+  return (
+    <View style={styles.container}>
+      {headerSection()}
+      {bodySection()}
     </View>
   );
 };

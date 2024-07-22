@@ -10,7 +10,42 @@ export type AuthenticationStackParam = {
   ForgotPassword: undefined;
   VerficationOTP: undefined;
   ResetPassword: undefined;
+  TermsAndConditions: undefined;
 };
+
+export type SA_TabsParam = {
+  SA_HomeStack: undefined;
+  SA_ReservationsStack: undefined;
+  SA_MoreStack: undefined;
+};
+export type SA_HomeStackParam = {
+  SA_Home: undefined;
+};
+export type SA_HomeDetailsStackParam = {
+  SA_Notifications: undefined;
+};
+export type SA_MoreStackParam = {
+  SA_More: undefined;
+};
+export type SA_ReservationsStackParam = {
+  SA_Reservations: undefined;
+};
+export type SA_MoreDetailsStackParam = {
+  SA_Profile: undefined;
+  SA_Branches: undefined;
+  SA_Employees: undefined;
+  SA_Services: undefined;
+  SA_Offers: undefined;
+  SA_Coupons: undefined;
+  SA_Tickets: undefined;
+  SA_BlockAppointments: undefined;
+  SA_Accounts: undefined;
+  SA_Language: undefined;
+  SA_Ratings: undefined;
+  SA_TermsAndConditions: undefined;
+};
+
+
 export type MA_HomeStackParam = {
   MA_Home: undefined;
 };
@@ -22,86 +57,47 @@ export type MA_MoreStackParam = {
 };
 export type MA_MoreDetailsStackParam = {
   MA_Profile: undefined;
-  MA_AvailableServices: undefined;
+  MA_Sections: undefined;
+  MA_Services: undefined;
   MA_BlockAppointments: undefined;
   MA_Language: undefined;
+  MA_TermsAndConditions: undefined;
 };
 export type MA_ReservationsStackParam = {
   MA_Reservations: undefined;
 };
 export type MA_ReservationDetailsStackParam = {
   MA_ReservationDetails: undefined;
-}
-
-
-
-
-
-
-
-
-export type MainStackParam = {
-  Profile: undefined;
 };
 
-export type MA_TabsParam = {
-  MA_HomeStack: undefined;
-  MA_ReservationsStack: undefined;
-  MA_MoreStack: undefined;
-};
 
-export type HomeStackParam = {
-  Home: undefined;
+export type HS_TabsParam = {
+  HS_HomeStack: undefined;
+  HS_ReservationsStack: undefined;
+  HS_MoreStack: undefined;
 };
-
-export type HomeScreensStackParam = {
-  Search: undefined;
-  propertyDetails: undefined;
-  OurAgents: undefined;
-  AgentDetails: undefined;
-  AgentProfile: undefined;
-  ExclusiveAds: undefined;
-  EditProperty: undefined;
-  Report: undefined;
+export type HS_HomeStackParam = {
+  HS_Home: undefined;
 };
-
-export type SavedStackParam = {
-  Saved: undefined;
+export type HS_HomeDetailsStackParam = {
+  HS_Notifications: undefined;
 };
-
-export type PropertyStackParam = {
-  Property: undefined;
+export type HS_MoreStackParam = {
+  HS_More: undefined;
 };
-
-export type RequestStackParam = {
-  SearchRequest: undefined;
-  RequestDetails: undefined;
+export type HS_ReservationsStackParam = {
+  HS_Reservations: undefined;
 };
-
-export type AddPropertyStackParam = {
-  AddProperty: undefined;
+export type HS_MoreDetailsStackParam = {
+  HS_Profile: undefined;
+  HS_Employees: undefined;
+  HS_Services: undefined;
+  HS_BlockAppointments: undefined;
+  HS_Language: undefined;
+  HS_TermsAndConditions: undefined;
 };
-export type AddRequestStackParam = {
-  AddRequest: undefined;
-  EditRequest: undefined;
+export type HS_ReservationDetailsStackParam = {
+  HS_ReservationDetails: undefined;
 };
-export type MoreStackParam = {
-  More: undefined;
-};
-
-export type MoreScreensStackParam = {
-  Profile: undefined;
-  Wallet: undefined;
-  Plans: undefined;
-  MyPlan: undefined;
-  TransactionHistory: undefined;
-  Notification: undefined;
-  AboutUs: undefined;
-  ContactUs: undefined;
-  TermsConditions: undefined;
-  PrivacyPolicy: undefined;
-  RealEstateOffice: undefined;
-  Payment: undefined;
-}
 
 

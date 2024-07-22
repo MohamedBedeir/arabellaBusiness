@@ -43,7 +43,7 @@ const Modal_Warning: React.FC<Props> = (params: any) => {
           fontSize={calcFont(17)}
           textAlign={'center'}
           color={COLORS.textDark}
-          width={calcWidth(200)}
+          width={calcWidth(280)}
           lineHeight={calcHeight(28)}
         />
         <View style={styles.buttonsView}>

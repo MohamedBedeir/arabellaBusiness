@@ -10,6 +10,7 @@ interface AppButtonProps {
     lineHeight?: number;
     marginBottom?: number;
     width?: number;
+    numberOfLines?: number;
 };
 
 const AppText: React.FC<AppButtonProps> = ({
@@ -21,6 +22,7 @@ const AppText: React.FC<AppButtonProps> = ({
     lineHeight,
     marginBottom,
     width,
+    numberOfLines,
 }) => (
     <Text 
         style={{
@@ -32,6 +34,7 @@ const AppText: React.FC<AppButtonProps> = ({
             marginBottom,
             width,
         }}
+        numberOfLines={numberOfLines || 1}
     >
         {title}
     </Text>

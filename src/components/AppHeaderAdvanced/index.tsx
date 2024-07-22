@@ -11,6 +11,7 @@ import { IMAGES } from '../../assets/Images';
 import { Trans } from '../../translation';
 
 interface AppHeaderProps {
+    user?: any;
     onPress?: () => void;
     icon?: string | any;
     iconStyle?: ImageStyle;
@@ -19,6 +20,7 @@ interface AppHeaderProps {
 };
 
 const AppHeaderAdvanced: React.FC<AppHeaderProps> = ({
+    user,
     onPress,
     icon,
     title,
@@ -27,7 +29,7 @@ const AppHeaderAdvanced: React.FC<AppHeaderProps> = ({
     <View style={styles.container}>
         <View style={styles.view}>
             <View style={styles.profileContainer}>
-                <ImageBackground source={IMAGES.userTest} style={styles.profileImage} imageStyle={styles.profileImage}>
+                <ImageBackground source={user?.image} style={styles.profileImage} imageStyle={styles.profileImage}>
                     <View style={styles.statusBorder} >
                         <View style={styles.statusView}>
 
@@ -43,7 +45,7 @@ const AppHeaderAdvanced: React.FC<AppHeaderProps> = ({
                         color={COLORS.textDark}
                     />
                     <AppText
-                        title={'اسماء محمد'}
+                        title={user?.name}
                         fontFamily={FONTS.light}
                         fontSize={calcFont(14)}
                         textAlign={'left'}

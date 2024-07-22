@@ -14,68 +14,75 @@ import Modal_Warning from '../../../../../components/Modal_Warning';
 import AppTextGradient from '../../../../../components/AppTextGradient';
 import AppTabView from '../../../../../components/AppTabView';
 import AppText from '../../../../../components/AppText';
-import AppInput from '../../../../../components/AppInput';
 import AppPickerSelect from '../../../../../components/AppPickerSelect';
+import { DUMMY_DATA } from '../../../../../utils/dummyData';
+import AppModalTimings from '../../../../../components/AppModalTimings';
+import AppModalCalendar from '../../../../../components/AppModalCalendar';
+import moment from 'moment';
+import AppModalSelectItem from '../../../../../components/AppModalSelectItem';
 
 const BlockAppointments: React.FC = () => {
   const navigation = useNavigation<any>();
+  const [selectBlockType, setSelectBlockType] = useState<number>(1);
+  const [date, setDate] = useState<any>('');
+  const [dateFrom, setDateFrom] = useState<string>('');
+  const [dateTo, setDateTo] = useState<string>('');
+  const [timeFrom, setTimeFrom] = useState<any>({});
+  const [timeTo, setTimeTo] = useState<any>({});
+
   const [visibleDeleteTime, setVisibleDeleteTime] = useState<boolean>(false);
   const [visibleAddNewTime, setVisibleAddNewTime] = useState<boolean>(false);
   const [visibleEditTime, setVisibleEditTime] = useState<boolean>(false);
+  const [visibleCalendar, setVisibleCalendar] = useState<boolean>(false);
+  const [visibleTimings, setVisibleTimings] = useState<boolean>(false);
+  
+  
+
+
   const [visibleSaveData, setVisibleSaveData] = useState<boolean>(false);
 
-  const [selectBlockType, setSelectBlockType] = useState<number>(1);
 
-  const DATA = [
-    {
-      id: 1,
-      title: '#1234',
-      dateFron: 'Jun 3, 2024/06/2024',
-      dateTo: 'Jun 3, 2024/06/2024',
-      timeFrom: '15:00:00',
-      timeTo: '15:00:00',
-      type: 'محجوز',
-    },
-    {
-      id: 2,
-      title: '#1234',
-      dateFron: 'Jun 3, 2024/06/2024',
-      dateTo: 'Jun 3, 2024/06/2024',
-      type: 'مغلق لفترة',
-    },
-    {
-      id: 3,
-      title: '#1234',
-      dateFron: 'Jun 3, 2024/06/2024',
-      dateTo: 'Jun 3, 2024/06/2024',
-      timeFrom: '15:00:00',
-      timeTo: '15:00:00',
-      type: 'محجوز',
-    },
-    {
-      id: 4,
-      title: '#1234',
-      dateFron: 'Jun 3, 2024/06/2024',
-      dateTo: 'Jun 3, 2024/06/2024',
-      type: 'مغلق لفترة',
-    },
-    {
-      id: 5,
-      title: '#1234',
-      dateFron: 'Jun 3, 2024/06/2024',
-      dateTo: 'Jun 3, 2024/06/2024',
-      timeFrom: '15:00:00',
-      timeTo: '15:00:00',
-      type: 'محجوز',
-    },
-  ];
-
-  const renderItem = ({item, index} : {item: any, index: number}) => {
+  const headerSection = () => {
     return (
-      <BlockAppointmentsItem
-        item={item}
-        onPressDelete={() => setVisibleDeleteTime(true)}
-        onPressEdit={() => setVisibleEditTime(true)}
+      <AppHeaderDefault
+        onPress={() => navigation.goBack()}
+        icon={IMAGES.back}
+        title={Trans('blockAppointments')}
+        logo={IMAGES.logoColors}
+      />
+    )
+  };
+
+  const addSection = () => {
+    return (
+      <AppButtonDefault
+        colorStart={COLORS.primaryGradient}
+        colorEnd={COLORS.secondGradient}
+        border={false}
+        onPress={() => setVisibleAddNewTime(true)}
+        title={Trans('construction')}
+        icon={IMAGES.plusCircleWhite}
+        buttonStyle={{marginVertical: calcHeight(16)}}
+      />
+    )
+  };
+
+  const listSection = () => {
+    const renderItem = ({item, index} : {item: any, index: number}) => {
+      return (
+        <BlockAppointmentsItem
+          item={item}
+          onPressDelete={() => setVisibleDeleteTime(true)}
+          onPressEdit={() => setVisibleEditTime(true)}
+        />
+      )
+    };
+    return (
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={DUMMY_DATA.BLOCKAPPOINTMENTS}
+        renderItem={renderItem}
+        keyExtractor={item => `${item.id}`}
       />
     )
   };
@@ -123,8 +130,9 @@ const BlockAppointments: React.FC = () => {
               <AppPickerSelect
                 containerStyle={{marginBottom: calcHeight(16)}}
                 styleTitle={{}}
-                onPress={() => {}}
+                onPress={() => setVisibleCalendar(true)}
                 title={Trans('date')}
+                placeholder={date ? moment(date.toString()).format('YYYY/MM/DD') : Trans('date')}
                 image={IMAGES.calender}
               />
             )}
@@ -141,16 +149,18 @@ const BlockAppointments: React.FC = () => {
                   containerStyle={{width: calcWidth(166)}}
                   touchContainerStyle={{width: calcWidth(166)}}
                   styleTitle={{}}
-                  onPress={() => {}}
-                  title={Trans('longTimeAgo')}
+                  onPress={() => setVisibleTimings(true)}
+                  title={Trans('forWhile')}
+                  placeholder={timeFrom?.title || Trans('forWhile')}
                   image={IMAGES.timer}
                 />
                 <AppPickerSelect
                   containerStyle={{width: calcWidth(166)}}
                   touchContainerStyle={{width: calcWidth(166)}}
                   styleTitle={{}}
-                  onPress={() => {}}
-                  title={Trans('forWhile')}
+                  onPress={() => setVisibleTimings(true)}
+                  title={Trans('longTimeAgo')}
+                  placeholder={timeTo?.title || Trans('longTimeAgo')}
                   image={IMAGES.timer}
                 />
               </View>
@@ -197,6 +207,7 @@ const BlockAppointments: React.FC = () => {
       </Modal>
     )
   };
+  console.log('date========>>>>>>', date);
 
   const editTimeSection = () => {
     return (
@@ -316,31 +327,8 @@ const BlockAppointments: React.FC = () => {
     )
   };
 
-  return (
-    <View style={styles.container}>
-      <AppHeaderDefault
-        onPress={() => navigation.goBack()}
-        icon={IMAGES.back}
-        title={Trans('blockAppointments')}
-        logo={IMAGES.logoColors}
-      />
-      <AppButtonDefault
-        colorStart={COLORS.primaryGradient}
-        colorEnd={COLORS.secondGradient}
-        border={false}
-        onPress={() => setVisibleAddNewTime(true)}
-        title={Trans('construction')}
-        icon={IMAGES.plusCircleWhite}
-        buttonStyle={{marginVertical: calcHeight(16)}}
-      />
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => `${item.id}`}
-      />
-      {addNewTimeSection()}
-      {editTimeSection()}
+  const deleteTimeSection = () => {
+    return (
       <Modal_Warning
         visible={visibleDeleteTime}
         onClose={() => setVisibleDeleteTime(false)}
@@ -351,6 +339,11 @@ const BlockAppointments: React.FC = () => {
         button1Title={Trans('yes')}
         button2Title={Trans('no')}
       />
+    )
+  };
+
+  const saveDataSection = () => {
+    return (
       <Modal_Warning
         visible={visibleSaveData}
         onClose={() => setVisibleSaveData(false)}
@@ -359,6 +352,47 @@ const BlockAppointments: React.FC = () => {
         title={Trans('dataSavedSuccessfully')}
         buttonTitle={Trans('done')}
       />
+    )
+  };
+
+  const calendarSection = () => {
+    return (
+      <AppModalCalendar
+        visible={visibleCalendar}
+        onClose={() => setVisibleCalendar(false)}
+        onSave={(item: any) => {setDate(item)}}
+      />
+    )
+  };
+
+  const timingsSection = () => {
+    return (
+      <AppModalTimings
+        visible={visibleTimings}
+        onClose={() => setVisibleTimings(false)}
+        onSave={(item: any) => {setTimeFrom(item.start); setTimeTo(item.end); console.log('item-----', item)}}
+        // onSelectItem?: (item: any) => void;
+        // title?: string;
+        // data?: any[];
+        // itemSelected?: any;
+        // multiSelect?: boolean;
+      />
+    )
+  };
+
+  
+  return (
+    <View style={styles.container}>
+      {headerSection()}
+      {addSection()}
+      {listSection()}
+      {addNewTimeSection()}
+      {editTimeSection()}
+      {deleteTimeSection()}
+      {saveDataSection()}
+      {calendarSection()}
+      {timingsSection()}
+      
     </View>
   );
 };

@@ -24,7 +24,6 @@ const LanguageItem: React.FC<LanguageItemProps> = ({
     title,
     code,
 }) => (
-
     <TouchableOpacity
         style={[styles.container]}
         onPress={onPress}

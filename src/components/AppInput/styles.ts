@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: calcWidth(16),
+    borderWidth: 1,
   },
   input: {
     height: calcHeight(48),

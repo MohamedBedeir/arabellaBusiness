@@ -48,13 +48,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: calcWidth(16),
+    borderWidth: 0.6,
   },
   input: {
     width: calcWidth(251 - 52),
     height: calcHeight(48),
     fontSize: calcFont(14),
     fontFamily: FONTS.medium,
-    color: COLORS.textLight,
+    color: COLORS.textDark,
   },
   secretImage: {
     width: calcWidth(18),

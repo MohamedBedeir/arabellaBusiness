@@ -1,5 +1,5 @@
-import React from 'react';
-import { Image, ImageBackground, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { I18nManager, Image, ImageBackground, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { COLORS, FONTS } from '../../../utils/theme';
 import AppText from '../../../components/AppText';
@@ -7,20 +7,27 @@ import { IMAGES } from '../../../assets/Images';
 import { Trans } from '../../../translation';
 import { calcFont, calcHeight } from '../../../utils/sizes';
 import AppButtonDefault from '../../../components/AppButtonDefault';
+import { useNavigation } from '@react-navigation/native';
+import AppModalLanguage from '../../../components/AppModalLanguage';
 
 const LetsStart: React.FC<{}> = (params: any) => {
+  const navigation = useNavigation<any>();
+  const [visibleLanguage, setVisibleLanguage] = useState<boolean>(false);
 
   const languageSection = () => {
     return (
       <View style={styles.languageLangContainer}>
-        <TouchableOpacity style={styles.languageLangView}>
+        <TouchableOpacity
+          style={styles.languageLangView}
+          onPress={() => setVisibleLanguage(true)}
+        >
           <AppText
             title={Trans('switchLanguage')}
             fontFamily={FONTS.medium}
             fontSize={calcFont(16)}
             color={COLORS.white}
           />
-          <Image source={IMAGES.languageEn} style={styles.languageLangImage}/>
+          <Image source={I18nManager.isRTL ? IMAGES.languageAr : IMAGES.languageEn} style={styles.languageLangImage}/>
         </TouchableOpacity>
       </View>
     )
@@ -55,27 +62,38 @@ const LetsStart: React.FC<{}> = (params: any) => {
           colorStart={COLORS.primaryGradient}
           colorEnd={COLORS.secondGradient}
           border={false}
-          onPress={() => console.log('---')}
+          onPress={() => navigation.navigate('AuthenticationStack', {screen: 'Login'})}
           title={Trans('signIn')}
         />
-        <View style={styles.authView}>
+        {/* <View style={styles.authView}>
           <AppText
             title={Trans('dontHaveAccount')}
             color={COLORS.white}
             fontFamily={FONTS.medium}
             fontSize={calcFont(14)}
           />
-          <TouchableOpacity style={styles.authTouch}>
+          <TouchableOpacity
+            style={styles.authTouch}
+            onPress={() => navigation.navigate('AuthenticationStack', {screen: 'SignUp'})}
+          >
             <AppText
               title={Trans('createAccount')}
               fontFamily={FONTS.medium}
               fontSize={calcFont(14)}
               color={COLORS.primaryGradient}
-              // colorEnd={COLORS.primaryGradient}
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
+    )
+  };
+
+  const modalLanguageSection = () => {
+    return (
+      <AppModalLanguage
+        visible={visibleLanguage}
+        onClose={() => setVisibleLanguage(false)}
+      />
     )
   };
 
@@ -84,6 +102,7 @@ const LetsStart: React.FC<{}> = (params: any) => {
       {languageSection()}
       {messageSection()}
       {authSection()}
+      {modalLanguageSection()}
     </ImageBackground>
   );
 };
