@@ -19,8 +19,6 @@ export interface Props {
 }
 
 const AppModalSelectItem: React.FC<Props> = (params: any) => {
-  console.log('data--------', params.data);
-  
   const onSelect = (item: any) => {
     params.multiSelect ? null : params.onClose();
     params.onSelectItem(item);
@@ -29,7 +27,7 @@ const AppModalSelectItem: React.FC<Props> = (params: any) => {
   const renderItem = ({item, index} : {item: any, index: number}) => {
     var select = false;
     for (let s = 0; s < params.itemSelected.length; s++) {
-      if (item.id === params.itemSelected[s].id) {
+      if (item?.id === params?.itemSelected[s]?.id) {
         select = true;
       }
     };
@@ -45,7 +43,7 @@ const AppModalSelectItem: React.FC<Props> = (params: any) => {
           style={styles.itemIcon}
         />
         <AppText
-          title={I18nManager.isRTL ? item.nameAr : item.nameEn}
+          title={I18nManager.isRTL ? item.name : item.nameEn}
           fontSize={calcFont(14)}
           fontFamily={FONTS.medium}
           color={selectedItem ? COLORS.textDark : COLORS.textLight}

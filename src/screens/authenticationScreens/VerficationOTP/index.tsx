@@ -10,12 +10,16 @@ import AppButtonDefault from '../../../components/AppButtonDefault';
 import AuthHeader from '../../../components/AuthHeader';
 import OtpInputs from 'react-native-otp-inputs';
 import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch } from '../../../redux/store/store';
+import { RootState, useAppDispatch } from '../../../redux/store/store';
 import { confirmationCode } from '../../../middleware/authentication/verificationCode';
+import AppLoading from '../../../components/AppLoading';
+import { useSelector } from 'react-redux';
 
 const VerficationOTP: React.FC<{}> = (params: any) => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
+  const { authenticationLoader } = useSelector((store: RootState) => store?.auth);
+
   const [OTPCode, setOTPCode] = useState<string>('');
   const [errors, setErrors] = useState<any>();
   const [focused, setFocused] = useState<boolean>(false);
@@ -34,10 +38,9 @@ const VerficationOTP: React.FC<{}> = (params: any) => {
         phone: params.route.params.phone,
         otp: OTPCode,
       };
-      console.log('data-----?>>>>', data);
-      
       dispatch(confirmationCode(data));
     }
+    // navigation.navigate('MA_Tabs')
   };
 
   const headerSection = () => {
@@ -147,8 +150,18 @@ const VerficationOTP: React.FC<{}> = (params: any) => {
     )
   };
 
+  const loadingSection = () => {
+    return (
+      <AppLoading
+        margin_top={calcHeight(440)}
+        size={'large'}
+        visible={authenticationLoader}
+      />
+    )
+  };
   return (
     <View style={styles.container}>
+      {loadingSection()}
       {headerSection()}
       {dataSection()}
     </View>

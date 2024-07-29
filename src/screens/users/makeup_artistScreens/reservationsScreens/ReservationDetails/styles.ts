@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
   mainDataItemOptionApprovedContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: calcHeight(8),
   },
   input: {
     width: calcWidth(318),
@@ -79,7 +80,6 @@ const styles = StyleSheet.create({
     marginTop: calcHeight(16),
     width: calcWidth(319),
   },
-
   servicesDetailsContainer: {
     width: calcWidth(343),
     backgroundColor: COLORS.white,
@@ -88,9 +88,6 @@ const styles = StyleSheet.create({
     paddingVertical: calcHeight(16),
     marginBottom: calcHeight(16),
   },
-
-
-
   dateContainer: {
     width: calcWidth(343),
     backgroundColor: COLORS.white,
@@ -99,7 +96,6 @@ const styles = StyleSheet.create({
     paddingVertical: calcHeight(16),
     marginBottom: calcHeight(16),
   },
-
   addressContainer: {
     width: calcWidth(343),
     backgroundColor: COLORS.white,
@@ -135,7 +131,6 @@ const styles = StyleSheet.create({
     width: calcWidth(375),
     backgroundColor: COLORS.white,
     alignItems: 'center',
-    // marginTop: calcHeight(16),
     paddingBottom: calcHeight(16),
   },
   waitingContainer: {
@@ -144,30 +139,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  tabsContainer: {
-    width: calcWidth(375),
-    height: calcHeight(41),
-    paddingHorizontal: calcWidth(16),
-    backgroundColor: COLORS.white,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  filtterContainer: {
-    width: calcWidth(375),
-    height: calcHeight(48),
-    paddingHorizontal: calcWidth(16),
-    backgroundColor: COLORS.backgroundLight,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
-  listContainer: {
-    width: calcWidth(375),
-    paddingTop: calcHeight(16),
-    paddingHorizontal: calcWidth(16),
-    alignItems: 'center',
-  },
-
   otpContainer: {
     width: calcWidth(340 - 58),
     marginTop: calcHeight(8),
@@ -182,8 +153,6 @@ const styles = StyleSheet.create({
     color: COLORS.primaryGradient,
     fontFamily: FONTS.bold,
     fontSize: 20,
-    // fontStyle: 'normal',
-    // fontWeight: '500',
   },
 });
 export default styles;

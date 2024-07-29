@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Dimensions, FlatList, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Dimensions, FlatList, Platform, View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { Trans } from '../../../../../translation';
@@ -15,32 +15,137 @@ import AppTextGradient from '../../../../../components/AppTextGradient';
 import AppTabView from '../../../../../components/AppTabView';
 import AppText from '../../../../../components/AppText';
 import AppPickerSelect from '../../../../../components/AppPickerSelect';
-import { DUMMY_DATA } from '../../../../../utils/dummyData';
 import AppModalTimings from '../../../../../components/AppModalTimings';
 import AppModalCalendar from '../../../../../components/AppModalCalendar';
 import moment from 'moment';
-import AppModalSelectItem from '../../../../../components/AppModalSelectItem';
+import AppLoading from '../../../../../components/AppLoading';
+import { RootState, useAppDispatch } from '../../../../../redux/store/store';
+import { useSelector } from 'react-redux';
+import { slot_add, slot_delete, slots_data } from '../../../../../middleware/slots/slots';
+import { setslotAddState, setslotDeleteState, setslotEditState } from '../../../../../redux/store/slots/slotsSlice';
 
 const BlockAppointments: React.FC = () => {
   const navigation = useNavigation<any>();
+  const dispatch = useAppDispatch();
+  const { slotsLoader, slotData, slotCount, slotAddState, slotEditState, slotDeleteState } = useSelector((store: RootState) => store?.slots);
   const [selectBlockType, setSelectBlockType] = useState<number>(1);
+  const [calenderType, setCalenderType] = useState<string>('');
   const [date, setDate] = useState<any>('');
+  const [timeFrom, setTimeFrom] = useState<any>('');
+  const [timeTo, setTimeTo] = useState<any>('');
   const [dateFrom, setDateFrom] = useState<string>('');
   const [dateTo, setDateTo] = useState<string>('');
-  const [timeFrom, setTimeFrom] = useState<any>({});
-  const [timeTo, setTimeTo] = useState<any>({});
-
   const [visibleDeleteTime, setVisibleDeleteTime] = useState<boolean>(false);
   const [visibleAddNewTime, setVisibleAddNewTime] = useState<boolean>(false);
   const [visibleEditTime, setVisibleEditTime] = useState<boolean>(false);
   const [visibleCalendar, setVisibleCalendar] = useState<boolean>(false);
   const [visibleTimings, setVisibleTimings] = useState<boolean>(false);
-  
-  
-
-
   const [visibleSaveData, setVisibleSaveData] = useState<boolean>(false);
+  const [selectSlot, setSelectSlot] = useState<any>({});
+  const [page, setPage] = useState<number>(1);
 
+  const getSlots = (page: number) => {
+    dispatch(slots_data({page}));
+  };
+
+  useEffect(() => {
+    getSlots(1);
+  }, []);
+
+  const setData = () => {
+    setDate('');
+    setTimeFrom('');
+    setTimeTo('');
+    setDateFrom('');
+    setDateTo('');
+    setSelectBlockType(1);
+  };
+
+  useEffect(() => {
+    if (slotAddState == 'done') {
+      setVisibleAddNewTime(false);
+      setData();
+      setVisibleSaveData(true);
+      setslotAddState('');
+    }
+  }, [slotAddState]);
+
+  useEffect(() => {
+    if (slotEditState == 'done') {
+      setVisibleEditTime(false);
+      setData();
+      setVisibleSaveData(true);
+      setslotEditState('');
+    }
+  }, [slotEditState]);
+
+  useEffect(() => {
+    if (slotDeleteState == 'done') {
+      setVisibleDeleteTime(false);
+      setVisibleSaveData(true);
+      setslotDeleteState('');
+    }
+  }, [slotDeleteState]);
+
+  const _onRefresh_Slots = () => {
+    getSlots(1);
+    setPage(1);
+  };
+  const _loadMore_Slots = () => {
+    if((slotData.length < slotCount)) {
+      getSlots(page + 1);
+      setPage(page + 1);
+    }
+  };
+
+  const onAdd = () => {
+    if (selectBlockType == 1) {
+      if (date != '') {
+        var from: Date = new Date(date);
+        var to: Date = new Date(date);
+        if (timeFrom != '' && timeTo != '') {
+          from.setHours(timeFrom.hour, timeFrom.minute);
+          to.setHours(timeTo.hour, timeTo.minute);
+          const data = {
+            from,
+            to,
+            serviceProviderId: 5,
+            employeeId: null,
+            type: 'booked'
+          };
+          dispatch(slot_add({data}));
+        } else {
+
+        };
+
+      } else {
+
+      };
+    } else if (selectBlockType == 2) {
+      if (dateFrom != '' && dateTo != '') {
+        var from: Date = new Date(dateFrom);
+        var to: Date = new Date(dateTo);
+        from.setHours(0, 0);
+        to.setHours(0, 0);
+        const data = {
+          from,
+          to,
+          serviceProviderId: 5,
+          employeeId: null,
+          type: 'booked'
+        };
+        dispatch(slot_add({data}));
+      }
+    };
+    // const data = {
+    //   from: dateFrom,
+    //   to: dateTo,
+    //   serviceProviderId: 0,
+    //   employeeId: null,
+    //   type: 'booked'
+    // };
+    // dispatch(slot_add({data}));
+  };
 
   const headerSection = () => {
     return (
@@ -72,7 +177,7 @@ const BlockAppointments: React.FC = () => {
       return (
         <BlockAppointmentsItem
           item={item}
-          onPressDelete={() => setVisibleDeleteTime(true)}
+          onPressDelete={() => {setVisibleDeleteTime(true); setSelectSlot(item)}}
           onPressEdit={() => setVisibleEditTime(true)}
         />
       )
@@ -80,9 +185,34 @@ const BlockAppointments: React.FC = () => {
     return (
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={DUMMY_DATA.BLOCKAPPOINTMENTS}
+        data={slotData}
         renderItem={renderItem}
         keyExtractor={item => `${item.id}`}
+        refreshing={slotsLoader && page == 1}
+          onRefresh={_onRefresh_Slots}
+          onEndReached={() => {
+            _loadMore_Slots();
+          }}
+          onEndReachedThreshold={Platform.OS === 'ios' ? 0 : 0.2}
+          ListFooterComponent={() => {
+            return (
+              <>
+                {slotData.length == 0 ? (
+                  <>
+                    {/* <WarningScreen
+                      image={IMAGES.emptySearch}
+                      title={Trans('dontHaveSearchResultsTitle')}
+                      description={Trans('dontHaveSearchResultsDescription')}
+                    /> */}
+                  </>
+                ) : (
+                  <View style={{backgroundColor: COLORS.backgroundLight, width: '100%', paddingVertical: calcHeight(4), justifyContent: 'center', paddingBottom: calcHeight(32)}}>
+                    {(slotsLoader && page > 1) && <ActivityIndicator color={COLORS.primaryGradient} size={'large'}/>}
+                  </View>
+                )}
+              </>
+            )
+          }}
       />
     )
   };
@@ -130,7 +260,7 @@ const BlockAppointments: React.FC = () => {
               <AppPickerSelect
                 containerStyle={{marginBottom: calcHeight(16)}}
                 styleTitle={{}}
-                onPress={() => setVisibleCalendar(true)}
+                onPress={() => {setVisibleCalendar(true); setCalenderType('date')}}
                 title={Trans('date')}
                 placeholder={date ? moment(date.toString()).format('YYYY/MM/DD') : Trans('date')}
                 image={IMAGES.calender}
@@ -171,16 +301,18 @@ const BlockAppointments: React.FC = () => {
                   containerStyle={{width: calcWidth(166)}}
                   touchContainerStyle={{width: calcWidth(166)}}
                   styleTitle={{}}
-                  onPress={() => {}}
+                  onPress={() => {setVisibleCalendar(true); setCalenderType('dateFrom')}}
                   title={Trans('fromDate')}
+                  placeholder={dateFrom ? moment(dateFrom.toString()).format('YYYY/MM/DD') : Trans('fromDate')}
                   image={IMAGES.calender}
                 />
                 <AppPickerSelect
                   containerStyle={{width: calcWidth(166)}}
                   touchContainerStyle={{width: calcWidth(166)}}
                   styleTitle={{}}
-                  onPress={() => {}}
+                  onPress={() => {setVisibleCalendar(true); setCalenderType('dateTo')}}
                   title={Trans('toDate')}
+                  placeholder={dateTo ? moment(dateTo.toString()).format('YYYY/MM/DD') : Trans('toDate')}
                   image={IMAGES.calender}
                 />
               </View>
@@ -189,7 +321,7 @@ const BlockAppointments: React.FC = () => {
           <View style={styles.modalActionContainer}>
             <AppButtonDefault
               title={Trans('save')}
-              onPress={() => {setVisibleSaveData(true); setVisibleAddNewTime(false)}}
+              onPress={() => onAdd()}
               colorStart={COLORS.primaryGradient}
               colorEnd={COLORS.secondGradient}
               buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
@@ -207,7 +339,6 @@ const BlockAppointments: React.FC = () => {
       </Modal>
     )
   };
-  console.log('date========>>>>>>', date);
 
   const editTimeSection = () => {
     return (
@@ -326,13 +457,16 @@ const BlockAppointments: React.FC = () => {
       </Modal>
     )
   };
-
+  const onDelete = () => {
+    setVisibleDeleteTime(false)
+    dispatch(slot_delete({id: selectSlot?.id}));
+  };
   const deleteTimeSection = () => {
     return (
       <Modal_Warning
         visible={visibleDeleteTime}
         onClose={() => setVisibleDeleteTime(false)}
-        onPress1={() => setVisibleDeleteTime(false)}
+        onPress1={() => onDelete()}
         onPress2={() => setVisibleDeleteTime(false)}
         image={IMAGES.modalCancel}
         title={Trans('doDeleteAppointmentBlockedAppointments')}
@@ -342,12 +476,18 @@ const BlockAppointments: React.FC = () => {
     )
   };
 
+  const onDoneSave = () => {
+    setVisibleSaveData(false);
+    getSlots(1);
+    setPage(1);
+  };
+
   const saveDataSection = () => {
     return (
       <Modal_Warning
         visible={visibleSaveData}
-        onClose={() => setVisibleSaveData(false)}
-        onPress={() => setVisibleSaveData(false)}
+        onClose={() => onDoneSave()}
+        onPress={() => onDoneSave()}
         image={IMAGES.modalDone}
         title={Trans('dataSavedSuccessfully')}
         buttonTitle={Trans('done')}
@@ -355,12 +495,23 @@ const BlockAppointments: React.FC = () => {
     )
   };
 
+  const onSetCalender = (item: any) => {
+    if (calenderType == 'date') {
+      setDate(item);
+    } else if (calenderType == 'dateFrom') {
+      setDateFrom(item);
+    } else if (calenderType == 'dateTo') {
+      setDateTo(item);
+    }
+  };
+
   const calendarSection = () => {
     return (
       <AppModalCalendar
         visible={visibleCalendar}
         onClose={() => setVisibleCalendar(false)}
-        onSave={(item: any) => {setDate(item)}}
+        onSave={(item: any) => onSetCalender(item)}
+        buttons
       />
     )
   };
@@ -370,7 +521,7 @@ const BlockAppointments: React.FC = () => {
       <AppModalTimings
         visible={visibleTimings}
         onClose={() => setVisibleTimings(false)}
-        onSave={(item: any) => {setTimeFrom(item.start); setTimeTo(item.end); console.log('item-----', item)}}
+        onSave={(item: any) => {setTimeFrom(item.start); setTimeTo(item.end)}}
         // onSelectItem?: (item: any) => void;
         // title?: string;
         // data?: any[];
@@ -380,9 +531,19 @@ const BlockAppointments: React.FC = () => {
     )
   };
 
-  
+  const loadingSection = () => {
+    return (
+      <AppLoading
+        margin_top={calcHeight(440)}
+        size={'large'}
+        visible={slotsLoader && page == 1}
+      />
+    )
+  };
+
   return (
     <View style={styles.container}>
+      {loadingSection()}
       {headerSection()}
       {addSection()}
       {listSection()}

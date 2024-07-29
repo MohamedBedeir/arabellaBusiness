@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, Image, View, TouchableOpacity } from 'react-native';
+import { ImageBackground, Image, View, TouchableOpacity, I18nManager } from 'react-native';
 import { styles } from './styles';
 import AppText from '../AppText';
 import { Trans } from '../../translation';
@@ -11,6 +11,8 @@ import AppButtonDefault from '../AppButtonDefault';
 import AppTextViewGradient from '../AppTextViewGradient';
 import AppDataLine from '../AppDataLine';
 import LinearGradient from 'react-native-linear-gradient';
+import { DUMMY_DATA } from '../../utils/dummyData';
+import moment from 'moment';
 
 interface ReservationItemProps {
     item?: any;
@@ -21,7 +23,16 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
     item,
     onPress,
 }) => {
-
+    console.log('item-------------', item);
+    
+    const _item = item;
+    const _status: any = DUMMY_DATA.APPOINTMENT_STATUS;
+    var state = '';
+    for (let i = 0; i < _status.length; i++) {
+        if (_item?.status == _status[i]?.key) {
+            state = I18nManager.isRTL ? _status[i].name : _status[i].nameEn;
+        }
+    }
     const dataSection = () => {
         return (
             <LinearGradient
@@ -33,7 +44,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
             >
                 <View>
                     <AppText
-                        title={`${Trans('reserveNumber')} 1234`}
+                        title={`${Trans('reserveNumber')} ${_item?.id}`}
                         fontSize={calcFont(14)}
                         fontFamily={FONTS.medium}
                         color={COLORS.white}
@@ -41,7 +52,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
                         marginBottom={calcHeight(8)}
                     />
                     <AppText
-                        title={`1520 ${Trans('rs')}`}
+                        title={`${_item?.invoice?.totalPriceAfterDiscount} ${Trans('rs')}`}
                         fontSize={calcFont(24)}
                         fontFamily={FONTS.extra_bold}
                         color={COLORS.white}
@@ -50,7 +61,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
                     />
                     <View style={styles.dataStatusContainer}>
                         <AppText
-                            title={'ملغي'}
+                            title={state}
                             fontSize={calcFont(14)}
                             fontFamily={FONTS.bold}
                             color={COLORS.white}
@@ -66,12 +77,16 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
     };
 
     const detailsSection = () => {
+        var services: string = '';
+        for (let i = 0; i < _item?.serviceBookings?.length; i++) {
+            services = `${_item?.serviceBookings[i]?.service?.name}${_item?.serviceBookings?.length == i+1 ? '' : ','} ${services}`;
+        }
         return (
             <View>
                 <AppDataLine
                     containerStyle={{}}
                     image={IMAGES.moreAddress}
-                    title={'الرياض , 48 شارع عبدالحميد احمد'}
+                    title={`${_item?.address}`}
                     fontSize={calcFont(14)}
                     fontFamily={FONTS.medium}
                     textColor={COLORS.textDark}
@@ -81,7 +96,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
                 <AppDataLine
                     containerStyle={{}}
                     image={IMAGES.moreAccount2}
-                    title={'جنا محمد سالم البراوى'}
+                    title={_item?.customer?.name}
                     fontSize={calcFont(14)}
                     fontFamily={FONTS.medium}
                     textColor={COLORS.textDark}
@@ -91,7 +106,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
                 <AppDataLine
                     containerStyle={{}}
                     image={IMAGES.moreDate}
-                    title={'15/10/2024'}
+                    title={`${moment(_item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}   ${moment(_item?.serviceBookings[0]?.scheduledAt).format('hh:mm')}`}
                     fontSize={calcFont(14)}
                     fontFamily={FONTS.medium}
                     textColor={COLORS.textDark}
@@ -101,7 +116,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
                 <AppDataLine
                     containerStyle={{}}
                     image={IMAGES.moreService}
-                    title={'تصفيف شعر , ميكاب كامل, تصفيف شعر , ميكاب كامل, تصفيف شعر , ميكاب كامل'}
+                    title={services}
                     fontSize={calcFont(14)}
                     fontFamily={FONTS.medium}
                     textColor={COLORS.textDark}

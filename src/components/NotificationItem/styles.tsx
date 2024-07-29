@@ -18,9 +18,9 @@ export const styles = StyleSheet.create({
     paddingVertical: calcHeight(12),
     paddingHorizontal: calcWidth(16),
     borderRadius: calcWidth(16),
-    marginBottom: calcHeight(10),
+    // marginBottom: calcHeight(10),
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   dataIcon: {
@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
     paddingRight: calcWidth(8),
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: calcHeight(4),
+    // marginBottom: calcHeight(4),
   },
   detailsView: {
     width: calcWidth(318), 

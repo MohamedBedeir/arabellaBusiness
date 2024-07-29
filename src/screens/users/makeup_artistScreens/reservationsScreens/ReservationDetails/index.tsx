@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { I18nManager, Image, Linking, ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
@@ -20,13 +20,23 @@ import AppTextViewGradient from '../../../../../components/AppTextViewGradient';
 import OtpInputs from 'react-native-otp-inputs';
 import Modal_Warning from '../../../../../components/Modal_Warning';
 import MapView, { Marker } from 'react-native-maps';
+import { RootState, useAppDispatch } from '../../../../../redux/store/store';
+import { appointment_details } from '../../../../../middleware/appointments/details/details';
+import { useSelector } from 'react-redux';
+import AppLoading from '../../../../../components/AppLoading';
+import moment from 'moment';
+import { appointment_otp, appointment_update } from '../../../../../middleware/appointments/update/update';
 
-const ReservationDetails: React.FC = () => {
+const ReservationDetails: React.FC = (params: any) => {
   const navigation = useNavigation<any>();
+  const dispatch = useAppDispatch();
+  const { appointmentDetailsLoader, appointmentDetailsData } = useSelector((store: RootState) => store?.appointment_details);
+  const item: any = appointmentDetailsData;
+  const status = item?.status;
   const refTimer = useRef();
-  const [costService, setCostService] = useState<any>(1520);
   const [costTransfer, setCostTransfer] = useState<any>(0);
-  const [count, setCount] = useState<number>(0);
+  const [costTransferState, setCostTransferState] = useState<boolean>(false);
+  const [count, setCount] = useState<number>(20);
   const [step, setStep] = useState<number>(1);
   const [OTPCode, setOTPCode] = useState<string>('');
   const [errors, setErrors] = useState<any>();
@@ -34,6 +44,14 @@ const ReservationDetails: React.FC = () => {
   const [visibleRejection, setVisibleRejection] = useState<boolean>(false);
   const [visibleCancellation, setVisibleCancellation] = useState<boolean>(false);
 
+  const getReservationDetails = () => {
+    dispatch(appointment_details({id: params.route.params.id}))
+  };
+
+  useEffect(() => {
+    getReservationDetails();
+  }, []);
+  
   const headerSection = () => {
     return (
       <AppHeaderDefault
@@ -46,6 +64,7 @@ const ReservationDetails: React.FC = () => {
   };
 
   const bodySection = () => {
+    const date = item?.serviceBookings ? `${moment(item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  ${moment(item?.serviceBookings[0]?.scheduledAt).format('hh:mm')}` : '';
     const line = (title?: string | any, description?: string | any, icon?: string | any, option?: string | any) => {
       return (
         <View style={styles.lineContainer}>
@@ -99,14 +118,14 @@ const ReservationDetails: React.FC = () => {
         >
           <View style={styles.mainDataItemContainer}>
             <AppText
-              title={`${Trans('reserveNumber')} 1234`}
+              title={`${Trans('reserveNumber')} ${item.id}`}
               fontSize={calcFont(16)}
               fontFamily={FONTS.bold}
               color={COLORS.white}
               textAlign={'left'}
             />
             <AppText
-              title={'15/10/2024'}
+              title={date}
               fontSize={calcFont(14)}
               fontFamily={FONTS.regular}
               color={COLORS.white}
@@ -122,14 +141,14 @@ const ReservationDetails: React.FC = () => {
               textAlign={'left'}
             />
             <AppText
-              title={`1520 ${Trans('rs')}`}
+              title={`${parseInt(item?.invoice?.totalPriceAfterDiscount, 10)} ${Trans('rs')}`}
               fontSize={calcFont(16)}
               fontFamily={FONTS.bold}
               color={COLORS.white}
               textAlign={'left'}
             />
           </View>
-          <View style={[styles.mainDataItemContainer, {borderBottomWidth: 0}]}>
+          {status == 'accepted_by_service_provider' && <View style={[styles.mainDataItemContainer, {borderBottomWidth: 0}]}>
             <AppText
               title={Trans('costTransfer')}
               fontSize={calcFont(16)}
@@ -137,18 +156,16 @@ const ReservationDetails: React.FC = () => {
               color={COLORS.white}
               textAlign={'left'}
             />
-            {step > 1 && (
-              <AppText
-                title={`${costTransfer} ${Trans('rs')}`}
-                fontSize={calcFont(16)}
-                fontFamily={FONTS.bold}
-                color={COLORS.white}
-                textAlign={'left'}
-              />
-            )}
-          </View>
+            <AppText
+              title={`${costTransfer || item?.appointmentFees[0]?.amount} ${Trans('rs')}`}
+              fontSize={calcFont(16)}
+              fontFamily={FONTS.bold}
+              color={COLORS.white}
+              textAlign={'left'}
+            />
+          </View>}
             <View style={styles.mainDataItemOptionContainer}>
-              {step > 2 && (
+              {(status == 'scheduled' || status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed') && (
                 <View style={styles.mainDataItemOptionApprovedContainer}>
                   <Image source={IMAGES.notificationsOpen} style={styles.mainDataItemOptionIcon}/>
                   <AppText
@@ -160,7 +177,7 @@ const ReservationDetails: React.FC = () => {
                   />
                 </View>
               )}
-              {step == 1 && (
+              {status == 'reviewing' && (
                 <View style={styles.mainDataItemOptionApprovedContainer}>
                   <TextInput
                     value={costTransfer}
@@ -169,7 +186,7 @@ const ReservationDetails: React.FC = () => {
                     onChangeText={(text: any) => setCostTransfer(text)}
                     placeholderTextColor={COLORS.gray}
                     numberOfLines={1}
-                    style={styles.input}
+                    style={[styles.input, {borderWidth: 2, borderColor: costTransferState ? COLORS.red : COLORS.borderLight}]}
                   />
                 </View>
               )}
@@ -183,7 +200,7 @@ const ReservationDetails: React.FC = () => {
                 textAlign={'left'}
               />
               <AppText
-                title={`${ costTransfer > 0 ? parseInt(costTransfer, 10) + parseInt(costService, 10) : parseInt(costService, 10)} ${Trans('rs')}`}
+                title={`${ costTransfer > 0 ? parseInt(costTransfer, 10) + parseInt(item?.invoice?.totalPriceAfterDiscount, 10) : parseInt(item?.invoice?.totalPriceAfterDiscount, 10)} ${Trans('rs')}`}
                 fontSize={calcFont(16)}
                 fontFamily={FONTS.bold}
                 color={COLORS.white}
@@ -206,8 +223,8 @@ const ReservationDetails: React.FC = () => {
             textColor={''}
             textAlign={'left'}
           />
-          {line(`${Trans('name')}: `, 'جنا محمد سالم البراوى', null, null)}
-          {step >= 3 && line(`${Trans('phone')}: `, '+96640802488', IMAGES.callCircle, null)}
+          {line(`${Trans('name')}: `, item?.customer?.name, null, null)}
+          {(status == 'scheduled' || status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed') && line(`${Trans('phone')}: `, item?.customer?.phoneNumber, IMAGES.callCircle, null)}
         </View>
       )
     };
@@ -224,9 +241,16 @@ const ReservationDetails: React.FC = () => {
             textColor={''}
             textAlign={'left'}
           />
-          {line(`${Trans('serviceName')} 1: `, 'تصفيف شعر', null, `30 ${Trans('minute')}`)}
+          {item?.serviceBookings?.map((item: any) => {
+            return (
+              <>
+                {line(`${Trans('serviceName')}: `, I18nManager.isRTL ? item?.service?.name : item?.service?.nameEn, null, `${item?.service?.estimatedTime} ${Trans('minute')}`)}
+              </>
+            )
+          })}
+          {/* {line(`${Trans('serviceName')} 1: `, 'تصفيف شعر', null, `30 ${Trans('minute')}`)}
           {line(`${Trans('serviceName')} 2: `, 'ميكب كامل', null, `20 ${Trans('minute')}`)}
-          {line(`${Trans('serviceName')} 3: `, 'تصفيف شعر', null, `15 ${Trans('minute')}`)}
+          {line(`${Trans('serviceName')} 3: `, 'تصفيف شعر', null, `15 ${Trans('minute')}`)} */}
         </View>
       )
     };
@@ -313,7 +337,7 @@ const ReservationDetails: React.FC = () => {
             textColor={''}
             textAlign={'left'}
           />
-          {line(null, 'الرياض , 48 شارع عبدالحميد احمد', null, null)}
+          {line(null, item?.address, null, null)}
           <TouchableOpacity
             onPress={() =>  Linking.openURL(`https://www.google.com/maps/search/?api=1&query=24.7377507,46.6015283`)}
           >
@@ -337,32 +361,32 @@ const ReservationDetails: React.FC = () => {
             </MapView>
           </TouchableOpacity>
           {/* <Image source={IMAGES.mapTest} style={styles.addressMapTest}/> */}
-          {step >= 3 && (
+          {(status == 'scheduled' || status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed') && (
             <View style={styles.stepsContainer}>
               <ReservationStepData
                 title={Trans('onWayPlaceDetention')}
-                active={step >= 4}
+                active={(status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed')}
               />
               <ReservationStepLine
-                active={step >= 4}
+                active={(status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed')}
               />
               <ReservationStepData
                 title={Trans('availablePlaceReservation')}
-                active={step >= 5}
+                active={(status == 'arrived' || status == 'started' || status == 'completed')}
               />
               <ReservationStepLine
-                active={step >= 5}
+                active={(status == 'arrived' || status == 'started' || status == 'completed')}
               />
               <ReservationStepData
                 title={Trans('startService')}
-                active={step >= 6}
+                active={status == 'started' || status == 'completed'}
               />
               <ReservationStepLine
-                active={step >= 7}
+                active={step == 2 && status == 'started' || status == 'completed'}
               />
               <ReservationStepData
                 title={Trans('serviceCompleted')}
-                active={step >= 8}
+                active={status == 'completed'}
               />
             </View>
           )}
@@ -372,39 +396,85 @@ const ReservationDetails: React.FC = () => {
 
     const actionSection = () => {
       const onNext = () => {
-        if (step == 1) {
-          if (costTransfer) {
-            setStep(step + 1);
+        if (status == 'reviewing') {
+          if (costTransfer == 0) {
+            setCostTransferState(true);
           } else {
-            null;
+            setCostTransferState(false);
+            dispatch(appointment_update({id: item.id, status: 'accepted_by_service_provider', fees: parseInt(costTransfer, 10)}));
+          };
+        } else if (status == 'scheduled') {
+          dispatch(appointment_update({id: item.id, status: 'en_route', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
+        } else if (status == 'en_route') {
+          dispatch(appointment_update({id: item.id, status: 'arrived', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
+        } else if (status == 'arrived') {
+          dispatch(appointment_update({id: item.id, status: 'started', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
+        } else if (status == 'started') {
+          if (step == 1) {
+            setStep(2);
+            dispatch(appointment_otp({id: item.id}));
+          } else if (step == 2) {
+            dispatch(appointment_update({id: item.id, otp: OTPCode, status: 'completed', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
           }
-        } else if (step == 4) {
-          setCount(12);
-          setStep(step + 1);
         } else {
-          setStep(step + 1);
+          null;
         }
       };
     
       const onAction = () => {
-        if (step == 1) {
-          setVisibleRejection(true);
-        } else {
-          setVisibleCancellation(true);
+        if (status == 'reviewing') {
+          dispatch(appointment_update({id: item.id, status: 'rejected_by_service_provider', fees: 0}));
+        } else if (status == 'arrived') {
+          dispatch(appointment_update({id: item.id, status: 'cancelled', fees: 0}));
         }
       };
 
-      const title1 = step == 1 ? Trans('sendOffer') : step == 3 ? Trans('onWayPlaceDetention') : step == 4 ? Trans('availablePlaceReservation') : step == 5 ? Trans('startService') : step == 6 ? Trans('requestCompletionCode') : Trans('serviceCompleted');
-      const title2 = step == 1 ? Trans('reservationRefused') : step == 5 ? Trans('reservationCanceled') : '';
-      
+      var title1: string = '';
+      var title2: string = '';
+      switch (status) {
+        case 'reviewing':
+          title1 = Trans('sendOffer');
+          title2 = Trans('reservationRefused');
+          break;
+        case 'accepted_by_service_provider':
+          title1 = '';
+          title2 = '';
+          break;
+        case 'confirmed_by_customer':
+          title1 = Trans('onWayPlaceDetention');
+          title2 = '';
+          break;
+        case 'scheduled':
+          title1 = Trans('onWayPlaceDetention');
+          title2 = '';
+          break;
+        case 'en_route':
+          title1 = Trans('availablePlaceReservation');
+          title2 = '';
+          break;
+        case 'arrived':
+          title1 = Trans('startService');
+          title2 = Trans('reservationCanceled');
+          break;
+        case 'started':
+          title1 = step == 1 ? Trans('requestCompletionCode') : Trans('serviceCompleted');
+          title2 = '';
+          break;
+        case 'cancelled':
+          title1 = '';
+          title2 = '';
+          break;
+        case 'rejected_by_service_provider':
+          title1 = '';
+          title2 = '';
+          break;
+      };
       return (
         <View style={styles.actionContainer}>
-          {step == 7 && (
+          {step == 2 && status == 'started' && (
             <View style={styles.otpContainer}>
               <OtpInputs
                 autofillFromClipboard
-                // onFocus={() => setFocused(true)}
-                // ref={otpRef}
                 handleChange={code => {
                   setErrors('');
                   setOTPCode(code);
@@ -416,28 +486,26 @@ const ReservationDetails: React.FC = () => {
                 numberOfInputs={5}
                 inputStyles={
                   !errors
-                    ? [styles.otpInput, {borderColor: focused ? COLORS.primaryGradient : COLORS.gray}]
+                    ? [styles.otpInput, {borderColor: focused ? COLORS.primaryGradient : COLORS.borderLight}]
                     : [styles.otpInput, {borderColor: 'red'}]
                 }
               />
             </View>
           )}
-          {step == 2 && (
-              <TouchableOpacity onPress={() => onNext()}>
-                <AppTextViewGradient
-                  containerStyle={styles.waitingContainer}
-                  colorStart={COLORS.white}
-                  colorEnd={COLORS.white}
-                  title={Trans('waitingForResponseFromClient')}
-                  fontFamily={FONTS.bold}
-                  fontSize={calcFont(20)}
-                  textAlign={'center'}
-                  textColorStart={COLORS.secondGradient}
-                  textColorEnd={COLORS.primaryGradient}
-                />
-              </TouchableOpacity>
+          {status == 'accepted_by_service_provider' && (
+            <AppTextViewGradient
+              containerStyle={styles.waitingContainer}
+              colorStart={COLORS.white}
+              colorEnd={COLORS.white}
+              title={Trans('waitingForResponseFromClient')}
+              fontFamily={FONTS.bold}
+              fontSize={calcFont(20)}
+              textAlign={'center'}
+              textColorStart={COLORS.secondGradient}
+              textColorEnd={COLORS.primaryGradient}
+            />
           )}
-          {(step != 2 && step < 8) && (
+          {(status == 'reviewing' || status == 'scheduled' || status == 'en_route' || status == 'arrived' || status == 'started') && (
             <AppButtonDefault
               title={title1}
               onPress={() => onNext()}
@@ -446,7 +514,7 @@ const ReservationDetails: React.FC = () => {
               buttonStyle={{marginTop: calcHeight(8)}}
             />
           )}
-          {(step == 1 || (step == 5 && count <= 0)) && (
+          {(status == 'reviewing' || (status == 'arrived' && count == 0)) && (
             <AppButtonDefault
               title={title2}
               onPress={() => onAction()}
@@ -467,7 +535,7 @@ const ReservationDetails: React.FC = () => {
           {customerNameSection()}
           {servicesDetailsSection()}
           {dateSection()}
-          {step == 5 && timerSection()}
+          {status == 'arrived' && timerSection()}
           {addressSection()}
         </ScrollView>
         {actionSection()}
@@ -478,7 +546,7 @@ const ReservationDetails: React.FC = () => {
   const modalCompletedSection = () => {
     return (
       <Modal_Warning
-        visible={step == 8}
+        visible={step == 2 && status == 'completed'}
         onClose={() => navigation.goBack()}
         onPress={() => navigation.goBack()}
         image={IMAGES.modalDone}
@@ -518,8 +586,19 @@ const ReservationDetails: React.FC = () => {
     )
   };
 
+  const loadingSection = () => {
+    return (
+      <AppLoading
+        margin_top={calcHeight(440)}
+        size={'large'}
+        visible={appointmentDetailsLoader}
+      />
+    )
+  };
+
   return (
     <View style={styles.container}>
+      {loadingSection()}
       {headerSection()}
       {bodySection()}
       {modalCompletedSection()}

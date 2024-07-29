@@ -21,8 +21,8 @@ const Login: React.FC<{}> = (params: any) => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
   const { authenticationLoader } = useSelector((store: RootState) => store?.auth);
-  const [phone, setPhone] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [phone, setPhone] = useState<string>('552045968');
+  const [password, setPassword] = useState<string>('123456');
   const [checkPhone, setCheckPhone] = useState<boolean>(false);
   const [checkPassword, setCheckPassword] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -55,7 +55,7 @@ const Login: React.FC<{}> = (params: any) => {
         password,
       };
       dispatch(login(data));
-    }
+    };
   };
 
   const headerSection = () => {

@@ -9,6 +9,7 @@ import { calcFont, calcHeight } from '../../../utils/sizes';
 import AppButtonDefault from '../../../components/AppButtonDefault';
 import { useNavigation } from '@react-navigation/native';
 import AppModalLanguage from '../../../components/AppModalLanguage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LetsStart: React.FC<{}> = (params: any) => {
   const navigation = useNavigation<any>();
@@ -55,6 +56,11 @@ const LetsStart: React.FC<{}> = (params: any) => {
     )
   };
 
+  const onNext = async () => {
+    await AsyncStorage.setItem('skip', 'done');
+    navigation.navigate('AuthenticationStack', {screen: 'Login'});
+  };
+
   const authSection = () => {
     return (
       <View style={styles.authContainer}>
@@ -62,7 +68,7 @@ const LetsStart: React.FC<{}> = (params: any) => {
           colorStart={COLORS.primaryGradient}
           colorEnd={COLORS.secondGradient}
           border={false}
-          onPress={() => navigation.navigate('AuthenticationStack', {screen: 'Login'})}
+          onPress={() => onNext()}
           title={Trans('signIn')}
         />
         {/* <View style={styles.authView}>

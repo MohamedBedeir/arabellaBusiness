@@ -1,29 +1,36 @@
 export default {
   baseUrl: 'https://onaddress.net/api/client/mobile/',
+  imageUrl: 'https://araberlla-staging.s3.me-south-1.amazonaws.com/',
   //=========================
-  login: 'auth/login',
-  verifyOTP: `auth/otp`,
+  login: 'auth/login/pnp',
+  forgot_password: '/auth/forgot-password',
+  verifyOTP: 'auth/otp',
+  reset_password: 'auth/reset-password',
 
 
 
-
-
-
-
+  uploadFile: 'admins/files/upload',
+  categories: 'categories',
+  serviceAction: 'admins/services',
+  slotAction: 'admins/occupied-slots',
+  appointments: 'admins/appointments',
+  statistics: 'admins/statistics',
+  service_providers: '/admins/service_providers',
+  profiles: 'profiles',
+  users: '/admins/users',
+  notifications: 'admins/notifications'  ,
 
 
 
 
   register: 'auth/register',
   confirm_code: 'auth/confirm',
-  forgot_password: 'auth/password/forget',
-  reset_password: 'auth/password/reset',
   update_password: 'auth/update-password',
   user_data: 'auth/client-info',
   update_user_data: 'auth/update-data',
   upgraded_user_data: 'auth/update-company-details',
   types: 'properties/types',
-  categories: 'properties/categories',
+  
   facilities: 'properties/facilities',
   features: 'properties/features',
   allCities: 'api/client/mobile/cities',

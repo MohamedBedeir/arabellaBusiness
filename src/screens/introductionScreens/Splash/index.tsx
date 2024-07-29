@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import I18n from '../../../translation';
 import { IMAGES } from '../../../assets/Images';
 import NetInfo, { NetInfoState } from "@react-native-community/netinfo";
-import { init_lang } from '../../../network';
+import { init_lang, init_token } from '../../../network';
 
 const Splash: React.FC<{}> = (params: any) => {
   useEffect(() => {
@@ -59,11 +59,27 @@ const Splash: React.FC<{}> = (params: any) => {
   };
 
   const startup = async () => {
-    const skip = await AsyncStorage.getItem('skip');
+    const skip: any = await AsyncStorage.getItem('skip');
+    const user: any = await AsyncStorage.getItem('user');
+    const token: any = await AsyncStorage.getItem('token');
+
     setTimeout(() => {
-      // params.navigation.navigate('Definition');
       if (skip == 'done') {
-        params.navigation.navigate('Definition');
+        if (user && JSON.parse(user).id) {
+          const _user = JSON.parse(user);
+          init_token(token);
+          if (_user.role == 'service_provider_manager') {
+            params.navigation.navigate('MA_Tabs');
+          } else if (_user.role == 'service_provider_manager') {
+            params.navigation.navigate('SA_Tabs');
+          } else if (_user.role == 'service_provider_manager') {
+            params.navigation.navigate('HS_Tabs');
+          } else if (_user.role == 'service_provider_manager') {
+            params.navigation.navigate('AD_Tabs');
+          }
+        } else {
+          params.navigation.navigate('AuthenticationStack', {screen: 'Login'});
+        }
       } else {
         params.navigation.navigate('Definition');
       }

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Dimensions, FlatList, Image, ImageBackground, ScrollView, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Dimensions, FlatList, I18nManager, Image, ImageBackground, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { Trans } from '../../../../../translation';
@@ -20,9 +20,22 @@ import RNFS from 'react-native-fs';
 import ServicesItem from '../../../../../components/ServicesItem';
 import AppModalSelectItem from '../../../../../components/AppModalSelectItem';
 import { DUMMY_DATA } from '../../../../../utils/dummyData';
+import { RootState, useAppDispatch } from '../../../../../redux/store/store';
+import { categories } from '../../../../../middleware/general/categories';
+import { useSelector } from 'react-redux';
+import { service_add, service_data, service_delete, service_edit } from '../../../../../middleware/services/services';
+import AppLoading from '../../../../../components/AppLoading';
+import { setServiceAddState, setServiceDeleteState, setServiceEditState } from '../../../../../redux/store/services/servicesSlice';
+import endpoints from '../../../../../network/endpoints';
 
 const Services: React.FC = () => {
   const navigation = useNavigation<any>();
+  const dispatch = useAppDispatch();
+  const { categoriesData } = useSelector((store: RootState) => store?.categories);
+  const { servicesLoader, serviceData, serviceCount, serviceAddState, serviceEditState, serviceDeleteState } = useSelector((store: RootState) => store?.services);
+  const [selectService, setSelectService] = useState<any>({});
+  const [page, setPage] = useState<number>(1);
+  
   const [nameAr, setNameAr] = useState<string>('');
   const [nameEn, setNameEn] = useState<string>('');
   const [descriptioneAr, setDescriptionAr] = useState<string>('');
@@ -32,6 +45,7 @@ const Services: React.FC = () => {
   const [base64, setBase64] = useState('');
   const [imageFile, setImageFile] = useState<any>(null);
   const [condition, setCondition] = useState<boolean>(true);
+  const [selectCategories, setSelectCategories] = useState<any>({});
 
   const [visibleFillter, setVisibleFillter] = useState<boolean>(false);
   const [visibleAddNewService, setVisibleAddNewService] = useState<boolean>(false);
@@ -40,6 +54,97 @@ const Services: React.FC = () => {
   const [visibleDeleteService, setVisibleDeleteService] = useState<boolean>(false);
   const [visibleUpdateServiceState, setVisibleUpdateServiceState] = useState<boolean>(false);
   const [selectServiceState, setSelectServiceState] = useState<any>({});
+  const [visibleCategories, setVisibleCategories] = useState<boolean>(false);
+
+  const getServices = (page: number) => {
+    dispatch(service_data({page}));
+  };
+  useEffect(() => {
+    dispatch(categories({}));
+    getServices(1);
+  }, []);
+
+  const setData = (item?: any) => {
+    if (item) {
+      setNameAr(item?.name);
+      setNameEn(item?.nameEn);
+      setDescriptionAr(item?.description);
+      setDescriptionEn(item?.descriptionEn);
+      setPrice(item.price);
+      setTime(item.estimatedTime.toString());
+      // setTime(item?.estimatedTime);
+      setBase64('');
+      setImageFile(`${endpoints.imageUrl}${item?.featuredImage}`);
+      setCondition(item?.isActive);
+      setSelectCategories(item?.category);
+    } else {
+      setNameAr('');
+      setNameEn('');
+      setDescriptionAr('');
+      setDescriptionEn('');
+      setPrice('');
+      setTime('');
+      setBase64('');
+      setImageFile(null);
+      setCondition(true);
+      setSelectCategories({});
+    }
+  };
+  useEffect(() => {
+    if (serviceAddState == 'done') {
+      setVisibleAddNewService(false);
+      setData();
+      setVisibleSaveData(true);
+      dispatch(setServiceAddState(''));
+    }
+  }, [serviceAddState]);
+
+  useEffect(() => {
+    if (serviceEditState == 'done') {
+      setVisibleEditService(false);
+      setData();
+      setVisibleSaveData(true);
+      dispatch(setServiceEditState(''));
+    }
+  }, [serviceEditState]);
+
+  useEffect(() => {
+    if (serviceDeleteState == 'done') {
+      setVisibleDeleteService(false);
+      setVisibleSaveData(true);
+      dispatch(setServiceDeleteState(''));
+    }
+  }, [serviceDeleteState]);
+
+  const _onRefresh_Services = () => {
+    getServices(1);
+    setPage(1);
+  };
+  const _loadMore_Services = () => {
+    if((serviceData.length < serviceCount)) {
+      getServices(page + 1);
+      setPage(page + 1);
+    }
+  };
+
+  const onAdd = () => {
+    const data = {
+      name: nameAr,
+      nameEn: nameEn,
+      description: descriptioneAr,
+      descriptionEn: descriptionEn,
+      price: parseInt(price, 10),
+      estimatedTime: parseInt(time, 10),
+      isActive: condition,
+      isHomeService: true,
+      state: 'pending',
+      categoryId: selectCategories?.id,
+      serviceProviderId: 5,
+      taxId: 1,
+      isTaxIncluded: false,
+    };
+    dispatch(service_add({data, image: imageFile}));
+  };
 
   const headerSection = () => {
     return (
@@ -75,15 +180,30 @@ const Services: React.FC = () => {
       </View>
     )
   };
+  
+  const onState = (item: any) => {
+    setVisibleUpdateServiceState(true);
+    setSelectService(item);
+    if (item.isActive) {
+      setSelectServiceState(DUMMY_DATA.SERVICESTATUES[0]);
+    } else {
+      setSelectServiceState(DUMMY_DATA.SERVICESTATUES[1]);
+    }
+  };
 
+  const onEditService = (item: any) => {
+    setVisibleEditService(true);
+    setData(item);
+
+  }
   const listSection = () => {
     const renderItem = ({item, index} : {item: any, index: number}) => {
       return (
         <ServicesItem
           item={item}
-          onPressDelete={() => setVisibleDeleteService(true)}
-          onPressEdit={() => setVisibleEditService(true)}
-          onUpdateState={() => setVisibleUpdateServiceState(true)}
+          onPressDelete={() => {setVisibleDeleteService(true); setSelectService(item)}}
+          onPressEdit={() => onEditService(item)}
+          onUpdateState={() => onState(item)}
         />
       )
     };
@@ -91,9 +211,34 @@ const Services: React.FC = () => {
       <View>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={DUMMY_DATA.SERVICES}
+          data={serviceData}
           renderItem={renderItem}
-          keyExtractor={item => `${item}`}
+          keyExtractor={item => `${item.id}`}
+          refreshing={servicesLoader && page == 1}
+          onRefresh={_onRefresh_Services}
+          onEndReached={() => {
+            _loadMore_Services();
+          }}
+          onEndReachedThreshold={Platform.OS === 'ios' ? 0 : 0.2}
+          ListFooterComponent={() => {
+            return (
+              <>
+                {serviceData.length == 0 ? (
+                  <>
+                    {/* <WarningScreen
+                      image={IMAGES.emptySearch}
+                      title={Trans('dontHaveSearchResultsTitle')}
+                      description={Trans('dontHaveSearchResultsDescription')}
+                    /> */}
+                  </>
+                ) : (
+                  <View style={{backgroundColor: COLORS.backgroundLight, width: '100%', paddingVertical: calcHeight(4), justifyContent: 'center', paddingBottom: calcHeight(32)}}>
+                    {(servicesLoader && page > 1) && <ActivityIndicator color={COLORS.primaryGradient} size={'large'}/>}
+                  </View>
+                )}
+              </>
+            )
+          }}
         />
       </View>
     )
@@ -155,6 +300,7 @@ const Services: React.FC = () => {
             />
             <AppInput
               title={Trans('price')}
+              keyboardType={'number-pad'}
               value={price}
               placeholder={'0'}
               onChangeText={(text: string) => setPrice(text)}
@@ -163,6 +309,7 @@ const Services: React.FC = () => {
             />
             <AppInput
               title={Trans('estimatedTime')}
+              keyboardType={'number-pad'}
               value={time}
               placeholder={'0'}
               onChangeText={(text: string) => setTime(text)}
@@ -173,9 +320,9 @@ const Services: React.FC = () => {
               containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
               touchContainerStyle={{width: calcWidth(343)}}
               styleTitle={{}}
-              onPress={() => {}}
+              onPress={() => setVisibleCategories(true)}
               title={Trans('category')}
-              placeholder={Trans('selectCategory')}
+              placeholder={selectCategories ? I18nManager.isRTL ? selectCategories.nameAr : selectCategories.nameEn : Trans('selectCategory')}
               icon={IMAGES.dropDown}
             />
             <View style={{marginTop: calcHeight(12)}}>
@@ -297,6 +444,7 @@ const Services: React.FC = () => {
             />
             <AppInput
               title={Trans('price')}
+              keyboardType={'number-pad'}
               value={price}
               placeholder={'0'}
               onChangeText={(text: string) => setPrice(text)}
@@ -305,6 +453,7 @@ const Services: React.FC = () => {
             />
             <AppInput
               title={Trans('estimatedTime')}
+              keyboardType={'number-pad'}
               value={time}
               placeholder={'0'}
               onChangeText={(text: string) => setTime(text)}
@@ -315,9 +464,9 @@ const Services: React.FC = () => {
               containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
               touchContainerStyle={{width: calcWidth(343)}}
               styleTitle={{}}
-              onPress={() => {}}
+              onPress={() => setVisibleCategories(true)}
               title={Trans('category')}
-              placeholder={Trans('selectCategory')}
+              placeholder={selectCategories ? I18nManager.isRTL ? selectCategories.name : selectCategories.nameEn : Trans('selectCategory')}
               icon={IMAGES.dropDown}
             />
             <View style={{marginTop: calcHeight(12)}}>
@@ -383,7 +532,7 @@ const Services: React.FC = () => {
           <View style={styles.modalActionContainer}>
             <AppButtonDefault
               title={Trans('save')}
-              onPress={() => {setVisibleSaveData(true); setVisibleAddNewService(false)}}
+              onPress={() => onAdd()}
               colorStart={COLORS.primaryGradient}
               colorEnd={COLORS.secondGradient}
               buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
@@ -460,6 +609,7 @@ const Services: React.FC = () => {
             />
             <AppInput
               title={Trans('price')}
+              keyboardType={'number-pad'}
               value={price}
               placeholder={'0'}
               onChangeText={(text: string) => setPrice(text)}
@@ -468,6 +618,7 @@ const Services: React.FC = () => {
             />
             <AppInput
               title={Trans('estimatedTime')}
+              keyboardType={'number-pad'}
               value={time}
               placeholder={'0'}
               onChangeText={(text: string) => setTime(text)}
@@ -478,9 +629,9 @@ const Services: React.FC = () => {
               containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
               touchContainerStyle={{width: calcWidth(343)}}
               styleTitle={{}}
-              onPress={() => {}}
+              onPress={() => setVisibleCategories(true)}
               title={Trans('category')}
-              placeholder={Trans('selectCategory')}
+              placeholder={selectCategories ? I18nManager.isRTL ? selectCategories.name : selectCategories.nameEn : Trans('selectCategory')}
               icon={IMAGES.dropDown}
             />
             <View style={{marginTop: calcHeight(12)}}>
@@ -565,12 +716,18 @@ const Services: React.FC = () => {
     )
   };
 
+  const onDoneSave = () => {
+    setVisibleSaveData(false);
+    getServices(1);
+    setPage(1);
+  };
+
   const modalSaveSection = () => {
     return (
       <Modal_Warning
         visible={visibleSaveData}
-        onClose={() => setVisibleSaveData(false)}
-        onPress={() => setVisibleSaveData(false)}
+        onClose={() => onDoneSave()}
+        onPress={() => onDoneSave()}
         image={IMAGES.modalDone}
         title={Trans('dataSavedSuccessfully')}
         buttonTitle={Trans('done')}
@@ -578,12 +735,16 @@ const Services: React.FC = () => {
     )
   };
   
+  const onDelete = () => {
+    setVisibleDeleteService(false);
+    dispatch(service_delete({id: selectService?.id}));
+  };
   const modalDeleteSection = () => {
     return (
       <Modal_Warning
         visible={visibleDeleteService}
         onClose={() => setVisibleDeleteService(false)}
-        onPress1={() => setVisibleDeleteService(false)}
+        onPress1={() => onDelete()}
         onPress2={() => setVisibleDeleteService(false)}
         image={IMAGES.modalCancel}
         title={Trans('doDeleteServiceFromServicesList')}
@@ -593,22 +754,67 @@ const Services: React.FC = () => {
     )
   };
 
+  const onUpdateState = (item: any) => {
+    
+    const data = {
+      name: selectService.name,
+      nameEn: selectService.nameEn,
+      description: selectService.description,
+      descriptionEn: selectService.descriptionEn,
+      price: parseInt(selectService.price, 10),
+      estimatedTime: parseInt(selectService.estimatedTime, 10),
+      isHomeService: true,
+      state: 'pending',
+      categoryId: selectService.categoryId,
+      serviceProviderId: 5,
+      taxId: 1,
+      isTaxIncluded: false,
+      isActive: item.id == 1,
+    };
+    dispatch(service_edit({id: item.id, data, image: ''}));
+  };
+
   const modalServiceStateSection = () => {
     return (
       <AppModalSelectItem
         visible={visibleUpdateServiceState}
-        onClose={() => {setVisibleUpdateServiceState(false)}}
-        onSelectItem={(item: any) => {setSelectServiceState(item)}}
-        title={Trans('chooseServiveState')}
-        data={DUMMY_DATA.SERVICESTATUES}
-        itemSelected={selectServiceState}
+          onClose={() => {setVisibleUpdateServiceState(false)}}
+          onSelectItem={(item: any) => onUpdateState(item)}
+          title={Trans('chooseServiveState')}
+          data={DUMMY_DATA.SERVICESTATUES}
+          itemSelected={selectServiceState}
+          multiSelect={false}
+      />
+    )
+  };
+
+  const modalCategoriesSection = () => {
+    return (
+      <AppModalSelectItem
+        visible={visibleCategories}
+        onClose={() => {setVisibleCategories(false)}}
+        onSelectItem={(item: any) => {setSelectCategories(item)}}
+        title={Trans('selectCategory')}
+        data={categoriesData}
+        itemSelected={selectCategories}
         multiSelect={false}
+      />
+    )
+  };
+
+  const loadingSection = () => {
+    return (
+      <AppLoading
+        margin_top={calcHeight(440)}
+        size={'large'}
+        visible={servicesLoader && page == 1}
       />
     )
   };
 
   return (
     <View style={styles.container}>
+      {loadingSection()}
       {headerSection()}
       {addSection()}
       {listSection()}
@@ -618,6 +824,7 @@ const Services: React.FC = () => {
       {modalSaveSection()}
       {modalDeleteSection()}
       {modalServiceStateSection()}
+      {modalCategoriesSection()}
     </View>
   );
 };

@@ -4,6 +4,7 @@ import { styles } from './styles';
 import AppText from '../AppText';
 import { calcFont, calcHeight } from '../../utils/sizes';
 import { COLORS, FONTS } from '../../utils/theme';
+import { Trans } from '../../translation';
 
 interface ReservationsReportProps {
     containerStyle?: ViewStyle;
@@ -57,7 +58,7 @@ const ReservationsReport: React.FC<ReservationsReportProps> = ({
                 />
                 <Image source={indicatorIcon} style={styles.icon}/>
                 <AppText
-                    title={percent + '%'}
+                    title={`${percent} ${Trans('rs')}`}
                     fontSize={calcFont(14)}
                     fontFamily={FONTS.medium}
                     color={indicatorColor}

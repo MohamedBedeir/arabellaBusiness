@@ -9,38 +9,34 @@ interface ConfirmationCodeArgs {
   navigation?: any;
   phone?: string;
   otp?: string;
+  form?: string;
 };
 
 export const confirmationCode = createAsyncThunk(
   'CONVERMATION_CODE',
   async (args: ConfirmationCodeArgs, thunkApi) => {
-    // thunkApi.dispatch(setAuthenticationLoader(true));
-    // thunkApi.dispatch(setConfirmationCodeState(''));
+    thunkApi.dispatch(setAuthenticationLoader(true));
+    thunkApi.dispatch(setConfirmationCodeState(''));
     try {
-      // thunkApi.dispatch(setAuthenticationLoader(false));
       const data: any = {
-        phone: args?.phone,
+        phoneNumber: args?.phone,
         otp: args?.otp,
       };
-      console.log('data----------', data);
-      const response = await client.post(`${endpoints.verifyOTP}`, data);
-      console.log('response----------', response.data);
-      // if (!response.data.error) {
-      //   thunkApi.dispatch(setConfirmationCodeState('done'));
-      //   await AsyncStorage.setItem('user', JSON.stringify(response.data.client));
-      //   init_token(`Bearer ${response.data.client.access_token}`);
-      //   // init_lang();
-      //   if (args.whereFrom == 'register') {
-      //     args.navigation.navigate('MainStack')
-      //   } else if (args.whereFrom == 'forgotPassword') {
-      //     args.navigation.navigate('ResetPassword', {id: response.data.client.id, confirmation_code: response.data.client.confirmation_code});
-      //   }
-      // } else {
-      //   thunkApi.dispatch(setConfirmationCodeState('error'));
-      // }
+      const response: any = await client.post(`${endpoints.verifyOTP}`, data);
+      console.log('response----confirmationCode------', response);
+      thunkApi.dispatch(setAuthenticationLoader(false));
+      if (response.status == 201) {
+        thunkApi.dispatch(setConfirmationCodeState('done'));
+        await AsyncStorage.setItem('user', JSON.stringify(response.data.data.user));
+        await AsyncStorage.setItem('token', `Bearer ${response.data.data.token}`);
+        init_token(`Bearer ${response.data.data.token}`);
+        args.navigation.navigate('MA_Tabs');
+      } else {
+        thunkApi.dispatch(setConfirmationCodeState('error'));
+      }
     } catch (err) {
-      // thunkApi.dispatch(setConfirmationCodeState('error'));
-      // thunkApi.dispatch(setAuthenticationLoader(false));
+      thunkApi.dispatch(setAuthenticationLoader(false));
+      thunkApi.dispatch(setConfirmationCodeState('error'));
     }
   },
 );

@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: COLORS.backgroundLight,
-    paddingBottom: calcHeight(180),
   },
   tabsContainer: {
     width: calcWidth(375),

@@ -3,36 +3,37 @@ import {setAuthenticationLoader, setResetPasswordState} from '../../redux/store/
 import {client} from '../../network/apiClient';
 import endpoints from '../../network/endpoints';
 
-interface ResetPassworArgs {
+interface ResetPasswor {
   navigation: any;
-  id: string;
-  password: string;
-  password_confirmation: string;
+  phone: string;
+  otp: string;
+  newPassword: string;
+  confirmNewPassword: string;
 };
-
 
 export const resetPassword = createAsyncThunk(
   'RESET_PASSWORD',
-  async (args: ResetPassworArgs, thunkApi) => {
+  async (args: ResetPasswor, thunkApi) => {
     thunkApi.dispatch(setAuthenticationLoader(true));
     thunkApi.dispatch(setResetPasswordState(''));
     try {
       const data = {
-        id: args.id,
-        password: args.password,
-        password_confirmation: args.password_confirmation,
+        phoneNumber: args?.phone,
+        otp: args?.otp,
+        newPassword: args?.newPassword,
+        confirmNewPassword: args?.confirmNewPassword,
       };
       const response: any = await client.post(endpoints.reset_password, data);
-      thunkApi.dispatch(setAuthenticationLoader(false));
-      if (!response.data.error) {
-        args.navigation.navigate('Login');
+      if (response.status == 204) {
+        thunkApi.dispatch(setAuthenticationLoader(false));
         thunkApi.dispatch(setResetPasswordState('done'));
       } else {
+        thunkApi.dispatch(setAuthenticationLoader(false));
         thunkApi.dispatch(setResetPasswordState('error'));
-      }
+      };
     } catch (err) {
       thunkApi.dispatch(setAuthenticationLoader(false));
-      thunkApi.dispatch(setResetPasswordState('error'));
-    }
+      thunkApi.dispatch(setResetPasswordState('done'));
+    };
   },
 );

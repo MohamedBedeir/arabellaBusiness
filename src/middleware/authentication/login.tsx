@@ -1,9 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {init_lang, init_token} from '../../network';
 import {setAuthenticationLoader, setLoginState} from '../../redux/store/auth/authenticationSlice';
 import {client} from '../../network/apiClient';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { saveFcmToken } from '../notifications/notifications';
 import endpoints from '../../network/endpoints';
 
 interface LoginArgs {
@@ -19,19 +16,16 @@ export const login = createAsyncThunk(
     thunkApi.dispatch(setLoginState(''));
     try {
       const data: any = {
-        identifier: args.phone,
+        phoneNumber: args.phone,
         password: args.password,
       };
       const response: any = await client.post(endpoints.login, data);
-      thunkApi.dispatch(setAuthenticationLoader(false));
-      if (!response.data.error) {
-        thunkApi.dispatch(setLoginState('done'));
-        // await AsyncStorage.setItem('user', JSON.stringify(response.data.client));
-        // init_token(`Bearer ${response.data.client.access_token}`);
-        // thunkApi.dispatch(saveFcmToken({}));
-        // init_lang();
-        args.navigation.navigate('VerficationOTP', { phone: args.phone })
+      if (response.status == 204) {
+        thunkApi.dispatch(setAuthenticationLoader(false));
+        thunkApi.dispatch(setLoginState(''));
+        args.navigation.navigate('VerficationOTP', { phone: args.phone });
       } else {
+        thunkApi.dispatch(setAuthenticationLoader(false));
         thunkApi.dispatch(setLoginState('error'));
       }
     } catch (err) {

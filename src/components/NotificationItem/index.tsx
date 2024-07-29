@@ -11,6 +11,7 @@ import AppButtonDefault from '../AppButtonDefault';
 import AppTextViewGradient from '../AppTextViewGradient';
 import AppDataLine from '../AppDataLine';
 import LinearGradient from 'react-native-linear-gradient';
+import moment from 'moment';
 
 interface NotificationItemProps {
     item?: any;
@@ -34,19 +35,27 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
                 <View>
                     <AppText
                         title={item?.title}
-                        fontSize={calcFont(16)}
-                        fontFamily={FONTS.medium}
+                        fontSize={calcFont(18)}
+                        fontFamily={FONTS.extra_bold}
                         color={COLORS.white}
                         textAlign={'left'}
                         marginBottom={calcHeight(8)}
                     />
                     <AppText
-                        title={`1520 ${Trans('rs')}`}
-                        fontSize={calcFont(24)}
-                        fontFamily={FONTS.extra_bold}
+                        title={item?.message}
+                        fontSize={calcFont(16)}
+                        fontFamily={FONTS.regular}
                         color={COLORS.white}
                         textAlign={'left'}
                         marginBottom={calcHeight(12)}
+                        numberOfLines={3}
+                    />
+                    <AppText
+                        title={`${moment(item.createdAt).format('DD/MM/YYYY')}   ${moment(item.createdAt).format('hh:mm')}`}
+                        fontSize={calcFont(14)}
+                        fontFamily={FONTS.medium}
+                        color={COLORS.textDark}
+                        textAlign={'left'}
                     />
                 </View>
                 <TouchableOpacity onPress={onPress}>
@@ -111,9 +120,9 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         );
     }
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: item?.isRead ? COLORS.borderLight : COLORS.white}]}>
             {dataSection()}
-            {detailsSection()}
+            {/* {detailsSection()} */}
             {/* <View style={styles.dataContainer}>
                 <View style={styles.dataLeftContainer}>
                     <View style={styles.titleView}>

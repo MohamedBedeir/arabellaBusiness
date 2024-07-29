@@ -36,7 +36,7 @@ export const authenticationSlice = createSlice({
       state.registerError = action.payload;
     },
     setResetPasswordState: (state, action) => {
-      state.forgotPasswordState = action.payload;
+      state.resetPasswordState = action.payload;
     },
     setUserData: (state, action) => {
       state.userData = action.payload;

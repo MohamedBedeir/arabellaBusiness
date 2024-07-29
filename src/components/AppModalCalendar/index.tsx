@@ -15,14 +15,21 @@ export interface Props {
   visible?: boolean;
   onClose?: any;
   onSave?: (item: any) => void;
+  onMonth?: (item: any) => void;
+  initialView?: 'years' | 'months' | 'days';
+  buttons?: boolean;
 }
 
 const AppModalCalendar: React.FC<Props> = ({
   visible,
   onClose,
   onSave,
+  onMonth,
+  initialView,
+  buttons,
 }) => {
   const [selectSingleDate, setSelectSingleDate] = useState<any>('');
+  const [selectSingleMonth, setSelectSingleMonth] = useState<any>('');
   const minDate = new Date(); // Today
   const maxDate = new Date(2024, 7, 7);
   // const startDate = selectedStartDate ? selectedStartDate.toString() : "";
@@ -34,7 +41,6 @@ const AppModalCalendar: React.FC<Props> = ({
 
   const onPressSave = () => {
     onClose();
-    onSave(selectSingleDate);
   };
 
   return (
@@ -64,15 +70,17 @@ const AppModalCalendar: React.FC<Props> = ({
           todayTextStyle={{color: COLORS.textDark}}
           selectedDayColor={COLORS.primaryGradient}
           selectedDayTextColor="#FFFFFF"
-          onDateChange={(date: any) => setSelectSingleDate(date)}
-
-          minDate={minDate}
+          onDateChange={(date: any) => onSave(date)}
+          onMonthChange={(date: any) => onMonth(date)}
+          initialView={initialView || 'days'}
+          // minDate={minDate}
           // maxDate={maxDate}
           // selectedStartDate={new Date(2024, 7, 20)}
           // selectedEndDate={new Date(2024, 7, 23)}
 
         />
-        <View style={styles.modalActionContainer}>
+        {buttons && (
+          <View style={styles.modalActionContainer}>
             <AppButtonDefault
               title={Trans('save')}
               onPress={() => onPressSave()}
@@ -89,6 +97,7 @@ const AppModalCalendar: React.FC<Props> = ({
               border
             />
           </View>
+          )}
       </View>
     </Modal>
     )

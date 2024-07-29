@@ -26,18 +26,17 @@ const ForgotPassword: React.FC<{}> = () => {
     phone != '' ? setCheckPhone(false) : null;
   };
 
-  // navigation.navigate('VerficationOTP')
   const onForgotPassword = () => {
     if (phone == '') {
-      // _toast('danger', Trans('pleaseEnterRequiredData'));
       setCheckPhone(true);
     } else {
       setCheckPhone(false);
       const data = {
         navigation,
-        phone,
+        phone: `+966${phone}`,
       };
       dispatch(forgotPassword(data));
+      // navigation.navigate('ResetPassword', { phone: phone })
     }
   };
 

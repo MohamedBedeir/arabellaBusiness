@@ -1,33 +1,36 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import endpoints from '../../network/endpoints';
 import {client} from '../../network/apiClient';
-import { setUserDataLoader, setUserDataState } from '../../redux/store/profile/profile';
-import { userData } from '../profile/profile';
+import { setPasswordUpdateState, setProfileLoader, setProfileUpdateState } from '../../redux/store/profile/profileSlice';
 
-interface ResetPassworArgs {
-  navigation: any;
-  old_password: string;
+interface PassworUpdate {
+  currentPassword: string;
   password: string;
-  password_confirmation: string;
+  confirmPassword: string;
 };
 
-export const updatePassword = createAsyncThunk(
-  'RESET_PASSWORD',
-  async (args: ResetPassworArgs, thunkApi) => {
-    thunkApi.dispatch(setUserDataLoader(true));
-        thunkApi.dispatch(setUserDataState(''));
+export const password_update = createAsyncThunk(
+  'PASSWORD_UPDATE',
+  async (args: PassworUpdate, thunkApi) => {
+    thunkApi.dispatch(setPasswordUpdateState(''));
+    thunkApi.dispatch(setProfileLoader(true));
     try {
       const data = {
-        old_password: args.old_password,
+        currentPassword: args.currentPassword,
         password: args.password,
-        password_confirmation: args.password_confirmation,
+        confirmPassword: args.confirmPassword,
       };
-      const response: any = await client.put(endpoints.update_password, data);
-      thunkApi.dispatch(userData({}))
+      const response: any = await client.patch(`${endpoints.profiles}/password`, data);
+      if (response.status == 200 || response.status == 201 || response.status == 204) {
+        thunkApi.dispatch(setPasswordUpdateState('done'));
+        thunkApi.dispatch(setProfileLoader(false));
+      } else {
+        thunkApi.dispatch(setPasswordUpdateState('error'));
+        thunkApi.dispatch(setProfileLoader(false));
+      }
     } catch (err) {
-      thunkApi.dispatch(setUserDataLoader(false));
-      thunkApi.dispatch(setUserDataState('error'));
-      console.log(err);
+      thunkApi.dispatch(setPasswordUpdateState('error'));
+      thunkApi.dispatch(setProfileLoader(false));
     }
   },
 );

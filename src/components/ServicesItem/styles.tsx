@@ -37,9 +37,9 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   itemImage: {
-    width: calcWidth(139),
-    height: calcHeight(142),
-    borderRadius: calcWidth(12),
+    width: calcHeight(80),
+    height: calcHeight(80),
+    borderRadius: calcWidth(8),
   },
   dataRightContainer: {
     marginTop: calcHeight(16),

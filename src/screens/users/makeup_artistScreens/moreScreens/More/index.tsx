@@ -8,10 +8,29 @@ import AppHeaderDefault from '../../../../../components/AppHeaderDefault';
 import { IMAGES } from '../../../../../assets/Images';
 import MoreItem from '../../../../../components/MoreItem';
 import LogOutItem from '../../../../../components/LogOutItem';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { init_token } from '../../../../../network';
+import RNRestart from 'react-native-restart';
+import Modal_Warning from '../../../../../components/Modal_Warning';
 
 const More: React.FC = () => {
   const navigation = useNavigation<any>();
   const [notification, setNotification] = useState<boolean>(false);
+  const [visibleLogout, setVisibleLogout] = useState<boolean>(false);
+  
+
+
+  const restart = () => {
+    setTimeout(() => {
+      RNRestart.Restart();
+    }, 500);
+  };
+
+  const logout =  async() => {
+    await AsyncStorage.setItem('user', '');
+    init_token('');
+    restart();
+  }
 
   const headerSection = () => {
     return (
@@ -75,12 +94,27 @@ const More: React.FC = () => {
           iconStyle={{}}
         />
         <LogOutItem
-        containerStyle={{}}
-        onPress={() => {}}
-        image={IMAGES.moreLogout}
-        title={Trans('signOut')}
+          containerStyle={{}}
+          onPress={() => setVisibleLogout(true)}
+          image={IMAGES.moreLogout}
+          title={Trans('signOut')}
         />
       </View>
+    )
+  };
+
+  const modalLogoutSection = () => {
+    return (
+      <Modal_Warning
+        visible={visibleLogout}
+        onClose={() => setVisibleLogout(false)}
+        onPress1={() => logout()}
+        onPress2={() => setVisibleLogout(false)}
+        image={IMAGES.modalCancel}
+        title={Trans('doWantLogout')}
+        button1Title={Trans('yes')}
+        button2Title={Trans('no')}
+      />
     )
   };
   
@@ -88,6 +122,7 @@ const More: React.FC = () => {
     <View style={styles.container}>
       {headerSection()}
       {bodySection()}
+      {modalLogoutSection()}
     </View>
   );
 };

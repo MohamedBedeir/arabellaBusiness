@@ -10,6 +10,7 @@ import AppTextGradient from '../AppTextGradient';
 import AppTextViewGradient from '../AppTextViewGradient';
 import AppButtonDefault from '../AppButtonDefault';
 import { DUMMY_DATA } from '../../utils/dummyData';
+import endpoints from '../../network/endpoints';
 
 interface ServicesItemProps {
     item?: any;
@@ -24,13 +25,24 @@ const ServicesItem: React.FC<ServicesItemProps> = ({
     onPressDelete,
     onUpdateState,
 }) => {
+    const name = I18nManager.isRTL ? item?.name : item?.nameEn;
+    const category = I18nManager.isRTL ? item?.category?.name : item?.category?.nameEn;
     var myStateName: string = '';
-    var myStateColor: string = item?.myStateId == 1 ? COLORS.green2 : COLORS.yellow;
-    var myStateBackgroundColor: string = item?.myStateId == 1 ?  COLORS.backgroundGreen : COLORS.backgroundYellow;
-    var myStateIcon: string = item?.myStateId == 1 ? IMAGES.openGreen : IMAGES.openYellow;
+    var myStateIcon: string = '';
+    var myStateColor: string = '';
+    var myStateBackgroundColor: string = '';
+   
     for (let i = 0; i < DUMMY_DATA.SERVICESTATUES.length; i++) {
-        if (DUMMY_DATA.SERVICESTATUES[i].id == item?.myStateId) {
-            myStateName = I18nManager.isRTL ? DUMMY_DATA.SERVICESTATUES[i].nameAr : DUMMY_DATA.SERVICESTATUES[i].nameEn;
+        if (item?.isActive) {
+            myStateName = I18nManager.isRTL ? DUMMY_DATA.SERVICESTATUES[0].name : DUMMY_DATA.SERVICESTATUES[0].nameEn;
+            myStateIcon = IMAGES.openGreen;
+            myStateColor = COLORS.green2;
+            myStateBackgroundColor = COLORS.backgroundGreen;
+        } else {
+            myStateName = I18nManager.isRTL ? DUMMY_DATA.SERVICESTATUES[1].name : DUMMY_DATA.SERVICESTATUES[1].nameEn;
+            myStateIcon = IMAGES.openYellow;
+            myStateColor = COLORS.yellow;
+            myStateBackgroundColor = COLORS.backgroundYellow;
         }
     };
 
@@ -61,8 +73,8 @@ const ServicesItem: React.FC<ServicesItemProps> = ({
                             textAlign={'left'}
                         />
                     </View>
-                    <View style={[styles.valueView, {height: calcHeight(170)}]}>
-                        <Image source={IMAGES.serviceTest} style={styles.itemImage}/>
+                    <View style={[styles.valueView, {height: calcHeight(90)}]}>
+                        <Image source={{uri: `${endpoints.imageUrl}${item?.featuredImage}`}} style={styles.itemImage}/>
                     </View>
                     <View style={styles.keyView}>
                         <AppText
@@ -142,9 +154,9 @@ const ServicesItem: React.FC<ServicesItemProps> = ({
                             textAlign={'left'}
                         />
                     </View>
-                    <View style={[styles.valueView, {height: calcHeight(170), justifyContent: 'flex-start', paddingTop: calcHeight(16)}]}>
+                    <View style={[styles.valueView, {height: calcHeight(90), justifyContent: 'flex-start', paddingTop: calcHeight(16)}]}>
                         <AppText
-                            title={'بدكير'}
+                            title={name}
                             fontSize={calcFont(14)}
                             fontFamily={FONTS.medium}
                             color={COLORS.textDark}
@@ -171,7 +183,7 @@ const ServicesItem: React.FC<ServicesItemProps> = ({
                     </View>
                     <View style={styles.valueView}>
                         <AppText
-                            title={'تقليم الاظافر'}
+                            title={category}
                             fontSize={calcFont(14)}
                             fontFamily={FONTS.medium}
                             color={COLORS.textDark}
@@ -198,7 +210,7 @@ const ServicesItem: React.FC<ServicesItemProps> = ({
                     </View>
                     <View style={styles.valueView}>
                         <AppText
-                            title={`20 ${Trans('minute')}`}
+                            title={`${item?.estimatedTime} ${Trans('minute')}`}
                             fontSize={calcFont(14)}
                             fontFamily={FONTS.medium}
                             color={COLORS.textDark}

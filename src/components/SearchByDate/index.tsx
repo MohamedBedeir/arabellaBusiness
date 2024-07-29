@@ -3,13 +3,14 @@ import { Image, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { styles } from './styles';
 import AppText from '../AppText';
 import { calcFont, calcHeight } from '../../utils/sizes';
-import { FONTS } from '../../utils/theme';
+import { COLORS, FONTS } from '../../utils/theme';
 import { IMAGES } from '../../assets/Images';
 
 interface SearchByDateProps {
     containerStyle?: ViewStyle;
     onPress?: () => void;
-    title: string;
+    title?: string;
+    placeholder?: string;
     dateColor?: string;
 };
 
@@ -17,6 +18,7 @@ const SearchByDate: React.FC<SearchByDateProps> = ({
     containerStyle,
     onPress,
     title,
+    placeholder,
     dateColor,
 }) => (
     <TouchableOpacity
@@ -25,10 +27,10 @@ const SearchByDate: React.FC<SearchByDateProps> = ({
     >
         <Image source={IMAGES.calender} style={styles.image}/>
         <AppText
-            title={title}
+            title={title || placeholder}
             fontSize={calcFont(14)}
             fontFamily={FONTS.medium}
-            color={dateColor}
+            color={title ? COLORS.darkGray : COLORS.textLight}
             lineHeight={calcHeight(23)}
             textAlign={'left'}
         />

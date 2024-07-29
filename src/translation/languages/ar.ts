@@ -8,6 +8,7 @@ export default {
   weHappyToCooperate: 'سعداء بالتعاون مع اكبر صالونات فى المملكة',
   letsGetStarted: 'هيا بنا نبدأ !',
   signIn: 'تسجيل الدخول',
+  doWantLogout: 'هل تريد تسجيل الخروج ؟',
   dontHaveAccount: 'ليس لديك حساب ؟',
   createAccount: 'قم بانشاء حساب',
   fillInYourEmail: 'قم بتعبئة بيانات رقم الجوال و كلمة المرور',
@@ -21,6 +22,9 @@ export default {
   reTransmitter: 'إعادة الإرسال',
   forgotPassword: 'هل نسيت كلمة المرور',
   enterEmailResetPassword: 'أدخل رقم الجوال لإعادة تعيين كلمة المرور الخاصة بك',
+  resetPassword: 'تعيين كلمة المرور الخاصة بك',
+  fillInCodeAndPassword: 'قم بتعبئة الرمز و كلمة المرور الجديدة',
+  reset: 'تعيين',
   send: 'ارسال',
   createNewAccount: 'انشاء حساب جديد',
   fillInformationRegister: 'قم بملئ البيانات لتسجيل عضوية جديدة',
@@ -294,6 +298,7 @@ export default {
   allReservations: 'كل الحجوزات',
   accepted: 'المقبولة',
   cancelled: 'الملغية',
+  rejected: 'المرفوضة',
   reserveNumber: 'حجز رقم',
   rs: 'رس',
   reservationDetails: 'تفاصيل الحجز',
@@ -354,139 +359,10 @@ export default {
   editEmployee: 'تعديل موظف',
   selectBlockingPeriod: 'حدد فترة الحجب (بداية - نهاية)',
   selectBlockingDate: 'حدد تاريخ الحجب',
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // 1111374821
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  totalAmount: 'إجمالي المبلغ',
+  timePeriod: 'الفترة الزمنية',
+  chooseTimePeriod: 'اختر الفترة الزمنية',
+  first: 'البداية',
+  chooseStartDate: 'اختر البداية',
 };
 
