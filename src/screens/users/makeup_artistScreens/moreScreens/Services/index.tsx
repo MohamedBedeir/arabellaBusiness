@@ -139,7 +139,7 @@ const Services: React.FC = () => {
       isHomeService: true,
       state: 'pending',
       categoryId: selectCategories?.id,
-      serviceProviderId: 5,
+      // serviceProviderId: ,
       taxId: 1,
       isTaxIncluded: false,
     };
@@ -561,8 +561,8 @@ const Services: React.FC = () => {
         animationInTiming= {600}
         animationOutTiming= {600}
         isVisible={visibleEditService}
-        onBackdropPress={() => setVisibleEditService(false)}
-        onBackButtonPress={() => setVisibleEditService(false)}
+        onBackdropPress={() => {setVisibleEditService(false); setData()}}
+        onBackButtonPress={() => {setVisibleEditService(false); setData}}
         deviceHeight={Dimensions.get('screen').height}
         statusBarTranslucent
       >
@@ -704,7 +704,7 @@ const Services: React.FC = () => {
             />
             <AppButtonDefault
               title={Trans('cancellation')}
-              onPress={() => setVisibleEditService(false)}
+              onPress={() => {setVisibleEditService(false)}}
               colorStart={COLORS.primaryGradient}
               colorEnd={COLORS.secondGradient}
               buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
@@ -766,7 +766,7 @@ const Services: React.FC = () => {
       isHomeService: true,
       state: 'pending',
       categoryId: selectService.categoryId,
-      serviceProviderId: 5,
+      // serviceProviderId: 5,
       taxId: 1,
       isTaxIncluded: false,
       isActive: item.id == 1,

@@ -364,4 +364,5 @@ export default {
   chooseTimePeriod: 'choose time period',
   first: 'start',
   chooseStartDate: 'select start',
+  problemOccurredTryAgain:  'problem occurred, Try again',
 };

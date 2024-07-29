@@ -10,8 +10,6 @@ export const IMAGES = {
   start: require('./images/start.png'),
   chartImage: require('./images/chartImage.png'),
   userTest: require('./images/userTest.png'),
-  userTest2: require('./images/userTest2.png'),
-  userTest3: require('./images/userTest3.png'),
   mapTest: require('./images/mapTest.png'),
   serviceTest: require('./images/serviceTest.png'),
   uploadImage: require('./images/uploadImage.png'),

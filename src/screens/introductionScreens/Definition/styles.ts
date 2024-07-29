@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     width: calcWidth(343),
-    marginTop: calcHeight(545 + 44),
+    marginTop: calcHeight(515 + 44),
   },
   dataContainer: {
     flex: 1,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: calcHeight(710),
+    marginTop: calcHeight(680),
   },
   nextImage: {
     width: calcWidth(44),

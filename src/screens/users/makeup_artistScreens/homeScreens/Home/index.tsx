@@ -213,8 +213,8 @@ const Home: React.FC = () => {
               xAxisType={'dashed'}
               xAxisColor={'lightgray'}
               yAxisTextStyle={{color: COLORS.textLight, fontSize: calcFont(12), fontFamily:FONTS.medium}}
-              stepValue={barChart / 10}
-              maxValue={barChart}
+              // stepValue={barChart / 10}
+              // maxValue={barChart}
               noOfSections={20}
               // yAxisLabelTexts={['0', '20', '40', '60', '80', '100']}
               labelWidth={calcWidth(28)}
@@ -292,7 +292,7 @@ const Home: React.FC = () => {
             <LineChart
               data={statisticsData_TotalPaidAmount}
               data2={statisticsData_TotalRefundAmount}
-              maxValue={lineChart}
+              // maxValue={lineChart}
               noOfSections={10}
               stripWidth={3}
               curved

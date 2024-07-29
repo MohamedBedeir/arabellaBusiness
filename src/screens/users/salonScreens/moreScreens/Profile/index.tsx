@@ -44,7 +44,7 @@ const Profile: React.FC = () => {
       return (
         <ProfileImageItem
           containerStyle={{}}
-          profileImage={IMAGES.userTest3}
+          profileImage={IMAGES.userTest}
           onPressImage={() => {}}
           profileType={'صالون'}
         />

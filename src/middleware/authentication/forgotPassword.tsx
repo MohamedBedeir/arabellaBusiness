@@ -18,13 +18,13 @@ export const forgotPassword = createAsyncThunk(
         phoneNumber: args.phone,
       };
       const response: any = await client.post(endpoints.forgot_password, data);
-      console.log('response--forgotPassword----', response);
       if (response.status == 204) {
         thunkApi.dispatch(setAuthenticationLoader(false));
         thunkApi.dispatch(setForgotPasswordState('done'));
         args.navigation.navigate('ResetPassword', { phone: args.phone })
       } else {
         thunkApi.dispatch(setForgotPasswordState('error'));
+        thunkApi.dispatch(setAuthenticationLoader(false));
       };
     } catch (err) {
       thunkApi.dispatch(setForgotPasswordState('error'));

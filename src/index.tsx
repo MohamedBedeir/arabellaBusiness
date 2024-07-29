@@ -8,19 +8,19 @@ import { store } from './redux/store/store';
 import { calcFont, calcHeight, calcWidth } from './utils/sizes';
 import { I18nManager, Image, StatusBar } from 'react-native';
 import { IMAGES } from './assets/Images';
-import { FONTS } from './utils/theme';
+import { COLORS, FONTS } from './utils/theme';
 import I18n from 'i18n-js';
 
 const SuccessIcon = () => {
-  return <Image source={IMAGES.accountsReturns} style={{width: calcWidth(25), height: calcWidth(25)}} />;
+  return <Image source={IMAGES.accountsReturns} style={{width: calcWidth(32), height: calcWidth(32)}} />;
 };
 
 const DangerIcon = () => {
-  return <Image source={IMAGES.accountsReturns} style={{width: calcWidth(25), height: calcWidth(25)}} />;
+  return <Image source={IMAGES.accountsReturns} style={{width: calcWidth(32), height: calcWidth(32)}} />;
 };
 
 const WarningIcon = () => {
-  return <Image source={IMAGES.accountsReturns} style={{width: calcWidth(25), height: calcWidth(25)}} />;
+  return <Image source={IMAGES.accountsReturns} style={{width: calcWidth(32), height: calcWidth(32)}} />;
 };
 
 function App(): JSX.Element {
@@ -35,7 +35,7 @@ function App(): JSX.Element {
             animationType="slide-in"
             animationDuration={250}
             successColor="#78aa7a"
-            dangerColor="#f3776e"
+            dangerColor={COLORS.red}
             warningColor="#ebc680"
             normalColor="gray"
             successIcon={<SuccessIcon />}
@@ -46,7 +46,7 @@ function App(): JSX.Element {
             offsetTop={0}
             offsetBottom={-5}
             swipeEnabled={true}
-            style={{minWidth: calcWidth(430), height: calcHeight(60), borderRadius: 0}}
+            style={{minWidth: calcWidth(375), height: calcHeight(48), borderRadius: 0}}
           >
             <StatusBar backgroundColor={'transparent'} translucent={true} />
             <Navigation />

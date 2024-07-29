@@ -21,7 +21,7 @@ const Home: React.FC = () => {
   const headerSection = () => {
     const user = {
       name: 'صالون الملاك الأول',
-      image: IMAGES.userTest3,
+      image: IMAGES.userTest,
     };
     return (
       <AppHeaderAdvanced

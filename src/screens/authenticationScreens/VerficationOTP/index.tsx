@@ -14,25 +14,43 @@ import { RootState, useAppDispatch } from '../../../redux/store/store';
 import { confirmationCode } from '../../../middleware/authentication/verificationCode';
 import AppLoading from '../../../components/AppLoading';
 import { useSelector } from 'react-redux';
+import { useToast } from 'react-native-toast-notifications';
+import { setConfirmationCodeState } from '../../../redux/store/auth/authenticationSlice';
 
 const VerficationOTP: React.FC<{}> = (params: any) => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
-  const { authenticationLoader } = useSelector((store: RootState) => store?.auth);
+  const { authenticationLoader, confirmationCodeState } = useSelector((store: RootState) => store?.auth);
 
   const [OTPCode, setOTPCode] = useState<string>('');
-  const [errors, setErrors] = useState<any>();
+  const [errors, setErrors] = useState<boolean>();
   const [focused, setFocused] = useState<boolean>(false);
+
+  const toast = useToast();
+  const _toast = (type: string, body: string) => {
+    toast.show(body, {
+      type: type,
+      placement: 'bottom',
+      offset: 30,
+      animationType: 'slide-in',
+    });
+  };
+
+  useEffect(() => {
+    if (confirmationCodeState == 'error') {
+      _toast('danger', Trans('problemOccurredTryAgain'));
+      dispatch(setConfirmationCodeState(''));
+    };
+  }, [confirmationCodeState]);
 
   useEffect(() => {}, []);
   console.log('params------->>', params.route.params);
   
   const onSubmit = () => {
-    if (OTPCode == '') {
-      // _toast('danger', Trans('pleaseEnterRequiredData'));
-      // setCheckPhone(true);
+    if (OTPCode == '' || OTPCode.length < 5) {
+      setErrors(true);
     } else {
-      // setCheckPhone(false);
+      setErrors(false);
       const data = {
         navigation: params.navigation,
         phone: params.route.params.phone,
@@ -70,7 +88,7 @@ const VerficationOTP: React.FC<{}> = (params: any) => {
             fontFamily={FONTS.regular}
           />
           <AppText
-            title={'+966540802488'}
+            title={params.route.params.phone}
             color={COLORS.textDark}
             fontSize={calcFont(16)}
             fontFamily={FONTS.bold}
@@ -89,7 +107,7 @@ const VerficationOTP: React.FC<{}> = (params: any) => {
             // onFocus={() => setFocused(true)}
             // ref={otpRef}
             handleChange={code => {
-              setErrors('');
+              setErrors(false);
               setOTPCode(code);
             }}
             style={{
@@ -98,9 +116,9 @@ const VerficationOTP: React.FC<{}> = (params: any) => {
             }}
             numberOfInputs={5}
             inputStyles={
-              !errors
-                ? [styles.otpInput, {borderColor: focused ? COLORS.primaryGradient : COLORS.gray}]
-                : [styles.otpInput, {borderColor: 'red'}]
+              errors
+                ? [styles.otpInput, {borderColor: 'red'}]
+                : [styles.otpInput, {borderColor: focused ? COLORS.primaryGradient : COLORS.gray}]
             }
           />
         </View>

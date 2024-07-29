@@ -364,5 +364,6 @@ export default {
   chooseTimePeriod: 'اختر الفترة الزمنية',
   first: 'البداية',
   chooseStartDate: 'اختر البداية',
+  problemOccurredTryAgain: 'حدثت مشكلة اعد المحاولة',
 };
 

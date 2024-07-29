@@ -17,6 +17,7 @@ import OtpInputs from 'react-native-otp-inputs';
 import { resetPassword } from '../../../middleware/authentication/resetPassword';
 import { setResetPasswordState } from '../../../redux/store/auth/authenticationSlice';
 import Modal_Warning from '../../../components/Modal_Warning';
+import { useToast } from 'react-native-toast-notifications';
 
 const ResetPassword: React.FC<{}> = (params: any) => {
   const navigation = useNavigation<any>();
@@ -29,14 +30,27 @@ const ResetPassword: React.FC<{}> = (params: any) => {
   const [visibleUpdatePassword, setVisibleUpdatePassword] = useState<boolean>(false);
 
   const [OTPCode, setOTPCode] = useState<string>('');
-  const [errors, setErrors] = useState<any>();
+  const [errors, setErrors] = useState<boolean>();
   const [focused, setFocused] = useState<boolean>(false);
+
+  const toast = useToast();
+  const _toast = (type: string, body: string) => {
+    toast.show(body, {
+      type: type,
+      placement: 'bottom',
+      offset: 30,
+      animationType: 'slide-in',
+    });
+  };
 
   useEffect(() => {
     if (resetPasswordState == 'done') {
       setVisibleUpdatePassword(true);
       dispatch(setResetPasswordState(''));
-    }
+    } else if (resetPasswordState == 'error') {
+      _toast('danger', Trans('problemOccurredTryAgain'));
+      dispatch(setResetPasswordState(''));
+    };
   }, [resetPasswordState]);
 
   const onChangeNewPassword = (text: string) => {
@@ -49,11 +63,16 @@ const ResetPassword: React.FC<{}> = (params: any) => {
   };
 
   const onReset = () => {
-    if (newPassword == '') {
+    if (OTPCode == '' || OTPCode.length < 5) {
+      setErrors(true);
+    } else if (newPassword == '') {
+      setErrors(false);
       setCheckNewPassword(true);
     } else if (confirmNewPassword == '' || confirmNewPassword != newPassword) {
+      setErrors(false);
       setCheckConfirmNewPassword(true);
     } else {
+      setErrors(false);
       setCheckNewPassword(false);
       setCheckConfirmNewPassword(false);
       const data = {
@@ -105,7 +124,7 @@ const ResetPassword: React.FC<{}> = (params: any) => {
             // onFocus={() => setFocused(true)}
             // ref={otpRef}
             handleChange={code => {
-              setErrors('');
+              setErrors(false);
               setOTPCode(code);
             }}
             style={{
@@ -190,16 +209,6 @@ const ResetPassword: React.FC<{}> = (params: any) => {
     )
   };
 
-  const loadingSection = () => {
-    return (
-      <AppLoading
-        margin_top={calcHeight(440)}
-        size={'large'}
-        visible={authenticationLoader}
-      />
-    )
-  };
-
   const goToLogin = () => {
     setVisibleUpdatePassword(false);
     navigation.navigate('Login');
@@ -213,6 +222,16 @@ const ResetPassword: React.FC<{}> = (params: any) => {
         image={IMAGES.modalDone}
         title={Trans('passwordUpdateSuccessfully')}
         buttonTitle={Trans('done')}
+      />
+    )
+  };
+
+  const loadingSection = () => {
+    return (
+      <AppLoading
+        margin_top={calcHeight(440)}
+        size={'large'}
+        visible={authenticationLoader}
       />
     )
   };

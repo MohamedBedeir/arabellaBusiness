@@ -109,7 +109,7 @@ const BlockAppointments: React.FC = () => {
           const data = {
             from,
             to,
-            serviceProviderId: 5,
+            // serviceProviderId: 5,
             employeeId: null,
             type: 'booked'
           };
@@ -130,7 +130,7 @@ const BlockAppointments: React.FC = () => {
         const data = {
           from,
           to,
-          serviceProviderId: 5,
+          // serviceProviderId: 5,
           employeeId: null,
           type: 'booked'
         };

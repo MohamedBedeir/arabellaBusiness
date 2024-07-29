@@ -16,16 +16,35 @@ import { RootState, useAppDispatch } from '../../../redux/store/store';
 import { login } from '../../../middleware/authentication/login';
 import AppLoading from '../../../components/AppLoading';
 import { useSelector } from 'react-redux';
+import { useToast } from 'react-native-toast-notifications';
+import { setLoginState } from '../../../redux/store/auth/authenticationSlice';
 
 const Login: React.FC<{}> = (params: any) => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
-  const { authenticationLoader } = useSelector((store: RootState) => store?.auth);
-  const [phone, setPhone] = useState<string>('552045968');
-  const [password, setPassword] = useState<string>('123456');
+  const { authenticationLoader, loginState } = useSelector((store: RootState) => store?.auth);
+  const [phone, setPhone] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [checkPhone, setCheckPhone] = useState<boolean>(false);
   const [checkPassword, setCheckPassword] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+
+  const toast = useToast();
+  const _toast = (type: string, body: string) => {
+    toast.show(body, {
+      type: type,
+      placement: 'bottom',
+      offset: 30,
+      animationType: 'slide-in',
+    });
+  };
+
+  useEffect(() => {
+    if (loginState == 'error') {
+      _toast('danger', Trans('problemOccurredTryAgain'));
+      dispatch(setLoginState(''));
+    };
+  }, [loginState]);
 
   useEffect(() => {}, []);
 

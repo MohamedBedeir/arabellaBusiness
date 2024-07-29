@@ -51,6 +51,7 @@ const LetsStart: React.FC<{}> = (params: any) => {
           fontSize={calcFont(18)}
           color={COLORS.white}
           lineHeight={calcHeight(24)}
+          numberOfLines={2}
         />
       </View>
     )

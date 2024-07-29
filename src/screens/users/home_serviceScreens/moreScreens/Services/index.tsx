@@ -139,7 +139,7 @@ const Services: React.FC = () => {
       isHomeService: true,
       state: 'pending',
       categoryId: selectCategories?.id,
-      serviceProviderId: 5,
+      // serviceProviderId: 5,
       taxId: 1,
       isTaxIncluded: false,
     };
@@ -766,7 +766,7 @@ const Services: React.FC = () => {
       isHomeService: true,
       state: 'pending',
       categoryId: selectService.categoryId,
-      serviceProviderId: 5,
+      // serviceProviderId: 5,
       taxId: 1,
       isTaxIncluded: false,
       isActive: item.id == 1,

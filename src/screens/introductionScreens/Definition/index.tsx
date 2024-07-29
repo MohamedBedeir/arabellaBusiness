@@ -24,17 +24,19 @@ const Definition: React.FC = () => {
             <AppText
               title={title}
               fontFamily={FONTS.extra_bold}
-              fontSize={calcFont(32)}
+              fontSize={calcFont(28)}
               color={COLORS.white}
-              lineHeight={calcHeight(42)}
+              lineHeight={calcHeight(32)}
               marginBottom={calcHeight(8)}
+              numberOfLines={2}
             />
             <AppText
               title={description}
               fontFamily={FONTS.light}
-              fontSize={calcFont(18)}
+              fontSize={calcFont(20)}
               color={COLORS.white}
               lineHeight={calcHeight(20)}
+              numberOfLines={2}
             />
           </View>
         )

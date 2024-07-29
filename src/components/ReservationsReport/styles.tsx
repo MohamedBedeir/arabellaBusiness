@@ -21,9 +21,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   icon: {
-    width: calcWidth(20),
+    // width: calcWidth(20),
     height: calcWidth(20),
-    marginHorizontal: calcWidth(8),
+    marginHorizontal: calcWidth(4),
   },
   image: {
     width: calcWidth(48),

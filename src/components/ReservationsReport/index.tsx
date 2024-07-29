@@ -40,7 +40,7 @@ const ReservationsReport: React.FC<ReservationsReportProps> = ({
             />
             <AppText
                 title={count}
-                fontSize={calcFont(24)}
+                fontSize={calcFont(28)}
                 fontFamily={FONTS.medium}
                 color={COLORS.textDark}
                 lineHeight={calcHeight(23)}
@@ -50,16 +50,17 @@ const ReservationsReport: React.FC<ReservationsReportProps> = ({
             <View style={styles.indicatorContainer}>
                 <AppText
                     title={duration}
-                    fontSize={calcFont(14)}
+                    fontSize={calcFont(15)}
                     fontFamily={FONTS.light}
                     color={COLORS.textLight}
                     lineHeight={calcHeight(23)}
                     textAlign={'left'}
                 />
-                <Image source={indicatorIcon} style={styles.icon}/>
+                <View style={styles.icon}></View>
+                {/* <Image source={indicatorIcon} style={styles.icon}/> */}
                 <AppText
                     title={`${percent} ${Trans('rs')}`}
-                    fontSize={calcFont(14)}
+                    fontSize={calcFont(16)}
                     fontFamily={FONTS.medium}
                     color={indicatorColor}
                     lineHeight={calcHeight(23)}

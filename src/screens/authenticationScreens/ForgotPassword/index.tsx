@@ -10,15 +10,38 @@ import AppButtonDefault from '../../../components/AppButtonDefault';
 import AuthHeader from '../../../components/AuthHeader';
 import AppInputPhone from '../../../components/AppInputPhone';
 import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch } from '../../../redux/store/store';
+import { RootState, useAppDispatch } from '../../../redux/store/store';
 import { forgotPassword } from '../../../middleware/authentication/forgotPassword';
+import { useSelector } from 'react-redux';
+import AppLoading from '../../../components/AppLoading';
+import { useToast } from 'react-native-toast-notifications';
+import { setForgotPasswordState } from '../../../redux/store/auth/authenticationSlice';
 
 const ForgotPassword: React.FC<{}> = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<any>();
+  const { authenticationLoader, forgotPasswordState } = useSelector((store: RootState) => store?.auth);
+
   const [phone, setPhone] = useState<string>('');
   const [checkPhone, setCheckPhone] = useState<boolean>(false);
 
+  const toast = useToast();
+  const _toast = (type: string, body: string) => {
+    toast.show(body, {
+      type: type,
+      placement: 'bottom',
+      offset: 30,
+      animationType: 'slide-in',
+    });
+  };
+
+  useEffect(() => {
+    if(forgotPasswordState == 'error') {
+      _toast('danger', Trans('problemOccurredTryAgain'));
+      dispatch(setForgotPasswordState(''));
+    };
+  }, [forgotPasswordState]);
+  
   useEffect(() => {}, []);
 
   const onChangePhone = (text: string) => {
@@ -103,8 +126,20 @@ const ForgotPassword: React.FC<{}> = () => {
     )
   };
 
+  const loadingSection = () => {
+    return (
+      <AppLoading
+        margin_top={calcHeight(440)}
+        size={'large'}
+        visible={authenticationLoader}
+      />
+    )
+  };
+
+
   return (
     <View style={styles.container}>
+      {loadingSection()}
       {headerSection()}
       {dataSection()}
     </View>
