@@ -51,8 +51,8 @@ const AppModalCalendar: React.FC<Props> = ({
       animationInTiming= {800}
       animationOutTiming= {800}
       isVisible={visible}
-      onBackdropPress={() => onPressClose}
-      onBackButtonPress={() => onPressClose}
+      onBackdropPress={() => onPressClose()}
+      onBackButtonPress={() => onPressClose()}
       deviceHeight={Dimensions.get('screen').height}
       statusBarTranslucent
     >

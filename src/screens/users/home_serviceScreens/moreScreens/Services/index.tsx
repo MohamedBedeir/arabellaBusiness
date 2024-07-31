@@ -27,25 +27,38 @@ import { service_add, service_data, service_delete, service_edit } from '../../.
 import AppLoading from '../../../../../components/AppLoading';
 import { setServiceAddState, setServiceDeleteState, setServiceEditState } from '../../../../../redux/store/services/servicesSlice';
 import endpoints from '../../../../../network/endpoints';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Services: React.FC = () => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
+  const [userData, setUserData] = useState<any>();
   const { categoriesData } = useSelector((store: RootState) => store?.categories);
   const { servicesLoader, serviceData, serviceCount, serviceAddState, serviceEditState, serviceDeleteState } = useSelector((store: RootState) => store?.services);
   const [selectService, setSelectService] = useState<any>({});
   const [page, setPage] = useState<number>(1);
   
+  const [serviceEditId, setServiceEditId] = useState<any>();
   const [nameAr, setNameAr] = useState<string>('');
   const [nameEn, setNameEn] = useState<string>('');
   const [descriptioneAr, setDescriptionAr] = useState<string>('');
   const [descriptionEn, setDescriptionEn] = useState<string>('');
   const [price, setPrice] = useState<string>('');
   const [time, setTime] = useState<string>('');
+
   const [base64, setBase64] = useState('');
   const [imageFile, setImageFile] = useState<any>(null);
   const [condition, setCondition] = useState<boolean>(true);
-  const [selectCategories, setSelectCategories] = useState<any>({});
+  const [selectCategories, setSelectCategories] = useState<any>('');
+
+  const [nameArError, setNameArError] = useState<boolean>(false);
+  const [nameEnError, setNameEnError] = useState<boolean>(false);
+  const [descriptioneArError, setDescriptionArError] = useState<boolean>(false);
+  const [descriptionEnError, setDescriptionEnError] = useState<boolean>(false);
+  const [priceError, setPriceError] = useState<boolean>(false);
+  const [timeError, setTimeError] = useState<boolean>(false);
+  const [selectCategoriesError, setSelectCategoriesError] = useState<boolean>(false);
+  const [imageFileError, setImageFileError] = useState<boolean>(false);
 
   const [visibleFillter, setVisibleFillter] = useState<boolean>(false);
   const [visibleAddNewService, setVisibleAddNewService] = useState<boolean>(false);
@@ -59,20 +72,35 @@ const Services: React.FC = () => {
   const getServices = (page: number) => {
     dispatch(service_data({page}));
   };
+
+  const getUser = async () => {
+    const user: any = await AsyncStorage.getItem('user');
+    setUserData(JSON.parse(user));
+  };
+
   useEffect(() => {
+    getUser();
     dispatch(categories({}));
     getServices(1);
   }, []);
 
   const setData = (item?: any) => {
+    setNameArError(false);
+    setNameEnError(false);
+    setDescriptionArError(false);
+    setDescriptionEnError(false);
+    setPriceError(false);
+    setTimeError(false);
+    setSelectCategoriesError(false);
+    setImageFileError(false);
     if (item) {
+      setServiceEditId(item?.id);
       setNameAr(item?.name);
       setNameEn(item?.nameEn);
       setDescriptionAr(item?.description);
       setDescriptionEn(item?.descriptionEn);
       setPrice(item.price);
       setTime(item.estimatedTime.toString());
-      // setTime(item?.estimatedTime);
       setBase64('');
       setImageFile(`${endpoints.imageUrl}${item?.featuredImage}`);
       setCondition(item?.isActive);
@@ -90,6 +118,8 @@ const Services: React.FC = () => {
       setSelectCategories({});
     }
   };
+  console.log('userData--------', userData);
+  
   useEffect(() => {
     if (serviceAddState == 'done') {
       setVisibleAddNewService(false);
@@ -128,22 +158,48 @@ const Services: React.FC = () => {
   };
 
   const onAdd = () => {
-    const data = {
-      name: nameAr,
-      nameEn: nameEn,
-      description: descriptioneAr,
-      descriptionEn: descriptionEn,
-      price: parseInt(price, 10),
-      estimatedTime: parseInt(time, 10),
-      isActive: condition,
-      isHomeService: true,
-      state: 'pending',
-      categoryId: selectCategories?.id,
-      // serviceProviderId: 5,
-      taxId: 1,
-      isTaxIncluded: false,
-    };
-    dispatch(service_add({data, image: imageFile}));
+    if (nameAr == '') {
+      setNameArError(true);
+    } else if (nameEn == '') {
+      setNameArError(false);
+      setNameEnError(true);
+    } else if (descriptioneAr == '') {
+      setNameEnError(false);
+      setDescriptionArError(true);
+    } else if (descriptionEn == '') {
+      setDescriptionArError(false);
+      setDescriptionEnError(true);
+    } else if (price == '') {
+      setDescriptionEnError(false);
+      setPriceError(true);
+    } else if (time == '') {
+      setPriceError(false);
+      setTimeError(true);
+    } else if (selectCategories == '') {
+      setTimeError(false);
+      setSelectCategoriesError(true);
+    } else if (base64 == '') {
+      setSelectCategoriesError(false);
+      setImageFileError(true);
+    } else {
+      setImageFileError(false);
+      const data = {
+        name: nameAr,
+        nameEn: nameEn,
+        description: descriptioneAr,
+        descriptionEn: descriptionEn,
+        price: parseInt(price, 10),
+        estimatedTime: parseInt(time, 10),
+        isActive: condition,
+        isHomeService: true,
+        state: 'pending',
+        categoryId: selectCategories?.id,
+        serviceProviderId: userData.serviceProviderId,
+        taxId: 1,
+        isTaxIncluded: false,
+      };
+      dispatch(service_add({data, image: imageFile}));
+    }
   };
 
   const headerSection = () => {
@@ -194,7 +250,61 @@ const Services: React.FC = () => {
   const onEditService = (item: any) => {
     setVisibleEditService(true);
     setData(item);
+  };
+  const onEdit = () => {
+    if (nameAr == '') {
+      setNameArError(true);
+    } else if (nameEn == '') {
+      setNameArError(false);
+      setNameEnError(true);
+    } else if (descriptioneAr == '') {
+      setNameEnError(false);
+      setDescriptionArError(true);
+    } else if (descriptionEn == '') {
+      setDescriptionArError(false);
+      setDescriptionEnError(true);
+    } else if (price == '') {
+      setDescriptionEnError(false);
+      setPriceError(true);
+    } else if (time == '') {
+      setPriceError(false);
+      setTimeError(true);
+    } else if (selectCategories == '') {
+      setTimeError(false);
+      setSelectCategoriesError(true);
+    } else {
+      const data = {
+        name: nameAr,
+        nameEn: nameEn,
+        description: descriptioneAr,
+        descriptionEn: descriptionEn,
+        price: parseInt(price, 10),
+        estimatedTime: parseInt(time, 10),
+        isActive: condition,
+        isHomeService: true,
+        state: 'pending',
+        categoryId: selectCategories?.id,
+        serviceProviderId: userData.serviceProviderId,
+        taxId: 1,
+        isTaxIncluded: false,
+      };
+      const id: number = serviceEditId;
+      dispatch(service_edit({id, data, image: base64 ? imageFile : ''}));
+    }
+  };
 
+  const onFillter = () => {
+    setVisibleFillter(false);
+    const data = {
+      name: nameAr,
+      nameEn: nameEn,
+      price: parseInt(price, 10),
+      estimatedTime: parseInt(time, 10),
+      categoryId: selectCategories?.id,
+      isActive: condition,
+    };
+    const id: number = serviceEditId;
+    dispatch(service_data({data, page: 1}));
   }
   const listSection = () => {
     const renderItem = ({item, index} : {item: any, index: number}) => {
@@ -264,16 +374,17 @@ const Services: React.FC = () => {
       <Modal
         style={{ margin: 0, justifyContent: 'flex-end', }}
         hasBackdrop propagateSwipe={true}
-        animationIn= 'slideInUp'
+        animationIn= 'fadeIn'
         animationInTiming= {600}
         animationOutTiming= {600}
         isVisible={visibleFillter}
-        onBackdropPress={() => setVisibleFillter(false)}
-        onBackButtonPress={() => setVisibleFillter(false)}
+        onBackdropPress={() => {setVisibleFillter(false); setData()}}
+        onBackButtonPress={() => {setVisibleFillter(false); setData()}}
         deviceHeight={Dimensions.get('screen').height}
         statusBarTranslucent
       >
         <View style={styles.modalFillterContainer}>
+          {modalCategoriesSection()}
           <AppTextGradient
             title={Trans('filter')}
             fontSize={calcFont(17)}
@@ -287,7 +398,7 @@ const Services: React.FC = () => {
               value={nameAr}
               placeholder={Trans('nameArabic')}
               onChangeText={(text: string) => setNameAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(8)}}
             />
             <AppInput
@@ -295,7 +406,7 @@ const Services: React.FC = () => {
               value={nameEn}
               placeholder={Trans('nameEnglish')}
               onChangeText={(text: string) => setNameEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -304,7 +415,7 @@ const Services: React.FC = () => {
               value={price}
               placeholder={'0'}
               onChangeText={(text: string) => setPrice(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -313,7 +424,7 @@ const Services: React.FC = () => {
               value={time}
               placeholder={'0'}
               onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppPickerSelect
@@ -325,7 +436,7 @@ const Services: React.FC = () => {
               placeholder={selectCategories ? I18nManager.isRTL ? selectCategories.nameAr : selectCategories.nameEn : Trans('selectCategory')}
               icon={IMAGES.dropDown}
             />
-            <View style={{marginTop: calcHeight(12)}}>
+            {/* <View style={{marginTop: calcHeight(12)}}>
               <AppText
                 title={Trans('condition')}
                 fontFamily={FONTS.medium}
@@ -369,13 +480,13 @@ const Services: React.FC = () => {
                   />
                 </TouchableOpacity>
               </View>
-            </View>
+            </View> */}
             
           </ScrollView>
           <View style={styles.modalActionContainer}>
             <AppButtonDefault
               title={Trans('research')}
-              onPress={() => {setVisibleFillter(false)}}
+              onPress={() => onFillter()}
               colorStart={COLORS.primaryGradient}
               colorEnd={COLORS.secondGradient}
               buttonStyle={{width: calcWidth(343), height: calcHeight(48)}}
@@ -392,22 +503,24 @@ const Services: React.FC = () => {
       <Modal
         style={{ margin: 0, justifyContent: 'flex-end', }}
         hasBackdrop propagateSwipe={true}
-        animationIn= 'slideInUp'
+        animationIn= 'fadeIn'
         animationInTiming= {600}
         animationOutTiming= {600}
         isVisible={visibleAddNewService}
-        onBackdropPress={() => setVisibleAddNewService(false)}
-        onBackButtonPress={() => setVisibleAddNewService(false)}
+        onBackdropPress={() => {setVisibleAddNewService(false); setData()}}
+        onBackButtonPress={() => {setVisibleAddNewService(false); setData()}}
         deviceHeight={Dimensions.get('screen').height}
         statusBarTranslucent
       >
         <View style={styles.modalAddContainer}>
+          {modalCategoriesSection()}
           <AppTextGradient
             title={Trans('addService')}
             fontSize={calcFont(17)}
             fontFamily={FONTS.bold}
             colorStart={COLORS.secondGradient}
             colorEnd={COLORS.primaryGradient}
+            textAlign={'left'}
           />
           <ScrollView showsVerticalScrollIndicator={false}>
             <AppInput
@@ -415,7 +528,7 @@ const Services: React.FC = () => {
               value={nameAr}
               placeholder={Trans('nameArabic')}
               onChangeText={(text: string) => setNameAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: nameArError ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(8)}}
             />
             <AppInput
@@ -423,7 +536,7 @@ const Services: React.FC = () => {
               value={nameEn}
               placeholder={Trans('nameEnglish')}
               onChangeText={(text: string) => setNameEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: nameEnError ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -431,7 +544,7 @@ const Services: React.FC = () => {
               value={descriptioneAr}
               placeholder={Trans('descriptionArabic')}
               onChangeText={(text: string) => setDescriptionAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: descriptioneArError ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -439,7 +552,7 @@ const Services: React.FC = () => {
               value={descriptionEn}
               placeholder={Trans('descriptionEnglish')}
               onChangeText={(text: string) => setDescriptionEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: descriptionEnError ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -448,7 +561,7 @@ const Services: React.FC = () => {
               value={price}
               placeholder={'0'}
               onChangeText={(text: string) => setPrice(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: priceError ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -457,12 +570,12 @@ const Services: React.FC = () => {
               value={time}
               placeholder={'0'}
               onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: timeError ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppPickerSelect
               containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
-              touchContainerStyle={{width: calcWidth(343)}}
+              touchContainerStyle={{width: calcWidth(343), borderWidth: 0.6, borderColor: selectCategoriesError ? COLORS.red : COLORS.lightPrimary}}
               styleTitle={{}}
               onPress={() => setVisibleCategories(true)}
               title={Trans('category')}
@@ -523,7 +636,7 @@ const Services: React.FC = () => {
                 color={COLORS.textDark}
               />
               <TouchableOpacity onPress={() => selectImage()}>
-                <ImageBackground source={image} style={styles.conditionAddImageImage} imageStyle={styles.conditionAddImageContainer}>
+                <ImageBackground source={image} style={[styles.conditionAddImageImage, {borderWidth: 0.6, borderColor: imageFileError ? COLORS.red : COLORS.lightPrimary}]} imageStyle={[styles.conditionAddImageContainer, {borderWidth: 0.6, borderColor: imageFileError ? COLORS.red : COLORS.lightPrimary}]}>
                   <Image source={IMAGES.imageAdd} style={styles.conditionAddImage}/>
                 </ImageBackground>
               </TouchableOpacity>
@@ -539,7 +652,7 @@ const Services: React.FC = () => {
             />
             <AppButtonDefault
               title={Trans('cancellation')}
-              onPress={() => setVisibleAddNewService(false)}
+              onPress={() => {setVisibleAddNewService(false); setData()}}
               colorStart={COLORS.primaryGradient}
               colorEnd={COLORS.secondGradient}
               buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
@@ -561,18 +674,20 @@ const Services: React.FC = () => {
         animationInTiming= {600}
         animationOutTiming= {600}
         isVisible={visibleEditService}
-        onBackdropPress={() => setVisibleEditService(false)}
-        onBackButtonPress={() => setVisibleEditService(false)}
+        onBackdropPress={() => {setVisibleEditService(false); setData()}}
+        onBackButtonPress={() => {setVisibleEditService(false); setData()}}
         deviceHeight={Dimensions.get('screen').height}
         statusBarTranslucent
       >
         <View style={styles.modalAddContainer}>
+          {modalCategoriesSection()}
           <AppTextGradient
             title={Trans('editService')}
             fontSize={calcFont(17)}
             fontFamily={FONTS.bold}
             colorStart={COLORS.secondGradient}
             colorEnd={COLORS.primaryGradient}
+            textAlign={'left'}
           />
           <ScrollView showsVerticalScrollIndicator={false}>
             <AppInput
@@ -580,7 +695,7 @@ const Services: React.FC = () => {
               value={nameAr}
               placeholder={Trans('nameArabic')}
               onChangeText={(text: string) => setNameAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: nameArError ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(8)}}
             />
             <AppInput
@@ -588,7 +703,7 @@ const Services: React.FC = () => {
               value={nameEn}
               placeholder={Trans('nameEnglish')}
               onChangeText={(text: string) => setNameEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: nameEnError ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -596,7 +711,7 @@ const Services: React.FC = () => {
               value={descriptioneAr}
               placeholder={Trans('descriptionArabic')}
               onChangeText={(text: string) => setDescriptionAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: descriptioneArError ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -604,7 +719,7 @@ const Services: React.FC = () => {
               value={descriptionEn}
               placeholder={Trans('descriptionEnglish')}
               onChangeText={(text: string) => setDescriptionEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: descriptionEnError ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -613,7 +728,7 @@ const Services: React.FC = () => {
               value={price}
               placeholder={'0'}
               onChangeText={(text: string) => setPrice(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: priceError ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -622,12 +737,12 @@ const Services: React.FC = () => {
               value={time}
               placeholder={'0'}
               onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: timeError ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppPickerSelect
               containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
-              touchContainerStyle={{width: calcWidth(343)}}
+              touchContainerStyle={{width: calcWidth(343), borderWidth: 0.6, borderColor: selectCategoriesError ? COLORS.red : COLORS.lightPrimary}}
               styleTitle={{}}
               onPress={() => setVisibleCategories(true)}
               title={Trans('category')}
@@ -688,7 +803,7 @@ const Services: React.FC = () => {
                 color={COLORS.textDark}
               />
               <TouchableOpacity onPress={() => selectImage()}>
-                <ImageBackground source={image} style={styles.conditionAddImageImage} imageStyle={styles.conditionAddImageContainer}>
+                <ImageBackground source={image} style={[styles.conditionAddImageImage, {borderWidth: 0.6, borderColor: imageFileError ? COLORS.red : COLORS.lightPrimary}]} imageStyle={[styles.conditionAddImageContainer, {borderWidth: 0.6, borderColor: imageFileError ? COLORS.red : COLORS.lightPrimary}]}>
                   <Image source={IMAGES.imageAdd} style={styles.conditionAddImage}/>
                 </ImageBackground>
               </TouchableOpacity>
@@ -697,14 +812,14 @@ const Services: React.FC = () => {
           <View style={styles.modalActionContainer}>
             <AppButtonDefault
               title={Trans('save')}
-              onPress={() => {setVisibleSaveData(true); setVisibleEditService(false)}}
+              onPress={() => onEdit()}
               colorStart={COLORS.primaryGradient}
               colorEnd={COLORS.secondGradient}
               buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
             />
             <AppButtonDefault
               title={Trans('cancellation')}
-              onPress={() => setVisibleEditService(false)}
+              onPress={() => {setVisibleEditService(false); setData()}}
               colorStart={COLORS.primaryGradient}
               colorEnd={COLORS.secondGradient}
               buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
@@ -766,7 +881,7 @@ const Services: React.FC = () => {
       isHomeService: true,
       state: 'pending',
       categoryId: selectService.categoryId,
-      // serviceProviderId: 5,
+      serviceProviderId: userData.serviceProviderId,
       taxId: 1,
       isTaxIncluded: false,
       isActive: item.id == 1,
@@ -824,11 +939,9 @@ const Services: React.FC = () => {
       {modalSaveSection()}
       {modalDeleteSection()}
       {modalServiceStateSection()}
-      {modalCategoriesSection()}
     </View>
   );
 };
 
 export default Services;
-
 

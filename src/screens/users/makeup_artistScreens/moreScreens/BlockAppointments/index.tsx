@@ -23,10 +23,12 @@ import { RootState, useAppDispatch } from '../../../../../redux/store/store';
 import { useSelector } from 'react-redux';
 import { slot_add, slot_delete, slots_data } from '../../../../../middleware/slots/slots';
 import { setslotAddState, setslotDeleteState, setslotEditState } from '../../../../../redux/store/slots/slotsSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BlockAppointments: React.FC = () => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
+  const [userData, setUserData] = useState<any>();
   const { slotsLoader, slotData, slotCount, slotAddState, slotEditState, slotDeleteState } = useSelector((store: RootState) => store?.slots);
   const [selectBlockType, setSelectBlockType] = useState<number>(1);
   const [calenderType, setCalenderType] = useState<string>('');
@@ -48,7 +50,13 @@ const BlockAppointments: React.FC = () => {
     dispatch(slots_data({page}));
   };
 
+  const getUser = async () => {
+    const user: any = await AsyncStorage.getItem('user');
+    setUserData(JSON.parse(user));
+  };
+
   useEffect(() => {
+    getUser();
     getSlots(1);
   }, []);
 
@@ -79,13 +87,13 @@ const BlockAppointments: React.FC = () => {
     }
   }, [slotEditState]);
 
-  useEffect(() => {
-    if (slotDeleteState == 'done') {
-      setVisibleDeleteTime(false);
-      setVisibleSaveData(true);
-      setslotDeleteState('');
-    }
-  }, [slotDeleteState]);
+  // useEffect(() => {
+  //   if (slotDeleteState == 'done') {
+  //     setVisibleDeleteTime(false);
+  //     setVisibleSaveData(true);
+  //     setslotDeleteState('');
+  //   }
+  // }, [slotDeleteState]);
 
   const _onRefresh_Slots = () => {
     getSlots(1);
@@ -109,7 +117,7 @@ const BlockAppointments: React.FC = () => {
           const data = {
             from,
             to,
-            // serviceProviderId: 5,
+            serviceProviderId: userData.serviceProviderId,
             employeeId: null,
             type: 'booked'
           };
@@ -130,7 +138,7 @@ const BlockAppointments: React.FC = () => {
         const data = {
           from,
           to,
-          // serviceProviderId: 5,
+          serviceProviderId: userData.serviceProviderId,
           employeeId: null,
           type: 'booked'
         };
@@ -232,12 +240,15 @@ const BlockAppointments: React.FC = () => {
         statusBarTranslucent
       >
         <View style={styles.modalContainer}>
+        {calendarSection()}
+        {timingsSection()}
           <AppTextGradient
             title={Trans('addBlockingAppointment')}
             fontSize={calcFont(17)}
             fontFamily={FONTS.bold}
             colorStart={COLORS.secondGradient}
             colorEnd={COLORS.primaryGradient}
+            textAlign={'left'}
           />
           <View style={styles.modalTabsContainer}>
             <AppTabView
@@ -355,12 +366,15 @@ const BlockAppointments: React.FC = () => {
         statusBarTranslucent
       >
         <View style={styles.modalContainer}>
+          {calendarSection()}
+          {timingsSection()}
           <AppTextGradient
             title={Trans('editBlockingAppointment')}
             fontSize={calcFont(17)}
             fontFamily={FONTS.bold}
             colorStart={COLORS.secondGradient}
             colorEnd={COLORS.primaryGradient}
+            textAlign={'left'}
           />
           <View style={styles.modalTabsContainer}>
             <AppTabView
@@ -458,7 +472,7 @@ const BlockAppointments: React.FC = () => {
     )
   };
   const onDelete = () => {
-    setVisibleDeleteTime(false)
+    setVisibleDeleteTime(false);
     dispatch(slot_delete({id: selectSlot?.id}));
   };
   const deleteTimeSection = () => {
@@ -502,7 +516,8 @@ const BlockAppointments: React.FC = () => {
       setDateFrom(item);
     } else if (calenderType == 'dateTo') {
       setDateTo(item);
-    }
+    };
+    setVisibleCalendar(false);
   };
 
   const calendarSection = () => {
@@ -536,7 +551,7 @@ const BlockAppointments: React.FC = () => {
       <AppLoading
         margin_top={calcHeight(440)}
         size={'large'}
-        visible={slotsLoader && page == 1}
+        visible={slotsLoader}
       />
     )
   };
@@ -551,9 +566,6 @@ const BlockAppointments: React.FC = () => {
       {editTimeSection()}
       {deleteTimeSection()}
       {saveDataSection()}
-      {calendarSection()}
-      {timingsSection()}
-      
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {I18nManager, StyleSheet} from 'react-native';
 import { calcHeight, calcWidth } from '../../utils/sizes';
 import { COLORS } from '../../utils/theme';
 
@@ -28,6 +28,6 @@ export const styles = StyleSheet.create({
   icon: {
     width: calcWidth(18),
     height: calcWidth(18),
-    transform: [{rotate: '90deg'}],
+    transform: [{rotate: I18nManager.isRTL ? '90deg' : '270deg'}],
   },
 });

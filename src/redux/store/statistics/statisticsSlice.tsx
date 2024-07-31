@@ -18,6 +18,8 @@ export const statisticsSlice = createSlice({
       state.statisticsLoader = action.payload;
     },
     setStatisticsData: (state, action) => {
+      console.log('setStatisticsData---------------', setStatisticsData);
+      
       state.statisticsData = action.payload;
     },
     setStatisticsData_TotalAppointments: (state, action) => {

@@ -16,6 +16,8 @@ export const statistics_data = createAsyncThunk(
       thunkApi.dispatch(setStatisticsLoader(true));
       try {
         const response: any = await client.get(`${endpoints.statistics}?fromDate=${args.date}&type=${args.type}`);
+        console.log('response-------statistics_data------', response);
+        
         if (response.status == 200 || response.status == 201) {
           const statisticsData = response.data.data;
           var arr1: any = [];
@@ -66,7 +68,7 @@ export const statistics_data = createAsyncThunk(
               }
             }
           };
-          setStatisticsData(response.data.data);
+          thunkApi.dispatch(setStatisticsData(response.data.data));
           thunkApi.dispatch(setStatisticsData_TotalAppointments(array1));
           thunkApi.dispatch(setStatisticsData_TotalPaidAmount(array2));
           thunkApi.dispatch(setStatisticsData_TotalRefundAmount(array3));

@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   error: {
     fontSize: calcFont(14),
-    color: '#CC3300',
+    color: COLORS.red,
     fontFamily: FONTS.medium,
     marginTop: calcHeight(4),
     textAlign: 'left',

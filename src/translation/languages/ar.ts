@@ -224,6 +224,8 @@ export default {
   insideReservation: 'داخل الحجز',
   vacationAndRestData: 'بيانات الاجازات والراحة',
   holiday: 'يوم الاجازة',
+  beginningOfWork: 'بداية العمل',
+  endOfWork: 'نهاية العمل',
   beginningOfRest: 'بداية الراحة',
   endOfRest: 'نهاية الراحة',
   serviceProviders: 'مقدمى الخدمة',

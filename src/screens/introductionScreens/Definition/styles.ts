@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {I18nManager, Platform, StyleSheet} from 'react-native';
 import { calcFont, calcHeight, calcWidth } from '../../../utils/sizes';
 import { COLORS, FONTS } from '../../../utils/theme';
 
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     width: calcWidth(343),
-    marginTop: calcHeight(515 + 44),
+    marginTop: Platform.OS == 'ios' ? calcHeight(500) : calcHeight(500 + 44),
   },
   dataContainer: {
     flex: 1,
@@ -60,11 +60,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: calcHeight(680),
+    marginTop: Platform.OS == 'ios' ? calcHeight(620) : calcHeight(680),
+
   },
   nextImage: {
     width: calcWidth(44),
     height: calcWidth(44),
+    transform: [{scaleX: I18nManager.isRTL ? 1 : -1}],
   },
   nextView: {
     flexDirection: 'row',

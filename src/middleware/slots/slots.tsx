@@ -66,15 +66,16 @@ export const slot_delete = createAsyncThunk(
         thunkApi.dispatch(setslotsLoader(true));
         try {
             const response: any = await client.delete(`${endpoints.slotAction}/${args.id}`);
+            console.log('response------slot_delete-------', response);
             if (response.status == 200 || response.status == 201) {
-                thunkApi.dispatch(setslotDeleteState('done'));
-                thunkApi.dispatch(setslotsLoader(false));
+                // thunkApi.dispatch(setslotDeleteState('done'));
+                thunkApi.dispatch(slots_data({page: 1}));
             } else {
-                thunkApi.dispatch(setslotDeleteState('error'));
+                // thunkApi.dispatch(setslotDeleteState('error'));
                 thunkApi.dispatch(setslotsLoader(false));
             }
         } catch (err) {
-            thunkApi.dispatch(setslotDeleteState('error'));
+            // thunkApi.dispatch(setslotDeleteState('error'));
             thunkApi.dispatch(setslotsLoader(false));
         }
     },

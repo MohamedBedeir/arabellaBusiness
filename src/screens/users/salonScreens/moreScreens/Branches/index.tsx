@@ -126,7 +126,7 @@ const Branches: React.FC = () => {
               value={nameAr}
               placeholder={Trans('nameArabic')}
               onChangeText={(text: string) => setNameAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(8)}}
             />
             <AppInput
@@ -134,7 +134,7 @@ const Branches: React.FC = () => {
               value={nameEn}
               placeholder={Trans('nameEnglish')}
               onChangeText={(text: string) => setNameEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <View style={{marginTop: calcHeight(12)}}>
@@ -242,7 +242,7 @@ const Branches: React.FC = () => {
               value={nameAr}
               placeholder={Trans('nameArabic')}
               onChangeText={(text: string) => setNameAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(8)}}
             />
             <AppInput
@@ -250,7 +250,7 @@ const Branches: React.FC = () => {
               value={nameEn}
               placeholder={Trans('nameEnglish')}
               onChangeText={(text: string) => setNameEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -258,7 +258,7 @@ const Branches: React.FC = () => {
               value={descriptioneAr}
               placeholder={Trans('descriptionArabic')}
               onChangeText={(text: string) => setDescriptionAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -266,7 +266,7 @@ const Branches: React.FC = () => {
               value={descriptionEn}
               placeholder={Trans('descriptionEnglish')}
               onChangeText={(text: string) => setDescriptionEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInputPhone
@@ -277,7 +277,7 @@ const Branches: React.FC = () => {
               value={phone}
               keyboardType={'number-pad'}
               onChangeText={(text: string) => setPhone(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               // _textAligne={}
               // error={}
             />
@@ -304,7 +304,7 @@ const Branches: React.FC = () => {
               value={addressArabic}
               placeholder={'0'}
               onChangeText={(text: string) => setAddressArabic(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -312,7 +312,7 @@ const Branches: React.FC = () => {
               value={addressEnglish}
               placeholder={'0'}
               onChangeText={(text: string) => setAddressEnglish(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -320,7 +320,7 @@ const Branches: React.FC = () => {
               value={longitude}
               placeholder={'0'}
               onChangeText={(text: string) => setLongitude(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -328,7 +328,7 @@ const Branches: React.FC = () => {
               value={latitude}
               placeholder={'0'}
               onChangeText={(text: string) => setLatitude(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             
@@ -443,7 +443,7 @@ const Branches: React.FC = () => {
               value={nameAr}
               placeholder={Trans('nameArabic')}
               onChangeText={(text: string) => setNameAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(8)}}
             />
             <AppInput
@@ -451,7 +451,7 @@ const Branches: React.FC = () => {
               value={nameEn}
               placeholder={Trans('nameEnglish')}
               onChangeText={(text: string) => setNameEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -459,7 +459,7 @@ const Branches: React.FC = () => {
               value={descriptioneAr}
               placeholder={Trans('descriptionArabic')}
               onChangeText={(text: string) => setDescriptionAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -467,7 +467,7 @@ const Branches: React.FC = () => {
               value={descriptionEn}
               placeholder={Trans('descriptionEnglish')}
               onChangeText={(text: string) => setDescriptionEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInputPhone
@@ -478,7 +478,7 @@ const Branches: React.FC = () => {
             value={phone}
             keyboardType={'number-pad'}
             onChangeText={(text: string) => setPhone(text)}
-            inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+            inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
             // _textAligne={}
             // error={}
           />
@@ -505,7 +505,7 @@ const Branches: React.FC = () => {
               value={addressArabic}
               placeholder={'0'}
               onChangeText={(text: string) => setAddressArabic(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -513,7 +513,7 @@ const Branches: React.FC = () => {
               value={addressEnglish}
               placeholder={'0'}
               onChangeText={(text: string) => setAddressEnglish(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -521,7 +521,7 @@ const Branches: React.FC = () => {
               value={longitude}
               placeholder={'0'}
               onChangeText={(text: string) => setLongitude(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -529,7 +529,7 @@ const Branches: React.FC = () => {
               value={latitude}
               placeholder={'0'}
               onChangeText={(text: string) => setLatitude(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             

@@ -116,7 +116,7 @@ export const AppInputPhone: React.FC<Props> = ({
         <AppText
           title={error} 
           fontSize={calcFont(14)}
-          color={'#CC3300'}
+          color={COLORS.red}
           fontFamily={FONTS.medium}
         />
       )}

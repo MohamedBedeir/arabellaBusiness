@@ -321,7 +321,7 @@ const Home: React.FC = () => {
               containerStyle={{width: calcWidth(343 / 2)}}
               image={IMAGES.chartTypeP}
               imageStyle={{width: calcWidth(18), height: calcWidth(18)}}
-              title={I18nManager.isRTL ? statisticsData?.series?.paidAppointment.nameAr : statisticsData?.series?.paidAppointment.nameEn}
+              title={I18nManager.isRTL ? statisticsData?.series?.totalPaidAmount.nameAr : statisticsData?.series?.totalPaidAmount.nameEn}
               fontSize={calcFont(14)}
               fontFamily={FONTS.medium}
               textColor={COLORS.textDark}
@@ -331,7 +331,7 @@ const Home: React.FC = () => {
               containerStyle={{width: calcWidth(343 / 2)}}
               image={IMAGES.chartTypeS}
               imageStyle={{width: calcWidth(18), height: calcWidth(18)}}
-              title={I18nManager.isRTL ? statisticsData?.series?.unPaidAppointment.nameAr : statisticsData?.series?.unPaidAppointment.nameEn}
+              title={I18nManager.isRTL ? statisticsData?.series?.totalRefundAmount.nameAr : statisticsData?.series?.totalRefundAmount.nameEn}
               fontSize={calcFont(14)}
               fontFamily={FONTS.medium}
               textColor={COLORS.textDark}
@@ -346,8 +346,8 @@ const Home: React.FC = () => {
         {searchSection()}
         <ScrollView showsVerticalScrollIndicator={false}>
           {calculationSection()}
-          {chart1Section()}
-          {chart2Section()}
+          {statisticsData_TotalAppointments?.length >= 1 && chart1Section()}
+          {(statisticsData_TotalPaidAmount?.length >= 1 && statisticsData_TotalRefundAmount?.length >= 1) &&chart2Section()}
         </ScrollView>
       </>
     )

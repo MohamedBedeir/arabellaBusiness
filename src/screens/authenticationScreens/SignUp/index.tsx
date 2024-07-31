@@ -42,6 +42,7 @@ const SignUp: React.FC<{}> = (params: any) => {
             fontSize={calcFont(22)}
             fontFamily={FONTS.extra_bold}
             marginBottom={calcHeight(8)}
+            textAlign={'left'}
           />
           <AppText
             title={Trans('fillInformationRegister')}
@@ -49,6 +50,7 @@ const SignUp: React.FC<{}> = (params: any) => {
             fontSize={calcFont(14)}
             fontFamily={FONTS.regular}
             marginBottom={calcHeight(20)}
+            textAlign={'left'}
           />
         </View>
       </View>
@@ -122,7 +124,7 @@ const SignUp: React.FC<{}> = (params: any) => {
             value={name}
             placeholder={Trans('fullName')}
             onChangeText={(text: string) =>setName(text)}
-            inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+            inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
             // error={'emailError'}
             containerStyle={{}}
           />
@@ -149,7 +151,7 @@ const SignUp: React.FC<{}> = (params: any) => {
             value={email}
             placeholder={Trans('email')}
             onChangeText={(text: string) =>setEmail(text)}
-            inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+            inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
             // error={'emailError'}
             containerStyle={{marginTop: calcHeight(20)}}
           />
@@ -168,7 +170,7 @@ const SignUp: React.FC<{}> = (params: any) => {
             secret
             placeholder={Trans('password')}
             onChangeText={(text: string) =>setPassword(text)}
-            inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+            inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
             // error={'emailError'}
             containerStyle={{marginTop: calcHeight(20)}}
           />

@@ -132,7 +132,7 @@ const Sections: React.FC = () => {
               value={nameAr}
               placeholder={Trans('nameArabic')}
               onChangeText={(text: string) => setNameAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(8)}}
             />
             <AppInput
@@ -140,7 +140,7 @@ const Sections: React.FC = () => {
               value={nameEn}
               placeholder={Trans('nameEnglish')}
               onChangeText={(text: string) => setNameEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
           </ScrollView>
@@ -187,7 +187,7 @@ const Sections: React.FC = () => {
               value={nameAr}
               placeholder={Trans('nameArabic')}
               onChangeText={(text: string) => setNameAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(8)}}
             />
             <AppInput
@@ -195,7 +195,7 @@ const Sections: React.FC = () => {
               value={nameEn}
               placeholder={Trans('nameEnglish')}
               onChangeText={(text: string) => setNameEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -203,7 +203,7 @@ const Sections: React.FC = () => {
               value={descriptioneAr}
               placeholder={Trans('descriptionArabic')}
               onChangeText={(text: string) => setDescriptionAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -211,7 +211,7 @@ const Sections: React.FC = () => {
               value={descriptionEn}
               placeholder={Trans('descriptionEnglish')}
               onChangeText={(text: string) => setDescriptionEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <View style={{marginTop: calcHeight(12)}}>
@@ -280,7 +280,7 @@ const Sections: React.FC = () => {
               value={nameAr}
               placeholder={Trans('nameArabic')}
               onChangeText={(text: string) => setNameAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(8)}}
             />
             <AppInput
@@ -288,7 +288,7 @@ const Sections: React.FC = () => {
               value={nameEn}
               placeholder={Trans('nameEnglish')}
               onChangeText={(text: string) => setNameEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -296,7 +296,7 @@ const Sections: React.FC = () => {
               value={descriptioneAr}
               placeholder={Trans('descriptionArabic')}
               onChangeText={(text: string) => setDescriptionAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -304,7 +304,7 @@ const Sections: React.FC = () => {
               value={descriptionEn}
               placeholder={Trans('descriptionEnglish')}
               onChangeText={(text: string) => setDescriptionEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <View style={{marginTop: calcHeight(12)}}>

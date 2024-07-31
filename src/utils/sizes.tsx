@@ -21,7 +21,7 @@ const calcHeight: (heigh: number) => number = (pixels: number) => {
   return heightPercentageToDP(deviceRatio);
 };
 const calcFont: (width: number) => number = (pixels: number) => {
-  const pixel: number = I18nManager.isRTL ?  pixels * 65 : pixels * 80;
+  const pixel: number = I18nManager.isRTL ?  pixels * 70 : pixels * 75;
   const deviceRatio = (pixel) / 375;
   return widthPercentageToDP(deviceRatio);
 };

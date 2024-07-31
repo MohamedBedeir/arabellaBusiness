@@ -45,7 +45,11 @@ export type SA_MoreDetailsStackParam = {
   SA_TermsAndConditions: undefined;
 };
 
-
+export type MA_TabsParam = {
+  MA_HomeStack: undefined;
+  MA_ReservationsStack: undefined;
+  MA_MoreStack: undefined;
+};
 export type MA_HomeStackParam = {
   MA_Home: undefined;
 };

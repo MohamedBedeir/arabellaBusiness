@@ -27,10 +27,20 @@ export const confirmationCode = createAsyncThunk(
       thunkApi.dispatch(setAuthenticationLoader(false));
       if (response.status == 201) {
         thunkApi.dispatch(setConfirmationCodeState('done'));
-        await AsyncStorage.setItem('user', JSON.stringify(response.data.data.user));
+        const user: any = response.data.data.user;
+        await AsyncStorage.setItem('user', JSON.stringify(user));
         await AsyncStorage.setItem('token', `Bearer ${response.data.data.token}`);
         init_token(`Bearer ${response.data.data.token}`);
-        args.navigation.navigate('MA_Tabs');
+        console.log('user-------------------', user);
+        if (user.type == 'super_admin' || user.type == 'admin') {
+          args.navigation.navigate('AD_Tabs');
+        } else if (user.type == 'salon_admin') {
+          args.navigation.navigate('SA_Tabs');
+        } else if (user.type == 'makeup_artist') {
+          args.navigation.navigate('MA_Tabs');
+        } else if (user.type == 'home_service_provider') {
+          args.navigation.navigate('HS_Tabs');
+        };
       } else {
         thunkApi.dispatch(setConfirmationCodeState('error'));
       }

@@ -88,7 +88,7 @@ const ReservationDetails: React.FC = (params: any) => {
               />
             )}
             {icon && (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => Linking.openURL(`tel:${item?.customer?.phoneNumber}`)}>
                 <Image source={icon} style={styles.lineIcon}/>
               </TouchableOpacity>
             )}
@@ -118,7 +118,7 @@ const ReservationDetails: React.FC = (params: any) => {
         >
           <View style={styles.mainDataItemContainer}>
             <AppText
-              title={`${Trans('reserveNumber')} ${item.id}`}
+              title={`${Trans('reserveNumber')} ${item?.id}`}
               fontSize={calcFont(16)}
               fontFamily={FONTS.bold}
               color={COLORS.white}
@@ -338,28 +338,28 @@ const ReservationDetails: React.FC = (params: any) => {
             textAlign={'left'}
           />
           {line(null, item?.address, null, null)}
-          <TouchableOpacity
-            onPress={() =>  Linking.openURL(`https://www.google.com/maps/search/?api=1&query=24.7377507,46.6015283`)}
+          {(item?.lat && item?.lng) && <TouchableOpacity
+            onPress={() =>  Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${parseInt(item?.lat)},${parseInt(item?.lng)}`)}
           >
             <MapView
               style={styles.addressMapTest}
               region={{
-                latitude: 24.7377507,
-                longitude: 46.6015283,
+                latitude: parseInt(item?.lat, 10),
+                longitude: parseInt(item?.lng),
                 latitudeDelta: 0.222,
                 longitudeDelta: 0.221,
               }}
             >
               <Marker
                 key={1}
-                coordinate={{latitude: 24.7377507, longitude: 46.6015283}}
-                title={'title'}
-                description={'description'}
+                coordinate={{latitude: parseInt(item?.lat), longitude: parseInt(item?.lng)}}
+                // title={'title'}
+                // description={'description'}
               >
                 <Image source={IMAGES.mapMarker} style={{width: calcWidth(24), height: calcWidth(24)}}/>
               </Marker>
             </MapView>
-          </TouchableOpacity>
+          </TouchableOpacity>}
           {/* <Image source={IMAGES.mapTest} style={styles.addressMapTest}/> */}
           {(status == 'scheduled' || status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed') && (
             <View style={styles.stepsContainer}>
@@ -401,20 +401,20 @@ const ReservationDetails: React.FC = (params: any) => {
             setCostTransferState(true);
           } else {
             setCostTransferState(false);
-            dispatch(appointment_update({id: item.id, status: 'accepted_by_service_provider', fees: parseInt(costTransfer, 10)}));
+            dispatch(appointment_update({id: item?.id, status: 'accepted_by_service_provider', fees: parseInt(costTransfer, 10)}));
           };
         } else if (status == 'scheduled') {
-          dispatch(appointment_update({id: item.id, status: 'en_route', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
+          dispatch(appointment_update({id: item?.id, status: 'en_route', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
         } else if (status == 'en_route') {
-          dispatch(appointment_update({id: item.id, status: 'arrived', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
+          dispatch(appointment_update({id: item?.id, status: 'arrived', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
         } else if (status == 'arrived') {
-          dispatch(appointment_update({id: item.id, status: 'started', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
+          dispatch(appointment_update({id: item?.id, status: 'started', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
         } else if (status == 'started') {
           if (step == 1) {
             setStep(2);
-            dispatch(appointment_otp({id: item.id}));
+            dispatch(appointment_otp({id: item?.id}));
           } else if (step == 2) {
-            dispatch(appointment_update({id: item.id, otp: OTPCode, status: 'completed', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
+            dispatch(appointment_update({id: item?.id, otp: OTPCode, status: 'completed', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
           }
         } else {
           null;
@@ -423,9 +423,9 @@ const ReservationDetails: React.FC = (params: any) => {
     
       const onAction = () => {
         if (status == 'reviewing') {
-          dispatch(appointment_update({id: item.id, status: 'rejected_by_service_provider', fees: 0}));
+          dispatch(appointment_update({id: item?.id, status: 'rejected_by_service_provider', fees: 0}));
         } else if (status == 'arrived') {
-          dispatch(appointment_update({id: item.id, status: 'cancelled', fees: 0}));
+          dispatch(appointment_update({id: item?.id, status: 'cancelled', fees: 0}));
         }
       };
 

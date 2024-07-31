@@ -44,14 +44,16 @@ const LetsStart: React.FC<{}> = (params: any) => {
           color={COLORS.white}
           lineHeight={calcHeight(42)}
           marginBottom={calcHeight(8)}
+          textAlign={'left'}
         />
         <AppText
           title={Trans('notOnlyOrganizeReservations')}
-          fontFamily={FONTS.light}
+          fontFamily={FONTS.regular}
           fontSize={calcFont(18)}
           color={COLORS.white}
           lineHeight={calcHeight(24)}
           numberOfLines={2}
+          textAlign={'left'}
         />
       </View>
     )

@@ -10,6 +10,7 @@ import statisticsSlice from './statistics/statisticsSlice';
 import profileSlice from './profile/profileSlice';
 import categoriesSlice from './general/categories';
 import notificationsSlice from './notifications/notificationsSlice';
+import employeesSlice from './employees/employeesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ export const store = configureStore({
     appointment_details: appointment_detailsSlice,
     statistics: statisticsSlice,
     notifications: notificationsSlice,
+    employees: employeesSlice,
   },
 });
 

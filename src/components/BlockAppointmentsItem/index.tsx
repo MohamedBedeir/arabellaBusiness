@@ -75,9 +75,9 @@ const BlockAppointmentsItem: React.FC<BlockAppointmentsItemProps> = ({
                 </View>
                 <View style={styles.dataRightContainer}>
                     <View style={styles.editContainer}>
-                        <TouchableOpacity onPress={onPressEdit}>
+                        {/* <TouchableOpacity onPress={onPressEdit}>
                             <Image source={IMAGES.edit} style={styles.icon}/>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity onPress={onPressDelete}>
                             <Image source={IMAGES.delete} style={styles.icon}/>
                         </TouchableOpacity>

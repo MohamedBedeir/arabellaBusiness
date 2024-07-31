@@ -96,12 +96,14 @@ const Login: React.FC<{}> = (params: any) => {
             fontSize={calcFont(22)}
             fontFamily={FONTS.extra_bold}
             marginBottom={calcHeight(8)}
+            textAlign={'left'}
           />
           <AppText
             title={Trans('fillInYourEmail')}
             color={COLORS.textDark}
             fontSize={calcFont(14)}
             fontFamily={FONTS.light}
+            textAlign={'left'}
           />
         </View>
       )

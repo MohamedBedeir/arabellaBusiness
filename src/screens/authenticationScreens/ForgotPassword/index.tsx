@@ -82,6 +82,7 @@ const ForgotPassword: React.FC<{}> = () => {
             fontSize={calcFont(22)}
             fontFamily={FONTS.extra_bold}
             marginBottom={calcHeight(8)}
+            textAlign={'left'}
           />
           <AppText
             title={Trans('enterEmailResetPassword')}
@@ -89,6 +90,7 @@ const ForgotPassword: React.FC<{}> = () => {
             fontSize={calcFont(14)}
             fontFamily={FONTS.regular}
             marginBottom={calcHeight(20)}
+            textAlign={'left'}
           />
         </View>
       )

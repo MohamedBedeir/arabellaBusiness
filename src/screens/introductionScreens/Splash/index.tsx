@@ -68,15 +68,16 @@ const Splash: React.FC<{}> = (params: any) => {
         if (user && JSON.parse(user).id) {
           const _user = JSON.parse(user);
           init_token(token);
-          if (_user.role == 'service_provider_manager') {
-            params.navigation.navigate('MA_Tabs');
-          } else if (_user.role == 'service_provider_manager') {
-            params.navigation.navigate('SA_Tabs');
-          } else if (_user.role == 'service_provider_manager') {
-            params.navigation.navigate('HS_Tabs');
-          } else if (_user.role == 'service_provider_manager') {
+          const userData = JSON.parse(user);
+          if (userData.type == 'super_admin' || userData.type == 'admin') {
             params.navigation.navigate('AD_Tabs');
-          }
+          } else if (userData.type == 'salon_admin') {
+            params.navigation.navigate('SA_Tabs');
+          } else if (userData.type == 'makeup_artist') {
+            params.navigation.navigate('MA_Tabs');
+          } else if (userData.type == 'home_service_provider') {
+            params.navigation.navigate('HS_Tabs');
+          };
         } else {
           params.navigation.navigate('AuthenticationStack', {screen: 'Login'});
         }

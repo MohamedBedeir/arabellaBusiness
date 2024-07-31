@@ -142,7 +142,7 @@ const Services: React.FC = () => {
               value={nameAr}
               placeholder={Trans('nameArabic')}
               onChangeText={(text: string) => setNameAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(8)}}
             />
             <AppInput
@@ -150,7 +150,7 @@ const Services: React.FC = () => {
               value={nameEn}
               placeholder={Trans('nameEnglish')}
               onChangeText={(text: string) => setNameEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -158,7 +158,7 @@ const Services: React.FC = () => {
               value={price}
               placeholder={'0'}
               onChangeText={(text: string) => setPrice(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -166,7 +166,7 @@ const Services: React.FC = () => {
               value={time}
               placeholder={'0'}
               onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppPickerSelect
@@ -268,7 +268,7 @@ const Services: React.FC = () => {
               value={nameAr}
               placeholder={Trans('nameArabic')}
               onChangeText={(text: string) => setNameAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(8)}}
             />
             <AppInput
@@ -276,7 +276,7 @@ const Services: React.FC = () => {
               value={nameEn}
               placeholder={Trans('nameEnglish')}
               onChangeText={(text: string) => setNameEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -284,7 +284,7 @@ const Services: React.FC = () => {
               value={descriptioneAr}
               placeholder={Trans('descriptionArabic')}
               onChangeText={(text: string) => setDescriptionAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -292,7 +292,7 @@ const Services: React.FC = () => {
               value={descriptionEn}
               placeholder={Trans('descriptionEnglish')}
               onChangeText={(text: string) => setDescriptionEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -300,7 +300,7 @@ const Services: React.FC = () => {
               value={price}
               placeholder={'0'}
               onChangeText={(text: string) => setPrice(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -308,7 +308,7 @@ const Services: React.FC = () => {
               value={time}
               placeholder={'0'}
               onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppPickerSelect
@@ -431,7 +431,7 @@ const Services: React.FC = () => {
               value={nameAr}
               placeholder={Trans('nameArabic')}
               onChangeText={(text: string) => setNameAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(8)}}
             />
             <AppInput
@@ -439,7 +439,7 @@ const Services: React.FC = () => {
               value={nameEn}
               placeholder={Trans('nameEnglish')}
               onChangeText={(text: string) => setNameEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -447,7 +447,7 @@ const Services: React.FC = () => {
               value={descriptioneAr}
               placeholder={Trans('descriptionArabic')}
               onChangeText={(text: string) => setDescriptionAr(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -455,7 +455,7 @@ const Services: React.FC = () => {
               value={descriptionEn}
               placeholder={Trans('descriptionEnglish')}
               onChangeText={(text: string) => setDescriptionEn(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -463,7 +463,7 @@ const Services: React.FC = () => {
               value={price}
               placeholder={'0'}
               onChangeText={(text: string) => setPrice(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppInput
@@ -471,7 +471,7 @@ const Services: React.FC = () => {
               value={time}
               placeholder={'0'}
               onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
               containerStyle={{marginTop: calcHeight(12)}}
             />
             <AppPickerSelect

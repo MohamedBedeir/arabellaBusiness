@@ -14,6 +14,7 @@ export interface Props {
   containerStyle?: ViewStyle | null;
   styleTitle?: TextStyle | null;
   touchContainerStyle?: ViewStyle | null;
+  textWidth?: number;
 };
 export const AppPickerSelect: React.FC<Props> = ({
   containerStyle,
@@ -23,6 +24,7 @@ export const AppPickerSelect: React.FC<Props> = ({
   placeholder,
   image,
   icon,
+  textWidth,
 }) => {
   return (
     <View style={[styles.container, containerStyle]}>
@@ -47,7 +49,7 @@ export const AppPickerSelect: React.FC<Props> = ({
           fontSize={calcFont(14)}
           fontFamily={FONTS.medium}
           color={COLORS.textLight}
-          width={calcWidth(269)}
+          width={textWidth || calcWidth(269)}
           textAlign={'left'}
         />
         <TouchableOpacity onPress={onPress}>

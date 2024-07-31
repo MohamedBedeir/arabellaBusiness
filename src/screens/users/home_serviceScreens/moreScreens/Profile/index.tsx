@@ -24,6 +24,7 @@ import RNFS from 'react-native-fs';
 import endpoints from '../../../../../network/endpoints';
 import { password_update } from '../../../../../middleware/authentication/updatePassword';
 import { setPasswordUpdateState, setProfileUpdateState } from '../../../../../redux/store/profile/profileSlice';
+import { useToast } from 'react-native-toast-notifications';
 
 const Profile: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -41,15 +42,22 @@ const Profile: React.FC = () => {
   const [passwordCurrent, setPasswordCurrent] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordConvert, setPasswordConvert] = useState<string>('');
-  
-
   const [passwordCurrentError, setPasswordCurrentError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
   const [passwordConvertError, setPasswordConvertError] = useState<boolean>(false);
-
   const [visibleUpdateData, setVisibleUpdateData] = useState<boolean>(false);
   const [visibleUpdatePassword, setVisibleUpdatePassword] = useState<boolean>(false);
   
+  const toast = useToast();
+  const _toast = (type: string, body: string) => {
+    toast.show(body, {
+      type: type,
+      placement: 'bottom',
+      offset: 30,
+      animationType: 'slide-in',
+    });
+  };
+
   const getUser = async () => {
     const user: any = await AsyncStorage.getItem('user');
     const user_data = JSON.parse(user);
@@ -81,7 +89,10 @@ const Profile: React.FC = () => {
       setPasswordConvert('');
       setVisibleUpdatePassword(true);
       dispatch(setPasswordUpdateState(''));
-    }
+    } else if (passwordUpdateState == 'error') {
+      _toast('danger', Trans('problemOccurredTryAgain'));
+      dispatch(setPasswordUpdateState(''));
+    };
   }, [passwordUpdateState]);
 
   const onUpdateProfile = () => {
@@ -145,7 +156,7 @@ const Profile: React.FC = () => {
             value={userName}
             placeholder={Trans('name')}
             onChangeText={(text: string) =>setUserName(text)}
-            inputContainer={{borderColor: userName == '' ? '#CC3300' : COLORS.backgroundLight}}
+            inputContainer={{borderColor: userName == '' ? COLORS.red : COLORS.backgroundLight}}
             // error={'emailError'}
             containerStyle={{marginTop: calcHeight(20)}}
           />
@@ -166,7 +177,7 @@ const Profile: React.FC = () => {
             value={email}
             placeholder={Trans('email')}
             onChangeText={(text: string) =>setEmail(text)}
-            inputContainer={{borderColor: email == '' ? '#CC3300' : COLORS.backgroundLight}}
+            inputContainer={{borderColor: email == '' ? COLORS.red : COLORS.backgroundLight}}
             // error={'emailError'}
             containerStyle={{marginTop: calcHeight(20)}}
           />
@@ -186,6 +197,8 @@ const Profile: React.FC = () => {
               color={COLORS.textDark}
               fontFamily={FONTS.medium}
               fontSize={calcFont(14)}
+              textAlign={'left'}
+              marginBottom={calcHeight(4)}
             />
             <TouchableOpacity
               style={styles.policiesTouch}
@@ -196,6 +209,7 @@ const Profile: React.FC = () => {
                 fontFamily={FONTS.medium}
                 fontSize={calcFont(14)}
                 color={COLORS.primaryGradient}
+                textAlign={'left'}
               />
             </TouchableOpacity>
           </View>
@@ -211,12 +225,26 @@ const Profile: React.FC = () => {
       )
     };
     const onUpdatePassword = () => {
-      const data = {
-        currentPassword: passwordCurrent,
-        password: password,
-        confirmPassword: passwordConvert,
+      if (passwordCurrent == '') {
+        setPasswordCurrentError(true);
+      } else if (password == '') {
+        setPasswordCurrentError(false);
+        setPasswordError(true);
+      } else if (passwordConvert != password) {
+        setPasswordCurrentError(false);
+        setPasswordError(false);
+        setPasswordConvertError(true);
+      } else {
+        setPasswordCurrentError(false);
+        setPasswordError(false);
+        setPasswordConvertError(false);
+        const data = {
+          currentPassword: passwordCurrent,
+          password: password,
+          confirmPassword: passwordConvert,
+        };
+        dispatch(password_update(data));
       }
-      dispatch(password_update(data));
     };
     const passwordSection = () => {
       return (
@@ -228,7 +256,7 @@ const Profile: React.FC = () => {
             value={passwordCurrent}
             placeholder={''}
             onChangeText={(text: string) =>setPasswordCurrent(text)}
-            inputContainer={{borderColor: passwordCurrentError ? '#CC3300' : COLORS.backgroundLight}}
+            inputContainer={{borderColor: passwordCurrentError ? COLORS.red : COLORS.backgroundLight}}
             // error={'emailError'}
             // containerStyle={{marginTop: calcHeight(20)}}
           />
@@ -239,7 +267,7 @@ const Profile: React.FC = () => {
             value={password}
             placeholder={''}
             onChangeText={(text: string) =>setPassword(text)}
-            inputContainer={{borderColor: passwordError ? '#CC3300' : COLORS.backgroundLight}}
+            inputContainer={{borderColor: passwordError ? COLORS.red : COLORS.backgroundLight}}
             // error={'emailError'}
             containerStyle={{marginTop: calcHeight(20)}}
           />
@@ -250,7 +278,7 @@ const Profile: React.FC = () => {
             value={passwordConvert}
             placeholder={''}
             onChangeText={(text: string) =>setPasswordConvert(text)}
-            inputContainer={{borderColor: passwordConvertError ? '#CC3300' : COLORS.backgroundLight}}
+            inputContainer={{borderColor: passwordConvertError ? COLORS.red : COLORS.backgroundLight}}
             // error={'emailError'}
             containerStyle={{marginTop: calcHeight(20)}}
           />

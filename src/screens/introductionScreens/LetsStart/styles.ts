@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import { calcHeight, calcWidth } from '../../../utils/sizes';
 import { COLORS } from '../../../utils/theme';
 
@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
     },
     messageContainer: {
         width: calcWidth(343),
-        marginTop: calcHeight(465 + 44),
+        marginTop: Platform.OS == 'ios' ? calcHeight(465) : calcHeight(465 + 44),
+
     },
     authContainer: {
         marginTop: calcHeight(32),

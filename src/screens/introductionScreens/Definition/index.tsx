@@ -29,6 +29,7 @@ const Definition: React.FC = () => {
               lineHeight={calcHeight(32)}
               marginBottom={calcHeight(8)}
               numberOfLines={2}
+              textAlign={'left'}
             />
             <AppText
               title={description}
@@ -37,6 +38,7 @@ const Definition: React.FC = () => {
               color={COLORS.white}
               lineHeight={calcHeight(20)}
               numberOfLines={2}
+              textAlign={'left'}
             />
           </View>
         )

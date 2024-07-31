@@ -88,7 +88,7 @@ const ReservationDetails: React.FC = (params: any) => {
               />
             )}
             {icon && (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => Linking.openURL(`tel:${item.customer.phoneNumber}`)}>
                 <Image source={icon} style={styles.lineIcon}/>
               </TouchableOpacity>
             )}
@@ -339,20 +339,20 @@ const ReservationDetails: React.FC = (params: any) => {
           />
           {line(null, item?.address, null, null)}
           <TouchableOpacity
-            onPress={() =>  Linking.openURL(`https://www.google.com/maps/search/?api=1&query=24.7377507,46.6015283`)}
+            onPress={() =>  Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${item?.lat},${item?.lng}`)}
           >
             <MapView
               style={styles.addressMapTest}
               region={{
-                latitude: 24.7377507,
-                longitude: 46.6015283,
+                latitude: item?.lat,
+                longitude: item?.lng,
                 latitudeDelta: 0.222,
                 longitudeDelta: 0.221,
               }}
             >
               <Marker
                 key={1}
-                coordinate={{latitude: 24.7377507, longitude: 46.6015283}}
+                coordinate={{latitude: item?.lat, longitude: item?.lng}}
                 title={'title'}
                 description={'description'}
               >

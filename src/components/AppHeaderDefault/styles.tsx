@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {I18nManager, StyleSheet} from 'react-native';
 import { calcHeight, calcWidth } from '../../utils/sizes';
 import { COLORS } from '../../utils/theme';
 
@@ -29,6 +29,7 @@ export const styles = StyleSheet.create({
   icon: {
     width: calcWidth(28),
     height: calcWidth(28),
+    transform: [{scaleX: I18nManager.isRTL ? 1 : -1}],
   },
   logo: {
     width: calcWidth(24),

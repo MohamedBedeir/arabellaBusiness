@@ -80,12 +80,14 @@ const VerficationOTP: React.FC<{}> = (params: any) => {
             fontSize={calcFont(22)}
             fontFamily={FONTS.extra_bold}
             marginBottom={calcHeight(8)}
+            textAlign={'left'}
           />
           <AppText
             title={Trans('enterOTPCodeSent')}
             color={COLORS.textDark}
             fontSize={calcFont(14)}
             fontFamily={FONTS.regular}
+            textAlign={'left'}
           />
           <AppText
             title={params.route.params.phone}

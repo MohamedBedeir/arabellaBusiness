@@ -12,6 +12,7 @@ export default {
   uploadFile: 'admins/files/upload',
   categories: 'categories',
   serviceAction: 'admins/services',
+  employeeAction: 'admins/employees',
   slotAction: 'admins/occupied-slots',
   appointments: 'admins/appointments',
   statistics: 'admins/statistics',

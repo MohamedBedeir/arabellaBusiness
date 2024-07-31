@@ -60,7 +60,7 @@ const Profile: React.FC = () => {
             value={name}
             placeholder={Trans('name')}
             onChangeText={(text: string) =>setName(text)}
-            inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+            inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
             // error={'emailError'}
             containerStyle={{marginTop: calcHeight(20)}}
           />
@@ -87,7 +87,7 @@ const Profile: React.FC = () => {
             value={email}
             placeholder={Trans('email')}
             onChangeText={(text: string) =>setEmail(text)}
-            inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+            inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
             // error={'emailError'}
             containerStyle={{marginTop: calcHeight(20)}}
           />
@@ -97,7 +97,7 @@ const Profile: React.FC = () => {
             value={percentage}
             placeholder={Trans('arabellaCompanyPercentage')}
             onChangeText={(text: string) =>setPercentage(text)}
-            inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+            inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
             // error={'emailError'}
             containerStyle={{marginTop: calcHeight(20)}}
           />
@@ -141,7 +141,7 @@ const Profile: React.FC = () => {
             value={passwordOld}
             placeholder={'************'}
             onChangeText={(text: string) =>setPasswordOld(text)}
-            inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+            inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
             // error={'emailError'}
             // containerStyle={{marginTop: calcHeight(20)}}
           />
@@ -151,7 +151,7 @@ const Profile: React.FC = () => {
             value={passwordNew}
             placeholder={'************'}
             onChangeText={(text: string) =>setPasswordNew(text)}
-            inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+            inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
             // error={'emailError'}
             containerStyle={{marginTop: calcHeight(20)}}
           />
@@ -161,7 +161,7 @@ const Profile: React.FC = () => {
             value={passwordConvert}
             placeholder={'************'}
             onChangeText={(text: string) =>setPasswordConvert(text)}
-            inputContainer={{borderColor: 1 ? '#CC3300' : COLORS.lightPrimary}}
+            inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
             // error={'emailError'}
             containerStyle={{marginTop: calcHeight(20)}}
           />
