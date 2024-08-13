@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {MenuProvider} from 'react-native-popup-menu';
 import Toast, {ToastProvider} from 'react-native-toast-notifications';
@@ -9,6 +9,7 @@ import { calcFont, calcHeight, calcWidth } from './utils/sizes';
 import { I18nManager, Image, StatusBar } from 'react-native';
 import { IMAGES } from './assets/Images';
 import { COLORS, FONTS } from './utils/theme';
+import messaging from '@react-native-firebase/messaging';
 import I18n from 'i18n-js';
 
 const SuccessIcon = () => {
@@ -24,6 +25,21 @@ const WarningIcon = () => {
 };
 
 function App(): JSX.Element {
+  const testNewNoti = async () => {
+    // messaging().onMessage(async message => this.getNotifications());
+    const authStatus = await messaging().requestPermission();
+    console.log("authStatus---------", authStatus);
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    if (enabled) {
+      console.log("Authorization status:-------------------", authStatus);
+    }
+  };
+
+  useEffect(() => {
+    testNewNoti();
+  }, []);
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Provider store={store}>

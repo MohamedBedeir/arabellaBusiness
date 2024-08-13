@@ -3,6 +3,62 @@ import { Trans } from "../translation";
 import { COLORS } from "./theme";
 
 export const DUMMY_DATA = {
+  NATIONALITY: [
+    {
+      id: 1,
+      name: 'مصري',
+      nameEn: 'Egypt',
+    },
+    {
+      id: 2,
+      name: 'سعودي',
+      nameEn: 'Saudi',
+    },
+  ],
+  POSITIONS: [
+    {
+      id: 1,
+      name: 'موظف',
+      nameEn: 'Employee',
+    },
+  ],
+  DAYS: [
+    {
+      id: 1,
+      name: 'السبت',
+      nameEn: 'saturday',
+    },
+    {
+      id: 2,
+      name: 'الاحد',
+      nameEn: 'sunday',
+    },
+    {
+      id: 3,
+      name: 'الاثنين',
+      nameEn: 'monday',
+    },
+    {
+      id: 4,
+      name: 'الثلاثاء',
+      nameEn: 'tuesday',
+    },
+    {
+      id: 5,
+      name: 'الاربعاء',
+      nameEn: 'wednesday',
+    },
+    {
+      id: 6,
+      name: 'الخميس',
+      nameEn: 'thursday',
+    },
+    {
+      id: 7,
+      name: 'الجمعة',
+      nameEn: 'friday',
+    },
+  ],
   TIMING: [
     {
       id: 1,
@@ -593,5 +649,5 @@ export const DUMMY_DATA = {
       },
     ],
     appointmentFees: [],
-},
+  },
 };

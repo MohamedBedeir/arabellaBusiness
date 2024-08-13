@@ -28,6 +28,7 @@ import AppLoading from '../../../../../components/AppLoading';
 import { setServiceAddState, setServiceDeleteState, setServiceEditState } from '../../../../../redux/store/services/servicesSlice';
 import endpoints from '../../../../../network/endpoints';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppEmptyScreen from '../../../../../components/AppEmptyScreen/AppEmptyScreen';
 
 const Services: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -917,12 +918,12 @@ const Services: React.FC = () => {
     return (
       <AppModalSelectItem
         visible={visibleUpdateServiceState}
-          onClose={() => {setVisibleUpdateServiceState(false)}}
-          onSelectItem={(item: any) => onEdit(item, 'state')}
-          title={Trans('chooseServiveState')}
-          data={DUMMY_DATA.SERVICESTATUES}
-          itemSelected={selectServiceState}
-          multiSelect={false}
+        onClose={() => {setVisibleUpdateServiceState(false)}}
+        onSelectItem={(item: any) => onEdit(item, 'state')}
+        title={Trans('chooseServiveState')}
+        data={DUMMY_DATA.SERVICESTATUES}
+        itemSelected={selectServiceState}
+        multiSelect={false}
       />
     )
   };
@@ -937,6 +938,15 @@ const Services: React.FC = () => {
         data={categoriesData}
         itemSelected={selectCategories}
         multiSelect={false}
+      />
+    )
+  };
+
+  const emptySection = () => {
+    return (
+      <AppEmptyScreen
+        image={IMAGES.empty_service}
+        title={Trans('haveNotAddedAnyServicesYet')}
       />
     )
   };
@@ -956,6 +966,7 @@ const Services: React.FC = () => {
       {loadingSection()}
       {headerSection()}
       {addSection()}
+      {(!servicesLoader && serviceData.length == 0) && emptySection()}
       {listSection()}
       {fillterSection()}
       {addNewServiceSection()}

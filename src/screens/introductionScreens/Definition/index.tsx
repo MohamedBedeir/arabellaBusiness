@@ -12,7 +12,7 @@ import AppModalLanguage from '../../../components/AppModalLanguage';
 
 const Definition: React.FC = () => {
   const navigation = useNavigation<any>();
-  const viewPagerRef = useRef<PagerView>(null);
+  const viewPagerRef: any = useRef<PagerView>(null);
   const [viewPagerIndex, setViewPagerIndex] = useState<number>(0);
   const [visibleLanguage, setVisibleLanguage] = useState<boolean>(false);
 
@@ -129,7 +129,7 @@ const Definition: React.FC = () => {
         {languageSection()}
         {nextSection()}
       </View>
-    )
+    );
   };
 
   const modalLanguageSection = () => {

@@ -58,9 +58,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
                         textAlign={'left'}
                     />
                 </View>
-                <TouchableOpacity onPress={onPress}>
-                    <Image source={IMAGES.openDetailsWhite} style={styles.dataIcon}/>
-                </TouchableOpacity>
+                <Image source={IMAGES.openDetailsWhite} style={styles.dataIcon}/>
             </LinearGradient>
         );
     };
@@ -120,7 +118,10 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         );
     }
     return (
-        <View style={[styles.container, {backgroundColor: item?.isRead ? COLORS.borderLight : COLORS.white}]}>
+        <TouchableOpacity
+            onPress={onPress}
+            style={[styles.container, {backgroundColor: item?.isRead ? COLORS.borderLight : COLORS.white}]}
+        >
             {dataSection()}
             {/* {detailsSection()} */}
             {/* <View style={styles.dataContainer}>
@@ -225,7 +226,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
                     textColorEnd={COLORS.primaryGradient}
                 />
             </View> */}
-        </View>
+        </TouchableOpacity>
     );
 }
 

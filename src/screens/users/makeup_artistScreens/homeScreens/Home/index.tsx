@@ -22,6 +22,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppModalSelectItem from '../../../../../components/AppModalSelectItem';
 import AppModalCalendar from '../../../../../components/AppModalCalendar';
 import moment from 'moment';
+import messaging from '@react-native-firebase/messaging';
+import { notifications_data } from '../../../../../middleware/notifications/notifications';
 
 const Home: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -42,6 +44,41 @@ const Home: React.FC = () => {
   const [lineChart, setLineChart] = useState<number>(20000);
   
 
+  const testNewNoti = async () => {
+    messaging().onMessage(async message => dispatch(notifications_data({page: 1})));
+  };
+
+  messaging().getInitialNotification().then(async (remoteMessage: any) => {
+    console.log('getInitialNotification-------tabs--------', remoteMessage);
+    if (remoteMessage.data.notificationType == 'appointment' || remoteMessage.data.notificationType == 'reviewService' && remoteMessage.data.notificationTypeId) {
+      navigation.navigate('ReservationDetails', {appointmentId: remoteMessage.data.notificationTypeId});
+    } else if (remoteMessage.data.notificationType == 'serviceProvider' && remoteMessage.data.notificationTypeId) {
+      navigation.navigate("AllBranches", { salonId: remoteMessage.data.id });
+    } else if (remoteMessage.data.notificationType == 'branch' && remoteMessage.data.notificationTypeId) {
+      navigation.navigate("SalonDetails", {id: remoteMessage.data.notificationTypeId});
+    } else if (remoteMessage.data.notificationType == 'service' && remoteMessage.data.notificationTypeId) {
+      console.log('remoteMessage.data.notificationType == service && remoteMessage.data.notificationTypeId)');
+      navigation.navigate('ServiceDetails', {
+        type: 'from branch',
+        serviceId: remoteMessage.data.notificationTypeId,
+        salonId: remoteMessage.data?.serviceProviderId,
+        branchId: remoteMessage.data?.params.item.id,
+        address: remoteMessage.data?.address,
+        location: remoteMessage.data?.location,
+      });
+    } else if (remoteMessage.data.notificationType == 'offer' && remoteMessage.data.notificationTypeId) {
+      console.log('remoteMessage.data.notificationType == offer && remoteMessage.data.notificationTypeId');
+      navigation.navigate('ServiceDetails', {
+        type: 'from offers',
+        serviceId: remoteMessage.data.notificationTypeId,
+      });
+    } else if (remoteMessage.data.notificationType == 'coupon') {
+      navigation.navigate('Notifications');
+    } else {
+      console.log('nullnullnullnullnullnullnullnullnull');
+      null;
+    }
+  });
   const getStatistics = (type?: string, date?: string) => {
     dispatch(statistics_data({type: type || 'isYear', date: date || '2024-01-01T00:00:00Z'}));
   };
@@ -52,9 +89,19 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
+    testNewNoti();
     getUser();
     getStatistics();
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      testNewNoti();
+      getUser();
+      getStatistics();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const headerSection = () => {
     const user = {
@@ -64,7 +111,8 @@ const Home: React.FC = () => {
     return (
       <AppHeaderAdvanced
         user={user}
-        onPress={() => navigation.navigate('MA_HomeDetailsStack', {screen: 'MA_Notifications'})}
+        onPress1={() => navigation.navigate('MA_HomeDetailsStack', {screen: 'MA_Notifications'})}
+        onPress2={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_Profile'})}
       />
     )
   };
@@ -121,7 +169,7 @@ const Home: React.FC = () => {
           <SearchByDate
             onPress={() => onStartTime()}
             containerStyle={{borderColor: timeFirstData ? COLORS.red : COLORS.borderLight}}
-            placeholder={Trans('first')}
+            placeholder={selectTimePeriod?.id == 3 ? Trans('firstWeek') : Trans('first')}
             title={selectTimePeriod?.id == 1 ? selectYear.name : selectTimePeriod?.id == 2 ? selectMonth && `${moment(selectMonth).format('MM/YYYY')}` : selectTimePeriod?.id == 3 ? selectDay && `${moment(selectDay).format('DD/MM/YYYY')}` : ''}
           />
           <AppButtonDefault
@@ -296,6 +344,8 @@ const Home: React.FC = () => {
               noOfSections={10}
               stripWidth={3}
               curved
+              curveType={1}
+              // curvature={5}
               dataPointsColor1='red'
               xAxisColor={COLORS.borderLight}
               xAxisIndicesColor={COLORS.borderLight}
@@ -304,7 +354,7 @@ const Home: React.FC = () => {
               color2={COLORS.purple}
               hideDataPoints={false}
               xAxisLabelTextStyle={{color: COLORS.textLight, fontSize: calcFont(10), fontFamily:FONTS.medium, marginHorizontal: 4, width: calcWidth(28), marginStart: calcWidth(2)}}
-              xAxisIndicesHeight={10}
+              xAxisIndicesHeight={2}
               xAxisIndicesWidth={2}
               xAxisLabelsHeight={calcHeight(20)}
               xAxisThickness={1}
@@ -402,6 +452,7 @@ const Home: React.FC = () => {
   const calendarDaySection = () => {
     return (
       <AppModalCalendar
+        title={Trans('selectFirstWeek')}
         visible={visibleDay}
         onClose={() => setVisibleDay(false)}
         onSave={(item: any) => {setSelectDay(item); setVisibleDay(false); setTimeFirstData(false)}}

@@ -16,6 +16,8 @@ import { pervious_data } from '../../../../../middleware/appointments/pervious/p
 import { upcoming_data } from '../../../../../middleware/appointments/upcoming/upcoming';
 import { calcHeight } from '../../../../../utils/sizes';
 import AppLoading from '../../../../../components/AppLoading';
+import AppEmptyScreen from '../../../../../components/AppEmptyScreen/AppEmptyScreen';
+import { setAppointmentsPerviousData } from '../../../../../redux/store/appointments_pervious/appointments_perviousSlice';
 
 const Reservations: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -36,6 +38,7 @@ const Reservations: React.FC = () => {
   };
 
   useEffect(() => {
+    dispatch(setAppointmentsPerviousData([]));
     getPervious(1);
   }, [selectFillter]);
 
@@ -45,6 +48,16 @@ const Reservations: React.FC = () => {
     setPage_pervious(1);
     setPage_upcoming(1);
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getPervious(1);
+      getUpcoming(1);
+      setPage_pervious(1);
+      setPage_upcoming(1);
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const _onRefresh_Pervious = () => {
     getPervious(1);
@@ -138,7 +151,7 @@ const Reservations: React.FC = () => {
       return (
         <ReservationItem
           item={item}
-          onPress={() => navigation.navigate('MA_ReservationDetailsStack', {screen: 'MA_ReservationDetails', id: item.id})}
+          onPress={() => navigation.navigate('HS_ReservationDetailsStack', {screen: 'HS_ReservationDetails', id: item.id})}
         />
       )
     };
@@ -185,7 +198,7 @@ const Reservations: React.FC = () => {
       return (
         <ReservationItem
           item={item}
-          onPress={() => navigation.navigate('MA_ReservationDetailsStack', {screen: 'MA_ReservationDetails', id: item.id})}
+          onPress={() => navigation.navigate('HS_ReservationDetailsStack', {screen: 'HS_ReservationDetails', id: item.id})}
         />
       )
     };
@@ -227,6 +240,16 @@ const Reservations: React.FC = () => {
     );
   };
 
+  const emptySection = () => {
+    const title = selectTab == 1 ? Trans('dontHaveAnyReservations') : (selectFillter == '' ? Trans('dontHaveAnyReservations') : selectFillter == 'completed' ? Trans('dontHaveAnyReservationsComplated') : selectFillter == 'cancelled' ? Trans('dontHaveAnyReservationsCanceled') : selectFillter == 'rejected_by_service_provider' ? Trans('dontHaveAnyReservationsRejected') : '')
+    return (
+      <AppEmptyScreen
+        image={IMAGES.empty_appointment}
+        title={title}
+      />
+    )
+  };
+
   const loadingSection = () => {
     return (
       <AppLoading
@@ -237,14 +260,17 @@ const Reservations: React.FC = () => {
     )
   };
 
+  console.log('appointmentsUpcomingData---------', appointmentsUpcomingData);
+  
   return (
     <View style={[styles.container, {paddingBottom: selectTab == 2 ? calcHeight(180) : calcHeight(140)}]}>
       {loadingSection()}
       {headerSection()}
       {tabsSection()}
       {selectTab == 2 && fillterSection()}
-      {selectTab == 2 && listSectionPervious()}
-      {selectTab == 1 && listSectionUpcoming()}
+      {}
+      {(selectTab == 2 && appointmentsPerviousData.length != 0) ? listSectionPervious() : (selectTab == 1 && appointmentsUpcomingData.length != 0) ? listSectionUpcoming() :  (appointmentsPerviousLoader || appointmentsUpcomingLoader)  ?  <></> : emptySection()}
+      {}
     </View>
   );
 };

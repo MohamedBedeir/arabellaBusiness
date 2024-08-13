@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux';
 import { slot_add, slot_delete, slots_data } from '../../../../../middleware/slots/slots';
 import { setslotAddState, setslotDeleteState, setslotEditState } from '../../../../../redux/store/slots/slotsSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppEmptyScreen from '../../../../../components/AppEmptyScreen/AppEmptyScreen';
 
 const BlockAppointments: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -73,8 +74,10 @@ const BlockAppointments: React.FC = () => {
     if (slotAddState == 'done') {
       setVisibleAddNewTime(false);
       setData();
-      setVisibleSaveData(true);
+      // setVisibleSaveData(true);
       setslotAddState('');
+      getSlots(1);
+      setPage(1);
     }
   }, [slotAddState]);
 
@@ -291,8 +294,8 @@ const BlockAppointments: React.FC = () => {
                   touchContainerStyle={{width: calcWidth(166)}}
                   styleTitle={{}}
                   onPress={() => setVisibleTimings(true)}
-                  title={Trans('forWhile')}
-                  placeholder={timeFrom?.title || Trans('forWhile')}
+                  title={Trans('longTimeAgo')}
+                  placeholder={timeFrom?.title || Trans('longTimeAgo')}
                   image={IMAGES.timer}
                 />
                 <AppPickerSelect
@@ -300,8 +303,8 @@ const BlockAppointments: React.FC = () => {
                   touchContainerStyle={{width: calcWidth(166)}}
                   styleTitle={{}}
                   onPress={() => setVisibleTimings(true)}
-                  title={Trans('longTimeAgo')}
-                  placeholder={timeTo?.title || Trans('longTimeAgo')}
+                  title={Trans('forWhile')}
+                  placeholder={timeTo?.title || Trans('forWhile')}
                   image={IMAGES.timer}
                 />
               </View>
@@ -546,6 +549,15 @@ const BlockAppointments: React.FC = () => {
     )
   };
 
+  const emptySection = () => {
+    return (
+      <AppEmptyScreen
+        image={IMAGES.empty_timing}
+        title={Trans('haveNotBlockedAnyAppointmentsYet')}
+      />
+    )
+  };
+
   const loadingSection = () => {
     return (
       <AppLoading
@@ -561,6 +573,7 @@ const BlockAppointments: React.FC = () => {
       {loadingSection()}
       {headerSection()}
       {addSection()}
+      {(!slotsLoader && slotData.length == 0) && emptySection()}
       {listSection()}
       {addNewTimeSection()}
       {editTimeSection()}

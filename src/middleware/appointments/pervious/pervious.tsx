@@ -12,6 +12,7 @@ export const pervious_data = createAsyncThunk(
     'PERVIOUS_DATA',
     async (args: PerviousData, thunkApi) => {
         thunkApi.dispatch(setAppointmentsPerviousLoader(true));
+        args.page == 1 && thunkApi.dispatch(setAppointmentsPerviousData([]));
         try {
             const response: any = await client.get(`${endpoints.appointments}/pervious?status=${args?.status}&orderBy=DESC&page=${args.page}&take=10`);
             console.log('response-------pervious_data---------', response);

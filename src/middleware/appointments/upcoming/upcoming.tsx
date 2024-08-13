@@ -15,6 +15,7 @@ export const upcoming_data = createAsyncThunk(
     'UPCOMING_DATA',
     async (args: UpcomingData, thunkApi) => {
         thunkApi.dispatch(setAppointmentsUpcomingLoader(true));
+        args.page == 1 && thunkApi.dispatch(setAppointmentsUpcomingData([]));
         try {
             const response: any = await client.get(`${endpoints.appointments}/upcoming?orderBy=DESC&page=${args.page}&take=10`);
             console.log('response-------upcoming_data---------', response);

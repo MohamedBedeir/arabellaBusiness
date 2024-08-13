@@ -1,11 +1,10 @@
 import {StyleSheet} from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { calcHeight, calcWidth } from '../../utils/sizes';
 import { COLORS } from '../../utils/theme';
 const styles = StyleSheet.create({
     modalView: {
         maxHeight: calcHeight(480),
-        backgroundColor: Colors.white,
+        backgroundColor: COLORS.white,
         borderTopLeftRadius: calcWidth(16),
         borderTopRightRadius: calcWidth(16),
         justifyContent: 'center',

@@ -14,6 +14,8 @@ import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../../../../redux/store/store';
 import AppLoading from '../../../../../components/AppLoading';
 import { notifications_data, notifications_delete } from '../../../../../middleware/notifications/notifications';
+import messaging from '@react-native-firebase/messaging';
+import AppEmptyScreen from '../../../../../components/AppEmptyScreen/AppEmptyScreen';
 
 const Notifications: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -21,11 +23,16 @@ const Notifications: React.FC = () => {
   const { notificationsLoader, notificationsData } = useSelector((store: RootState) => store?.notifications);
   const [visibleDeleteAllNotification, setVisibleDeleteAllNotification] = useState<boolean>(false);
 
+  const testNewNoti = async () => {
+    messaging().onMessage(async message => getNotifications());
+  };
+
   const getNotifications = () => {
     dispatch(notifications_data({}));
   };
 
   useEffect(() => {
+    testNewNoti();
     getNotifications();
   }, []);
 
@@ -95,6 +102,15 @@ const Notifications: React.FC = () => {
     )
   };
 
+  const emptySection = () => {
+    return (
+      <AppEmptyScreen
+        image={IMAGES.empty_notification}
+        title={Trans('dontHaveAnyNotifications')}
+      />
+    )
+  };
+
   const loadingSection = () => {
     return (
       <AppLoading
@@ -110,6 +126,7 @@ const Notifications: React.FC = () => {
       {loadingSection()}
       {headerSection()}
       {notificationsData?.length >= 1 && deleteAllSection()}
+      {(!notificationsLoader && notificationsData.length == 0) && emptySection()}
       {listSection()}
       {modalDelateAllSection()}
     </View>

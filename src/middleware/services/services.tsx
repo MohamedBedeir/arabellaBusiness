@@ -142,8 +142,10 @@ export const service_data = createAsyncThunk(
             fillter = args?.data?.estimatedTime ? `${fillter}&filter[estimatedTime][eq]=${args.data.estimatedTime}` : fillter;
             fillter = args?.data?.categoryId ? `${fillter}&filter[categoryId][eq]=${args.data.categoryId}` : fillter;
             // fillter =  `${fillter}&isActive=${args.data.isActive}`;
-            console.log('fillter--------------', fillter);
+            console.log('fillter-----------', fillter);
             const response: any = await client.get(`${endpoints.serviceAction}${fillter}`);
+            console.log('response-------service_data---------', response);
+            
             thunkApi.dispatch(setServiceCount(response.data.metadata.pagination.itemCount))
             if (response.status == 200 || response.status == 201) {
                 thunkApi.dispatch(setServicesLoader(false));

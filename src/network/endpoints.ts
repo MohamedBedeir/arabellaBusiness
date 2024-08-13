@@ -1,16 +1,20 @@
 export default {
   baseUrl: 'https://onaddress.net/api/client/mobile/',
+  topikAll: 'dev_user_all',
+  topik: 'dev_user_',
+  realtime: 'dev_',
   imageUrl: 'https://araberlla-staging.s3.me-south-1.amazonaws.com/',
   //=========================
   login: 'auth/login/pnp',
   forgot_password: '/auth/forgot-password',
   verifyOTP: 'auth/otp',
   reset_password: 'auth/reset-password',
-
+  cities: 'admins/cities',
 
 
   uploadFile: 'admins/files/upload',
   categories: 'categories',
+  brancheAction: 'admins/branches',
   serviceAction: 'admins/services',
   employeeAction: 'admins/employees',
   slotAction: 'admins/occupied-slots',
@@ -19,9 +23,7 @@ export default {
   service_providers: '/admins/service_providers',
   profiles: 'profiles',
   users: '/admins/users',
-  notifications: 'admins/notifications'  ,
-
-
+  notifications: 'admins/notifications',
 
 
   register: 'auth/register',
@@ -35,7 +37,6 @@ export default {
   facilities: 'properties/facilities',
   features: 'properties/features',
   allCities: 'api/client/mobile/cities',
-  cities: 'cities',
   areas: 'areas',
   sliders:'sliders',
   create_property: 'properties/create',

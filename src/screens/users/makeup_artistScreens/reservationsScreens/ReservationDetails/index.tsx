@@ -64,14 +64,14 @@ const ReservationDetails: React.FC = (params: any) => {
   };
 
   const bodySection = () => {
-    const date = item?.serviceBookings ? `${moment(item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  ${moment(item?.serviceBookings[0]?.scheduledAt).format('hh:mm')}` : '';
+    const date = item?.serviceBookings ? `${moment(item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  -  ${moment(item?.serviceBookings[0]?.scheduledAt).format('hh:mm')}` : '';
     const line = (title?: string | any, description?: string | any, icon?: string | any, option?: string | any) => {
       return (
         <View style={styles.lineContainer}>
           <View style={styles.lineView}>
             {title && (
-                <AppText
-                title={title}
+              <AppText
+                title={`${title}`}
                 fontSize={calcFont(16)}
                 fontFamily={FONTS.bold}
                 color={COLORS.textDark}
@@ -223,8 +223,8 @@ const ReservationDetails: React.FC = (params: any) => {
             textColor={''}
             textAlign={'left'}
           />
-          {line(`${Trans('name')}: `, item?.customer?.name, null, null)}
-          {(status == 'scheduled' || status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed') && line(`${Trans('phone')}: `, item?.customer?.phoneNumber, IMAGES.callCircle, null)}
+          {line(`${Trans('name')}:  `, item?.customer?.name, null, null)}
+          {(status == 'scheduled' || status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed') && line(`${Trans('phone')}:  `, item?.customer?.phoneNumber, IMAGES.callCircle, null)}
         </View>
       )
     };
@@ -244,7 +244,7 @@ const ReservationDetails: React.FC = (params: any) => {
           {item?.serviceBookings?.map((item: any) => {
             return (
               <>
-                {line(`${Trans('serviceName')}: `, I18nManager.isRTL ? item?.service?.name : item?.service?.nameEn, null, `${item?.service?.estimatedTime} ${Trans('minute')}`)}
+                {line(`${Trans('serviceName')}:  `, I18nManager.isRTL ? item?.service?.name : item?.service?.nameEn, null, `${item?.service?.estimatedTime} ${Trans('minute')}`)}
               </>
             )
           })}
@@ -267,7 +267,7 @@ const ReservationDetails: React.FC = (params: any) => {
             textColor={''}
             textAlign={'left'}
           />
-          {line(`${Trans('serviceDate')}: `, '15/10/2024', null, null)}
+          {line(`${Trans('serviceDate')}:  `, item?.serviceBookings ? `${Trans('day')}: ${moment(item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  -  ${Trans('time')}: ${moment(item?.serviceBookings[0]?.scheduledAt).format('hh:mm')}` : '', null, null)}
         </View>
       )
     };
@@ -531,14 +531,17 @@ const ReservationDetails: React.FC = (params: any) => {
     return (
       <>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {mainDataSection()}
-          {customerNameSection()}
-          {servicesDetailsSection()}
-          {dateSection()}
-          {status == 'arrived' && timerSection()}
-          {addressSection()}
+          <View style={{width: calcWidth(375), alignItems: 'center'}}>
+            {mainDataSection()}
+            {customerNameSection()}
+            {servicesDetailsSection()}
+            {dateSection()}
+            {status == 'arrived' && timerSection()}
+            {addressSection()}
+          </View>
+          {step == 2 && status == 'started' && actionSection()}
         </ScrollView>
-        {actionSection()}
+        {step == 1 && actionSection()}
       </>
     )
   };

@@ -14,6 +14,7 @@ import AppButtonDefault from '../AppButtonDefault';
 export interface Props {
   visible?: boolean;
   onClose?: any;
+  title?: string;
   onSave?: (item: any) => void;
   onMonth?: (item: any) => void;
   initialView?: 'years' | 'months' | 'days';
@@ -23,6 +24,7 @@ export interface Props {
 const AppModalCalendar: React.FC<Props> = ({
   visible,
   onClose,
+  title,
   onSave,
   onMonth,
   initialView,
@@ -58,7 +60,7 @@ const AppModalCalendar: React.FC<Props> = ({
     >
       <View style={styles.container}>
         <AppText
-          title={Trans('selectBlockingDate')}
+          title={title ? title : Trans('selectBlockingDate')}
           fontSize={calcFont(16)}
           fontFamily={FONTS.bold}
           color={COLORS.textDark}

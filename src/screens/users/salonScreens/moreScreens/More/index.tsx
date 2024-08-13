@@ -59,14 +59,14 @@ const More: React.FC = () => {
             containerStyle={styles.moreItemContainer}
             iconStyle={{}}
           />
-          <MoreItem
+          {/* <MoreItem
             onPress={() => navigation.navigate('SA_MoreDetailsStack', {screen: 'SA_Offers'})}
             image={IMAGES.moreOffers}
             title={Trans('offers')}
             icon={IMAGES.dropDown}
             containerStyle={styles.moreItemContainer}
             iconStyle={{}}
-          />
+          /> */}
           <MoreItem
             onPress={() => navigation.navigate('SA_MoreDetailsStack', {screen: 'SA_BlockAppointments'})}
             image={IMAGES.moreDate}
@@ -83,14 +83,14 @@ const More: React.FC = () => {
             containerStyle={styles.moreItemContainer}
             iconStyle={{}}
           /> */}
-          <MoreItem
+          {/* <MoreItem
             onPress={() => setNotification(!notification)}
             image={IMAGES.moreNotifications}
             title={Trans('notifications')}
             icon={notification ? IMAGES.switchActive : IMAGES.switchUnActive}
             containerStyle={styles.moreItemContainer}
             iconStyle={{transform: [{rotate: '0deg'}], width: calcWidth(34), height: calcWidth(20)}}
-          />
+          /> */}
           <MoreItem
             onPress={() => navigation.navigate('SA_MoreDetailsStack', {screen: 'SA_Language'})}
             image={IMAGES.moreLanguage}

@@ -28,6 +28,7 @@ import AppLoading from '../../../../../components/AppLoading';
 import { setServiceAddState, setServiceDeleteState, setServiceEditState } from '../../../../../redux/store/services/servicesSlice';
 import endpoints from '../../../../../network/endpoints';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppEmptyScreen from '../../../../../components/AppEmptyScreen/AppEmptyScreen';
 
 const Services: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -36,9 +37,9 @@ const Services: React.FC = () => {
   const { categoriesData } = useSelector((store: RootState) => store?.categories);
   const { servicesLoader, serviceData, serviceCount, serviceAddState, serviceEditState, serviceDeleteState } = useSelector((store: RootState) => store?.services);
   const [selectService, setSelectService] = useState<any>({});
+  const [serviceEditId, setServiceEditId] = useState<any>();
   const [page, setPage] = useState<number>(1);
   
-  const [serviceEditId, setServiceEditId] = useState<any>();
   const [nameAr, setNameAr] = useState<string>('');
   const [nameEn, setNameEn] = useState<string>('');
   const [descriptioneAr, setDescriptionAr] = useState<string>('');
@@ -124,7 +125,7 @@ const Services: React.FC = () => {
     if (serviceAddState == 'done') {
       setVisibleAddNewService(false);
       setData();
-      setVisibleSaveData(true);
+      // setVisibleSaveData(true);
       dispatch(setServiceAddState(''));
     }
   }, [serviceAddState]);
@@ -133,18 +134,18 @@ const Services: React.FC = () => {
     if (serviceEditState == 'done') {
       setVisibleEditService(false);
       setData();
-      setVisibleSaveData(true);
+      // setVisibleSaveData(true);
       dispatch(setServiceEditState(''));
     }
   }, [serviceEditState]);
 
-  useEffect(() => {
-    if (serviceDeleteState == 'done') {
-      setVisibleDeleteService(false);
-      setVisibleSaveData(true);
-      dispatch(setServiceDeleteState(''));
-    }
-  }, [serviceDeleteState]);
+  // useEffect(() => {
+  //   if (serviceDeleteState == 'done') {
+  //     setVisibleDeleteService(false);
+  //     setVisibleSaveData(true);
+  //     dispatch(setServiceDeleteState(''));
+  //   }
+  // }, [serviceDeleteState]);
 
   const _onRefresh_Services = () => {
     getServices(1);
@@ -220,7 +221,7 @@ const Services: React.FC = () => {
           colorStart={COLORS.primaryGradient}
           colorEnd={COLORS.secondGradient}
           border={false}
-          onPress={() => setVisibleAddNewService(true)}
+          onPress={() => {setVisibleAddNewService(true); setData()}}
           title={Trans('addition')}
           icon={IMAGES.plusCircleWhite}
           buttonStyle={{width: calcWidth(253), height: calcHeight(48)}}
@@ -249,40 +250,21 @@ const Services: React.FC = () => {
 
   const onEditService = (item: any) => {
     setVisibleEditService(true);
+    setSelectService(item);
     setData(item);
   };
-  const onEdit = () => {
-    if (nameAr == '') {
-      setNameArError(true);
-    } else if (nameEn == '') {
-      setNameArError(false);
-      setNameEnError(true);
-    } else if (descriptioneAr == '') {
-      setNameEnError(false);
-      setDescriptionArError(true);
-    } else if (descriptionEn == '') {
-      setDescriptionArError(false);
-      setDescriptionEnError(true);
-    } else if (price == '') {
-      setDescriptionEnError(false);
-      setPriceError(true);
-    } else if (time == '') {
-      setPriceError(false);
-      setTimeError(true);
-    } else if (selectCategories == '') {
-      setTimeError(false);
-      setSelectCategoriesError(true);
-    } else {
+
+  const onEdit = (item?: any, type?: string) => {
+    if (type == 'state') {
       const data = {
+        isActive: item.id == 1,
         name: nameAr,
         nameEn: nameEn,
         description: descriptioneAr,
         descriptionEn: descriptionEn,
         price: parseInt(price, 10),
         estimatedTime: parseInt(time, 10),
-        isActive: condition,
         isHomeService: true,
-        state: 'pending',
         categoryId: selectCategories?.id,
         serviceProviderId: userData.serviceProviderId,
         taxId: 1,
@@ -290,6 +272,45 @@ const Services: React.FC = () => {
       };
       const id: number = serviceEditId;
       dispatch(service_edit({id, data, image: base64 ? imageFile : ''}));
+    } else {
+      if (nameAr == '') {
+        setNameArError(true);
+      } else if (nameEn == '') {
+        setNameArError(false);
+        setNameEnError(true);
+      } else if (descriptioneAr == '') {
+        setNameEnError(false);
+        setDescriptionArError(true);
+      } else if (descriptionEn == '') {
+        setDescriptionArError(false);
+        setDescriptionEnError(true);
+      } else if (price == '') {
+        setDescriptionEnError(false);
+        setPriceError(true);
+      } else if (time == '') {
+        setPriceError(false);
+        setTimeError(true);
+      } else if (selectCategories == '') {
+        setTimeError(false);
+        setSelectCategoriesError(true);
+      } else {
+        const data = {
+          name: nameAr,
+          nameEn: nameEn,
+          description: descriptioneAr,
+          descriptionEn: descriptionEn,
+          price: parseInt(price, 10),
+          estimatedTime: parseInt(time, 10),
+          isActive: item  || condition,
+          isHomeService: true,
+          categoryId: selectCategories?.id,
+          serviceProviderId: userData.serviceProviderId,
+          taxId: 1,
+          isTaxIncluded: false,
+        };
+        const id: number = serviceEditId;
+        dispatch(service_edit({id, data, image: base64 ? imageFile : ''}));
+      }
     }
   };
 
@@ -305,7 +326,8 @@ const Services: React.FC = () => {
     };
     const id: number = serviceEditId;
     dispatch(service_data({data, page: 1}));
-  }
+  };
+  
   const listSection = () => {
     const renderItem = ({item, index} : {item: any, index: number}) => {
       return (
@@ -313,7 +335,7 @@ const Services: React.FC = () => {
           item={item}
           onPressDelete={() => {setVisibleDeleteService(true); setSelectService(item)}}
           onPressEdit={() => onEditService(item)}
-          onUpdateState={() => onState(item)}
+          onUpdateState={() => {onState(item); setData(item)}}
         />
       )
     };
@@ -391,6 +413,7 @@ const Services: React.FC = () => {
             fontFamily={FONTS.bold}
             colorStart={COLORS.secondGradient}
             colorEnd={COLORS.primaryGradient}
+            textAlign={'left'}
           />
           <ScrollView showsVerticalScrollIndicator={false}>
             <AppInput
@@ -433,7 +456,7 @@ const Services: React.FC = () => {
               styleTitle={{}}
               onPress={() => setVisibleCategories(true)}
               title={Trans('category')}
-              placeholder={selectCategories ? I18nManager.isRTL ? selectCategories.nameAr : selectCategories.nameEn : Trans('selectCategory')}
+              placeholder={selectCategories ? I18nManager.isRTL ? selectCategories.name : selectCategories.nameEn : Trans('selectCategory')}
               icon={IMAGES.dropDown}
             />
             {/* <View style={{marginTop: calcHeight(12)}}>
@@ -665,7 +688,9 @@ const Services: React.FC = () => {
   };
 
   const editServiceSection = () => {
-    const image = base64 != '' ? { uri: `data:image/png;base64,${base64}` } : IMAGES.uploadImage;
+    console.log('selectService-------------', selectService);
+    
+    const image = base64 != '' ? { uri: `data:image/png;base64,${base64}` } : selectService?.featuredImage ? {uri: `${endpoints.imageUrl}${selectService?.featuredImage}`} : IMAGES.uploadImage;
     return (
       <Modal
         style={{ margin: 0, justifyContent: 'flex-end', }}
@@ -870,35 +895,35 @@ const Services: React.FC = () => {
   };
 
   const onUpdateState = (item: any) => {
-    
-    const data = {
-      name: selectService.name,
-      nameEn: selectService.nameEn,
-      description: selectService.description,
-      descriptionEn: selectService.descriptionEn,
-      price: parseInt(selectService.price, 10),
-      estimatedTime: parseInt(selectService.estimatedTime, 10),
-      isHomeService: true,
-      state: 'pending',
-      categoryId: selectService.categoryId,
-      serviceProviderId: userData.serviceProviderId,
-      taxId: 1,
-      isTaxIncluded: false,
-      isActive: item.id == 1,
-    };
-    dispatch(service_edit({id: item.id, data, image: ''}));
+    ;
+    // const data = {
+    //   name: selectService.name,
+    //   nameEn: selectService.nameEn,
+    //   description: selectService.description,
+    //   descriptionEn: selectService.descriptionEn,
+    //   price: parseInt(selectService.price, 10),
+    //   estimatedTime: parseInt(selectService.estimatedTime, 10),
+    //   isHomeService: true,
+    //   state: 'pending',
+    //   categoryId: selectService.categoryId,
+    //   serviceProviderId: userData.serviceProviderId,
+    //   taxId: 1,
+    //   isTaxIncluded: false,
+    //   isActive: item.id == 1,
+    // };
+    // dispatch(service_edit({id: item.id, data, image: ''}));
   };
 
   const modalServiceStateSection = () => {
     return (
       <AppModalSelectItem
         visible={visibleUpdateServiceState}
-          onClose={() => {setVisibleUpdateServiceState(false)}}
-          onSelectItem={(item: any) => onUpdateState(item)}
-          title={Trans('chooseServiveState')}
-          data={DUMMY_DATA.SERVICESTATUES}
-          itemSelected={selectServiceState}
-          multiSelect={false}
+        onClose={() => {setVisibleUpdateServiceState(false)}}
+        onSelectItem={(item: any) => onEdit(item, 'state')}
+        title={Trans('chooseServiveState')}
+        data={DUMMY_DATA.SERVICESTATUES}
+        itemSelected={selectServiceState}
+        multiSelect={false}
       />
     )
   };
@@ -913,6 +938,15 @@ const Services: React.FC = () => {
         data={categoriesData}
         itemSelected={selectCategories}
         multiSelect={false}
+      />
+    )
+  };
+
+  const emptySection = () => {
+    return (
+      <AppEmptyScreen
+        image={IMAGES.empty_service}
+        title={Trans('haveNotAddedAnyServicesYet')}
       />
     )
   };
@@ -932,6 +966,7 @@ const Services: React.FC = () => {
       {loadingSection()}
       {headerSection()}
       {addSection()}
+      {(!servicesLoader && serviceData.length == 0) && emptySection()}
       {listSection()}
       {fillterSection()}
       {addNewServiceSection()}

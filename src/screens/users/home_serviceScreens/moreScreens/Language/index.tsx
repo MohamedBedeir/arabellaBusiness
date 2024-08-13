@@ -12,10 +12,12 @@ import { calcHeight } from '../../../../../utils/sizes';
 import RNRestart from 'react-native-restart';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { init_lang } from '../../../../../network';
+import AppLoading from '../../../../../components/AppLoading';
 
 const Language: React.FC = () => {
   const navigation = useNavigation<any>();
   const [selectLang, setSelectLang] = useState<number>();
+  const [loader, setLoader] = useState<boolean>(false);
 
   useEffect(() => {
     getCurrentLang();
@@ -33,12 +35,14 @@ const Language: React.FC = () => {
   };
 
   const restart = () => {
+    // setLoader(false);
     setTimeout(() => {
       RNRestart.Restart();
     }, 500);
   };
 
   const updateLanguage = async () => {
+    setLoader(true);
     if (selectLang == 1) {
       await AsyncStorage.setItem('user_lang', 'ar');
       init_lang('ar');
@@ -101,8 +105,19 @@ const Language: React.FC = () => {
     )
   };
 
+  const loadingSection = () => {
+    return (
+      <AppLoading
+        margin_top={calcHeight(440)}
+        size={'large'}
+        visible={loader}
+      />
+    )
+  };
+
   return (
     <View style={styles.container}>
+      {loadingSection()}
       {headerSection()}
       {bodySection()}
     </View>

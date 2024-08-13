@@ -33,6 +33,7 @@ const AppText: React.FC<AppButtonProps> = ({
             lineHeight,
             marginBottom,
             width,
+            textTransform: 'capitalize',
         }}
         numberOfLines={numberOfLines || 1}
     >

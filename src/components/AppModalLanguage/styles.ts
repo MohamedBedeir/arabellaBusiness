@@ -1,7 +1,6 @@
-import {Dimensions, Platform, StyleSheet} from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { calcFont, calcHeight, calcWidth } from '../../utils/sizes';
-import { COLORS, FONTS } from '../../utils/theme';
+import { StyleSheet } from 'react-native';
+import { calcHeight, calcWidth } from '../../utils/sizes';
+import { COLORS } from '../../utils/theme';
 const styles = StyleSheet.create({
     container: {
         width: calcWidth(375),

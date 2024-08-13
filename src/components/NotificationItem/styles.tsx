@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {I18nManager, StyleSheet} from 'react-native';
 import { calcHeight, calcWidth } from '../../utils/sizes';
 import { COLORS } from '../../utils/theme';
 
@@ -26,6 +26,7 @@ export const styles = StyleSheet.create({
   dataIcon: {
     width: calcWidth(34),
     height: calcWidth(34),
+    transform: [{scaleX: I18nManager.isRTL ? 1 : -1}],
   },
   dataStatusContainer: {
     height :calcHeight(32),

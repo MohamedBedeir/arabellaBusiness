@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { Trans } from '../../../../../translation';
-import { calcWidth } from '../../../../../utils/sizes';
+import { calcHeight } from '../../../../../utils/sizes';
 import AppHeaderDefault from '../../../../../components/AppHeaderDefault';
 import { IMAGES } from '../../../../../assets/Images';
 import MoreItem from '../../../../../components/MoreItem';
@@ -12,13 +12,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { init_token } from '../../../../../network';
 import RNRestart from 'react-native-restart';
 import Modal_Warning from '../../../../../components/Modal_Warning';
+import messaging from '@react-native-firebase/messaging';
+import endpoints from '../../../../../network/endpoints';
+
 
 const More: React.FC = () => {
   const navigation = useNavigation<any>();
+  const [userData, setUserData] = useState<any>();
   const [notification, setNotification] = useState<boolean>(false);
   const [visibleLogout, setVisibleLogout] = useState<boolean>(false);
   
+  const getUser = async () => {
+    const user: any = await AsyncStorage.getItem('user');
+    setUserData(JSON.parse(user));
+  };
 
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const restart = () => {
     setTimeout(() => {
@@ -27,6 +38,10 @@ const More: React.FC = () => {
   };
 
   const logout =  async() => {
+    messaging().unsubscribeFromTopic(`${endpoints.topik}${userData?.id}`).then((item: any) => {
+      console.log('unsubscribeFromTopic--------', item);
+      
+    });
     await AsyncStorage.setItem('user', '');
     init_token('');
     restart();
@@ -46,55 +61,57 @@ const More: React.FC = () => {
   const bodySection = () => {
     return (
       <View style={styles.body}>
-        <MoreItem
-          onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_Profile'})}
-          image={IMAGES.moreAccount}
-          title={Trans('profilePersonly')}
-          icon={IMAGES.dropDown}
-          iconStyle={{}}
-        />
-        <MoreItem
-          onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_Services'})}
-          image={IMAGES.moreService}
-          title={Trans('services')}
-          icon={IMAGES.dropDown}
-          containerStyle={styles.moreItemContainer}
-          iconStyle={{}}
-        />
-        <MoreItem
-          onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_BlockAppointments'})}
-          image={IMAGES.moreDate}
-          title={Trans('blockAppointments')}
-          icon={IMAGES.dropDown}
-          containerStyle={styles.moreItemContainer}
-          iconStyle={{}}
-        />
-        <MoreItem
-          onPress={() => setNotification(!notification)}
-          image={IMAGES.moreNotifications}
-          title={Trans('notifications')}
-          icon={notification ? IMAGES.switchActive : IMAGES.switchUnActive}
-          containerStyle={styles.moreItemContainer}
-          iconStyle={{transform: [{rotate: '0deg'}], width: calcWidth(34), height: calcWidth(20)}}
-        />
-        <MoreItem
-          onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_Language'})}
-          image={IMAGES.moreLanguage}
-          title={Trans('language')}
-          icon={IMAGES.dropDown}
-          containerStyle={styles.moreItemContainer}
-          iconStyle={{}}
-        />
-        <MoreItem
-          onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_TermsAndConditions'})}
-          image={IMAGES.morePolicy}
-          title={Trans('arabellaPolicies')}
-          icon={IMAGES.dropDown}
-          containerStyle={styles.moreItemContainer}
-          iconStyle={{}}
-        />
+        <View>
+          <MoreItem
+            onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_Profile'})}
+            image={IMAGES.moreAccount}
+            title={Trans('profilePersonly')}
+            icon={IMAGES.dropDown}
+            iconStyle={{}}
+          />
+          <MoreItem
+            onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_Services'})}
+            image={IMAGES.moreService}
+            title={Trans('services')}
+            icon={IMAGES.dropDown}
+            containerStyle={styles.moreItemContainer}
+            iconStyle={{}}
+          />
+          <MoreItem
+            onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_BlockAppointments'})}
+            image={IMAGES.moreDate}
+            title={Trans('blockAppointments')}
+            icon={IMAGES.dropDown}
+            containerStyle={styles.moreItemContainer}
+            iconStyle={{}}
+          />
+          {/* <MoreItem
+            onPress={() => setNotification(!notification)}
+            image={IMAGES.moreNotifications}
+            title={Trans('notifications')}
+            icon={notification ? IMAGES.switchActive : IMAGES.switchUnActive}
+            containerStyle={styles.moreItemContainer}
+            iconStyle={{transform: [{rotate: '0deg'}], width: calcWidth(34), height: calcWidth(20)}}
+          /> */}
+          <MoreItem
+            onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_Language'})}
+            image={IMAGES.moreLanguage}
+            title={Trans('language')}
+            icon={IMAGES.dropDown}
+            containerStyle={styles.moreItemContainer}
+            iconStyle={{}}
+          />
+          <MoreItem
+            onPress={() => navigation.navigate('MA_MoreDetailsStack', {screen: 'MA_TermsAndConditions'})}
+            image={IMAGES.morePolicy}
+            title={Trans('arabellaPolicies')}
+            icon={IMAGES.dropDown}
+            containerStyle={styles.moreItemContainer}
+            iconStyle={{}}
+          />
+        </View>
         <LogOutItem
-          containerStyle={{}}
+          containerStyle={{marginTop: calcHeight(24)}}
           onPress={() => setVisibleLogout(true)}
           image={IMAGES.moreLogout}
           title={Trans('signOut')}

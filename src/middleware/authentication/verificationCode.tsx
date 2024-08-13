@@ -4,6 +4,7 @@ import endpoints from '../../network/endpoints';
 import {setAuthenticationLoader, setConfirmationCodeState} from '../../redux/store/auth/authenticationSlice';
 import {client} from '../../network/apiClient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from '@react-native-firebase/messaging';
 
 interface ConfirmationCodeArgs {
   navigation?: any;
@@ -23,15 +24,19 @@ export const confirmationCode = createAsyncThunk(
         otp: args?.otp,
       };
       const response: any = await client.post(`${endpoints.verifyOTP}`, data);
-      console.log('response----confirmationCode------', response);
       thunkApi.dispatch(setAuthenticationLoader(false));
       if (response.status == 201) {
         thunkApi.dispatch(setConfirmationCodeState('done'));
         const user: any = response.data.data.user;
         await AsyncStorage.setItem('user', JSON.stringify(user));
         await AsyncStorage.setItem('token', `Bearer ${response.data.data.token}`);
+        try {
+          await messaging().subscribeToTopic(`${endpoints.topik}${user?.id}`);
+          console.log('===--->>>>>>>>>>>>>>>>>>>>>>');
+        } catch (error) {
+          console.error(`Error subscribing to topic-----------: ${error}`);
+        }
         init_token(`Bearer ${response.data.data.token}`);
-        console.log('user-------------------', user);
         if (user.type == 'super_admin' || user.type == 'admin') {
           args.navigation.navigate('AD_Tabs');
         } else if (user.type == 'salon_admin') {
@@ -45,6 +50,8 @@ export const confirmationCode = createAsyncThunk(
         thunkApi.dispatch(setConfirmationCodeState('error'));
       }
     } catch (err) {
+      console.log('err--------', err);
+      
       thunkApi.dispatch(setAuthenticationLoader(false));
       thunkApi.dispatch(setConfirmationCodeState('error'));
     }

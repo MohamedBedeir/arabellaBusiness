@@ -30,7 +30,7 @@ const EmployeeItem: React.FC<EmployeeItemProps> = ({
     var myStateIcon: string = item?.stateId == 1 ? IMAGES.openGreen : IMAGES.openYellow;
     for (let i = 0; i < DUMMY_DATA.SERVICESTATUES.length; i++) {
         if (DUMMY_DATA.SERVICESTATUES[i].id == item?.stateId) {
-            myStateName = I18nManager.isRTL ? DUMMY_DATA.SERVICESTATUES[i].nameAr : DUMMY_DATA.SERVICESTATUES[i].nameEn;
+            myStateName = I18nManager.isRTL ? DUMMY_DATA.SERVICESTATUES[i].name : DUMMY_DATA.SERVICESTATUES[i].nameEn;
         }
     };
     return (
@@ -106,9 +106,9 @@ const EmployeeItem: React.FC<EmployeeItemProps> = ({
                 </View>
                 <View style={styles.dataRightContainer}>
                     <View style={styles.editContainer}>
-                        <TouchableOpacity onPress={onPressEdit}>
+                        {/* <TouchableOpacity onPress={onPressEdit}>
                             <Image source={IMAGES.edit} style={styles.icon}/>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity onPress={onPressDelete}>
                             <Image source={IMAGES.delete} style={styles.icon}/>
                         </TouchableOpacity>

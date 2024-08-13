@@ -90,7 +90,7 @@ const Profile: React.FC = () => {
       setVisibleUpdatePassword(true);
       dispatch(setPasswordUpdateState(''));
     } else if (passwordUpdateState == 'error') {
-      _toast('danger', Trans('problemOccurredTryAgain'));
+      _toast('danger', Trans('incorrectPasswordPleaseTryAgain'));
       dispatch(setPasswordUpdateState(''));
     };
   }, [passwordUpdateState]);
@@ -202,7 +202,7 @@ const Profile: React.FC = () => {
             />
             <TouchableOpacity
               style={styles.policiesTouch}
-              onPress={() => navigation.navigate('MA_TermsAndConditions')}
+              onPress={() => navigation.navigate('HS_TermsAndConditions')}
             >
               <AppText
                 title={Trans('arabellaPolicies')}

@@ -45,6 +45,7 @@ const Modal_Warning: React.FC<Props> = (params: any) => {
           color={COLORS.textDark}
           width={calcWidth(280)}
           lineHeight={calcHeight(28)}
+          numberOfLines={3}
         />
         <View style={styles.buttonsView}>
           {params?.buttonTitle && (

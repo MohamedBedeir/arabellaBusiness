@@ -90,7 +90,7 @@ const Profile: React.FC = () => {
       setVisibleUpdatePassword(true);
       dispatch(setPasswordUpdateState(''));
     } else if (passwordUpdateState == 'error') {
-      _toast('danger', Trans('problemOccurredTryAgain'));
+      _toast('danger', Trans('incorrectPasswordPleaseTryAgain'));
       dispatch(setPasswordUpdateState(''));
     };
   }, [passwordUpdateState]);

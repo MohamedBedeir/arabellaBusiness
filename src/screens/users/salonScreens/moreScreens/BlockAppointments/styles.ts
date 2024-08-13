@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: calcWidth(375),
-    height: calcHeight(440),
+    height: calcHeight(580),
     paddingVertical: calcHeight(24),
     borderTopRightRadius: calcWidth(16),
     borderTopLeftRadius: calcWidth(16),

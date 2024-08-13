@@ -53,8 +53,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: calcWidth(16),
   },
   icon: {
-    width: calcWidth(28),
-    height: calcWidth(28),
+    width: calcWidth(24),
+    height: calcWidth(24),
     marginHorizontal: calcWidth(6),
   },
   typeContainer: {

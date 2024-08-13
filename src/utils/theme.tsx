@@ -40,6 +40,6 @@ export const COLORS = {
   gray: 'rgba(244, 248, 255, 1)',
   darkGray: '#1B1D3D',
   lightGray: '#E7E8EB',
-  
+  transparent: 'rgba(0,0,0,0.0)',
 
 };

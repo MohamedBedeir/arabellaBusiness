@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "773178006039",
+    "firebase_url": "https://arabella-918a7-default-rtdb.firebaseio.com",
+    "project_id": "arabella-918a7",
+    "storage_bucket": "arabella-918a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773178006039:android:1d14310d12862757ef1a52",
+        "android_client_info": {
+          "package_name": "com.annz.arabella"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773178006039-oebv9okaestgru8fsldnccjfn46ivo0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEV3ZJOxAK0THn6EvGBFZYGfobOVEwDCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773178006039-oebv9okaestgru8fsldnccjfn46ivo0t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "773178006039-vl207p0vj4qa00lh7b5jphupnbgtd2jo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.annz.arabella"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773178006039:android:3d1120675b75a9c3ef1a52",
+        "android_client_info": {
+          "package_name": "com.arabella.arabellabusiness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773178006039-oebv9okaestgru8fsldnccjfn46ivo0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEV3ZJOxAK0THn6EvGBFZYGfobOVEwDCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773178006039-oebv9okaestgru8fsldnccjfn46ivo0t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "773178006039-vl207p0vj4qa00lh7b5jphupnbgtd2jo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.annz.arabella"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

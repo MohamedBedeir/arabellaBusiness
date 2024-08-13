@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
     marginTop: calcHeight(24),
     width: calcWidth(375),
     alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: calcHeight(600),
   },
   moreItemContainer: {
     marginTop: calcHeight(16),

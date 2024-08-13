@@ -11,6 +11,8 @@ import profileSlice from './profile/profileSlice';
 import categoriesSlice from './general/categories';
 import notificationsSlice from './notifications/notificationsSlice';
 import employeesSlice from './employees/employeesSlice';
+import citiesSlice from './general/cities';
+import branchesSlice from './branches/branchesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +27,8 @@ export const store = configureStore({
     statistics: statisticsSlice,
     notifications: notificationsSlice,
     employees: employeesSlice,
+    cities: citiesSlice,
+    branches: branchesSlice,
   },
 });
 

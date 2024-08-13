@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, Image, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Dimensions, FlatList, I18nManager, Image, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { Trans } from '../../../../../translation';
@@ -25,26 +25,27 @@ import { useSelector } from 'react-redux';
 import { employee_add, employee_data, employee_edit } from '../../../../../middleware/employees/employees';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setEmployeeAddState, setEmployeeEditState } from '../../../../../redux/store/employees/employeesSlice';
+import AppModalTimings from '../../../../../components/AppModalTimings';
 
 const Employees: React.FC = () => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
   const [userData, setUserData] = useState<any>();
-  // const { categoriesData } = useSelector((store: RootState) => store?.categories);
   const { employeesLoader, employeeData, employeeCount, employeeAddState, employeeEditState, employeeDeleteState } = useSelector((store: RootState) => store?.employees);
   const [selectEmployee, setSelectEmployee] = useState<any>({});
   const [employeeEditId, setEmployeeEditId] = useState<any>();
   const [page, setPage] = useState<number>(1);
 
+console.log('userData----------', userData);
 
   const [name, setName] = useState<string>('');
   const [selectBranch, setSelectBranch] = useState<any>('');
   const [email, setEmail] = useState<string>('');
   const [mobile, setMobile] = useState<string>('');
-  const [nationality, setNationality] = useState<string>('');
+  const [selectNationality, setSelectNationality] = useState<any>('');
   const [systemAccess, setSystemAccess] = useState<boolean>(true);
   const [userName, setUserName] = useState<string>('');
-  const [position, setposition] = useState<string>('');
+  const [selectPosition, setSelectPosition] = useState<any>('');
   const [password, setPassword] = useState<string>('');
   const [inHouseServices, setInHouseServices] = useState<boolean>(false);
   const [inApp, setInApp] = useState<boolean>(false);
@@ -55,11 +56,11 @@ const Employees: React.FC = () => {
   const [commissionOvertime, setCommissionOvertime] = useState<string>('');
   const [minimumProducts, setMinimumProducts] = useState<string>('');
   const [commissionProducts, setCommissionProducts] = useState<string>('');
-  const [dayOff, setDayOff] = useState<string>('');
-  const [restStart, setRestStart] = useState<string>('');
-  const [restEnd, setRestEnd] = useState<string>('');
-  const [workStart, setWorkStart] = useState<string>('');
-  const [workEnd, setWorkEnd] = useState<string>('');
+  const [selectDayeOff, setSelectDayeOff] = useState<any>('');
+  const [restStart, setRestStart] = useState<any>('');
+  const [restEnd, setRestEnd] = useState<any>('');
+  const [workStart, setWorkStart] = useState<any>('');
+  const [workEnd, setWorkEnd] = useState<any>('');
   const [servicesIds, setServicesIds] = useState<any>([]);
   const [isActive, setIsActive] = useState<boolean>(true);
 
@@ -92,10 +93,17 @@ const Employees: React.FC = () => {
   const [visibleFillter, setVisibleFillter] = useState<boolean>(false);
   const [visibleAddNewEmployee, setVisibleAddNewEmployee] = useState<boolean>(false);
   const [visibleEditEmployee, setVisibleEditEmployee] = useState<boolean>(false);
+  const [visibleNationality, setVisibleNationality] = useState<boolean>(false);
+  const [visiblePosition, setVisiblePosition] = useState<boolean>(false);
+  const [visibleDay, setVisibleDay] = useState<boolean>(false);
+  
+
   const [visibleSaveData, setVisibleSaveData] = useState<boolean>(false);
   const [visibleDeleteEmployee, setVisibleDeleteEmployee] = useState<boolean>(false);
   const [visibleUpdateEmployeeState, setVisibleUpdateEmployeeState] = useState<boolean>(false);
   const [selectEmployeeState, setSelectEmployeeState] = useState<any>({});
+  const [visibleTimingsWork, setvisibleTimingsRestWork] = useState<boolean>(false);
+  const [visibleTimingsRest, setvisibleTimingsRestRest] = useState<boolean>(false);
 
   const getEmployees = (page: number) => {
     dispatch(employee_data({page}));
@@ -143,10 +151,10 @@ const Employees: React.FC = () => {
       setSelectBranch('');
       setEmail('');
       setMobile('');
-      setNationality('');
+      setSelectNationality('');
       setSystemAccess(true);
       setUserName('');
-      setposition('');
+      setSelectPosition('');
       setPassword('');
       setInHouseServices(false);
       setInApp(false);
@@ -157,7 +165,7 @@ const Employees: React.FC = () => {
       setCommissionOvertime('');
       setMinimumProducts('');
       setCommissionProducts('');
-      setDayOff('');
+      setSelectDayeOff('');
       setRestStart('');
       setRestEnd('');
       setWorkStart('');
@@ -169,10 +177,10 @@ const Employees: React.FC = () => {
       setSelectBranch('');
       setEmail('');
       setMobile('');
-      setNationality('');
+      setSelectNationality('');
       setSystemAccess(true);
       setUserName('');
-      setposition('');
+      setSelectPosition('');
       setPassword('');
       setInHouseServices(false);
       setInApp(false);
@@ -183,7 +191,7 @@ const Employees: React.FC = () => {
       setCommissionOvertime('');
       setMinimumProducts('');
       setCommissionProducts('');
-      setDayOff('');
+      setSelectDayeOff('');
       setRestStart('');
       setRestEnd('');
       setWorkStart('');
@@ -238,19 +246,19 @@ const Employees: React.FC = () => {
     } else if (email == '') {
       setMobileError(false);
       setEmailError(true);
-    } else if (nationality == '') {
+    } else if (selectNationality == '') {
       setEmailError(false);
       setNationalityError(true);
-    } else if (servicesIds.length == 0) {
+    } /* else if (servicesIds.length == 0) {
       setNationalityError(false);
       setServicesIdsError(true);
-    } else if (userName == '') {
+    }  */else if (userName == '') {
       setServicesIdsError(false);
       setUserNameError(true);
     } else if (password == '') {
       setUserNameError(false);
       setPasswordError(true);
-    } else if (position == '') {
+    } else if (selectPosition == '') {
       setPasswordError(false);
       setpositionError(true);
     } else if (salary == '') {
@@ -271,7 +279,7 @@ const Employees: React.FC = () => {
     } else if (commissionProducts == '') {
       setMinimumProductsError(false);
       setCommissionProductsError(true);
-    } else if (dayOff == '') {
+    } else if (selectDayeOff == '') {
       setCommissionProductsError(false);
       setDayOffError(true);
     } else if (workStart == '') {
@@ -289,14 +297,14 @@ const Employees: React.FC = () => {
     } else {
       const data = {
         serviceProviderId: userData.serviceProviderId,
-        branchId: selectBranch?.id,
+        branchId: userData.serviceProviderId,
         name,
         email,
         mobile: `+966${mobile}`,
-        nationality,
+        nationality: selectNationality?.nameEn,
         systemAccess,
         userName,
-        position,
+        position: selectPosition?.nameEn,
         password,
         visibility: {
           inHouseServices,
@@ -312,11 +320,11 @@ const Employees: React.FC = () => {
           commissionProducts: parseInt(commissionProducts, 10)
         },
         schedule: {
-          dayOff,
-          restStart,
-          restEnd,
-          workStart,
-          workEnd,
+          dayOff: selectDayeOff?.nameEn,
+          restStart: `${restStart.title}:00`,
+          restEnd:`${restEnd.title}:00`,
+          workStart: `${workStart.title}:00`,
+          workEnd: `${workEnd.title}:00`,
         },
         servicesIds,
         isActive,
@@ -633,6 +641,11 @@ const Employees: React.FC = () => {
       >
         <View style={styles.modalAddContainer}>
           <ScrollView showsVerticalScrollIndicator={false}>
+            {modalNationalitySection()}
+            {modalPositionSection()}
+            {modalDaysSection()}
+            {timingsSectionWork()}
+            {timingsSectionRest()}
             <AppTextGradient
               title={Trans('addEmployee')}
               fontSize={calcFont(17)}
@@ -692,9 +705,9 @@ const Employees: React.FC = () => {
               containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
               touchContainerStyle={{width: calcWidth(343), borderWidth: 0.6, borderColor: nationalityError ? COLORS.red : COLORS.lightPrimary}}
               styleTitle={{}}
-              onPress={() => {}}
+              onPress={() => setVisibleNationality(true)}
               title={Trans('nationality')}
-              placeholder={Trans('nationality')}
+              placeholder={selectNationality.id ? (I18nManager.isRTL ? selectNationality?.name : selectNationality?.nameEn) : Trans('nationality')}
               icon={IMAGES.dropDown}
             />
             <AppPickerSelect
@@ -824,9 +837,9 @@ const Employees: React.FC = () => {
               containerStyle={{width: calcWidth(343), marginVertical: calcHeight(16)}}
               touchContainerStyle={{width: calcWidth(343), borderWidth: 0.6, borderColor: positionError ? COLORS.red : COLORS.lightPrimary}}
               styleTitle={{}}
-              onPress={() => {}}
+              onPress={() => setVisiblePosition(true)}
               title={Trans('position')}
-              placeholder={Trans('choosePosition')}
+              placeholder={selectPosition.id ? (I18nManager.isRTL ? selectPosition?.name : selectPosition?.nameEn) : Trans('choosePosition')}
               icon={IMAGES.dropDown}
             />
             <AppTextGradient
@@ -897,9 +910,9 @@ const Employees: React.FC = () => {
               containerStyle={{width: calcWidth(343), marginTop: calcHeight(16)}}
               touchContainerStyle={{width: calcWidth(343), borderWidth: 0.6, borderColor: positionError ? COLORS.red : COLORS.lightPrimary}}
               styleTitle={{}}
-              onPress={() => {}}
+              onPress={() => setVisibleDay(true)}
               title={Trans('holiday')}
-              placeholder={Trans('holiday')}
+              placeholder={selectDayeOff.id ? (I18nManager.isRTL ? selectDayeOff?.name : selectDayeOff?.nameEn) : Trans('holiday')}
               icon={IMAGES.dropDown}
             />
             <View style={{width: calcWidth(343), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -908,9 +921,9 @@ const Employees: React.FC = () => {
                 touchContainerStyle={{width: calcWidth(160), borderWidth: 0.6, borderColor: positionError ? COLORS.red : COLORS.lightPrimary}}
                 styleTitle={{}}
                 textWidth={calcWidth(110)}
-                onPress={() => {}}
+                onPress={() => setvisibleTimingsRestWork(true)}
                 title={Trans('beginningOfWork')}
-                placeholder={Trans('beginningOfWork')}
+                placeholder={workStart?.title || Trans('beginningOfWork')}
                 icon={IMAGES.dropDown}
               />
               <AppPickerSelect
@@ -918,9 +931,9 @@ const Employees: React.FC = () => {
                 touchContainerStyle={{width: calcWidth(160), borderWidth: 0.6, borderColor: positionError ? COLORS.red : COLORS.lightPrimary}}
                 styleTitle={{}}
                 textWidth={calcWidth(110)}
-                onPress={() => {}}
+                onPress={() => setvisibleTimingsRestWork(true)}
                 title={Trans('endOfWork')}
-                placeholder={Trans('endOfWork')}
+                placeholder={workEnd?.title || Trans('endOfWork')}
                 icon={IMAGES.dropDown}
               />
             </View>
@@ -930,9 +943,9 @@ const Employees: React.FC = () => {
                 touchContainerStyle={{width: calcWidth(160), borderWidth: 0.6, borderColor: positionError ? COLORS.red : COLORS.lightPrimary}}
                 styleTitle={{}}
                 textWidth={calcWidth(110)}
-                onPress={() => {}}
+                onPress={() => setvisibleTimingsRestRest(true)}
                 title={Trans('beginningOfRest')}
-                placeholder={Trans('endOfRest')}
+                placeholder={restStart?.title || Trans('endOfRest')}
                 icon={IMAGES.dropDown}
               />
               <AppPickerSelect
@@ -940,9 +953,9 @@ const Employees: React.FC = () => {
                 touchContainerStyle={{width: calcWidth(160), borderWidth: 0.6, borderColor: positionError ? COLORS.red : COLORS.lightPrimary}}
                 styleTitle={{}}
                 textWidth={calcWidth(110)}
-                onPress={() => {}}
+                onPress={() => setvisibleTimingsRestRest(true)}
                 title={Trans('endOfRest')}
-                placeholder={Trans('endOfRest')}
+                placeholder={restEnd?.title || Trans('endOfRest')}
                 icon={IMAGES.dropDown}
               />
             </View>
@@ -969,326 +982,326 @@ const Employees: React.FC = () => {
     )
   };
 
-  const editEmployeeSection = () => {
-    return (
-      <Modal
-        style={{ margin: 0, justifyContent: 'flex-end', }}
-        hasBackdrop propagateSwipe={true}
-        animationIn= 'slideInUp'
-        animationInTiming= {600}
-        animationOutTiming= {600}
-        isVisible={visibleEditEmployee}
-        onBackdropPress={() => setVisibleEditEmployee(false)}
-        onBackButtonPress={() => setVisibleEditEmployee(false)}
-        deviceHeight={Dimensions.get('screen').height}
-        statusBarTranslucent
-      >
-        <View style={styles.modalAddContainer}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <AppTextGradient
-              title={Trans('editEmployee')}
-              fontSize={calcFont(17)}
-              fontFamily={FONTS.bold}
-              colorStart={COLORS.secondGradient}
-              colorEnd={COLORS.primaryGradient}
-            />
-            <AppInput
-              title={Trans('name')}
-              value={nameAr}
-              placeholder={Trans('name')}
-              onChangeText={(text: string) => setNameAr(text)}
-              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
-              containerStyle={{marginTop: calcHeight(8)}}
-            />
-            {/* <AppPickerSelect
-              containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
-              touchContainerStyle={{width: calcWidth(343)}}
-              styleTitle={{}}
-              onPress={() => {}}
-              title={Trans('nameOfSalon')}
-              placeholder={Trans('nameOfSalon')}
-              icon={IMAGES.dropDown}
-            /> */}
-            <AppPickerSelect
-              containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
-              touchContainerStyle={{width: calcWidth(343)}}
-              styleTitle={{}}
-              onPress={() => {}}
-              title={Trans('branch')}
-              placeholder={Trans('branch')}
-              icon={IMAGES.dropDown}
-            />
-            <AppPickerSelect
-              containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
-              touchContainerStyle={{width: calcWidth(343)}}
-              styleTitle={{}}
-              onPress={() => {}}
-              title={Trans('service')}
-              placeholder={Trans('service')}
-              icon={IMAGES.dropDown}
-            />
-            <AppInput
-              title={Trans('email')}
-              value={time}
-              placeholder={Trans('email')}
-              onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
-              containerStyle={{marginTop: calcHeight(12)}}
-            />
-            <AppInputPhone
-              containerStyle={{marginTop: calcHeight(20)}}
-              title={Trans('mobileNumber')}
-              image={IMAGES.authPhone}
-              placeholder={Trans('mobileNumber')}
-              value={phone}
-              keyboardType={'number-pad'}
-              onChangeText={(text: string) => setPhone(text)}
-              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
-              // _textAligne={}
-              // error={}
-            />
-            <AppPickerSelect
-              containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
-              touchContainerStyle={{width: calcWidth(343)}}
-              styleTitle={{}}
-              onPress={() => {}}
-              title={Trans('nationality')}
-              placeholder={Trans('nationality')}
-              icon={IMAGES.dropDown}
-            />
-            <View style={{marginTop: calcHeight(16)}}>
-              <AppText
-                title={Trans('condition')}
-                fontFamily={FONTS.medium}
-                fontSize={calcFont(14)}
-                textAlign={'left'}
-                color={COLORS.textDark}
-              />
-              <View style={styles.conditionContainer}>
-                <TouchableOpacity
-                  style={styles.conditionView}
-                  onPress={() => setCondition(true)}
-                >
-                  <Image source={condition ? IMAGES.selectActive : IMAGES.selectUnActive} style={styles.conditionIcon}/>
-                  <AppTextViewGradient
-                    containerStyle={styles.conditionTextView}
-                    colorStart={'rgba(92, 190, 67, 0.2)'}
-                    colorEnd={'rgba(92, 190, 67, 0.2)'}
-                    title={Trans('activated')}
-                    fontFamily={FONTS.bold}
-                    fontSize={calcFont(14)}
-                    textAlign={'center'}
-                    textColorStart={COLORS.green2}
-                    textColorEnd={COLORS.green2}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.conditionView}
-                  onPress={() => setCondition(false)}
-                >
-                  <Image source={condition ? IMAGES.selectUnActive : IMAGES.selectActive} style={styles.conditionIcon}/>
-                  <AppTextViewGradient
-                    containerStyle={styles.conditionTextView}
-                    colorStart={'rgba(239, 68, 68, 0.2)'}
-                    colorEnd={'rgba(239, 68, 68, 0.2)'}
-                    title={Trans('deactivated')}
-                    fontFamily={FONTS.bold}
-                    fontSize={calcFont(14)}
-                    textAlign={'center'}
-                    textColorStart={COLORS.red}
-                    textColorEnd={COLORS.red}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={{marginVertical: calcHeight(16)}}>
-              <AppText
-                title={Trans('accessToSystem')}
-                fontFamily={FONTS.medium}
-                fontSize={calcFont(14)}
-                textAlign={'left'}
-                color={COLORS.textDark}
-              />
-              <View style={styles.conditionContainer}>
-                <TouchableOpacity
-                  style={styles.conditionView}
-                  onPress={() => setCondition(true)}
-                >
-                  <Image source={condition ? IMAGES.selectActive : IMAGES.selectUnActive} style={styles.conditionIcon}/>
-                  <AppTextViewGradient
-                    containerStyle={styles.conditionTextView}
-                    colorStart={'rgba(92, 190, 67, 0.2)'}
-                    colorEnd={'rgba(92, 190, 67, 0.2)'}
-                    title={Trans('yes')}
-                    fontFamily={FONTS.bold}
-                    fontSize={calcFont(14)}
-                    textAlign={'center'}
-                    textColorStart={COLORS.green2}
-                    textColorEnd={COLORS.green2}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.conditionView}
-                  onPress={() => setCondition(false)}
-                >
-                  <Image source={condition ? IMAGES.selectUnActive : IMAGES.selectActive} style={styles.conditionIcon}/>
-                  <AppTextViewGradient
-                    containerStyle={styles.conditionTextView}
-                    colorStart={'rgba(239, 68, 68, 0.2)'}
-                    colorEnd={'rgba(239, 68, 68, 0.2)'}
-                    title={Trans('no')}
-                    fontFamily={FONTS.bold}
-                    fontSize={calcFont(14)}
-                    textAlign={'center'}
-                    textColorStart={COLORS.red}
-                    textColorEnd={COLORS.red}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <AppTextGradient
-              title={Trans('loginInformation')}
-              fontSize={calcFont(17)}
-              fontFamily={FONTS.bold}
-              colorStart={COLORS.secondGradient}
-              colorEnd={COLORS.primaryGradient}
-            />
-            <AppInput
-              title={Trans('userName')}
-              value={time}
-              placeholder={Trans('userName')}
-              onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
-              containerStyle={{marginTop: calcHeight(12)}}
-            />
-            <AppInput
-              title={Trans('password')}
-              value={time}
-              placeholder={Trans('password')}
-              onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
-              containerStyle={{marginTop: calcHeight(12)}}
-            />
-            <AppPickerSelect
-              containerStyle={{width: calcWidth(343), marginVertical: calcHeight(16)}}
-              touchContainerStyle={{width: calcWidth(343)}}
-              styleTitle={{}}
-              onPress={() => {}}
-              title={Trans('position')}
-              placeholder={Trans('choosePosition')}
-              icon={IMAGES.dropDown}
-            />
-            <AppTextGradient
-              title={Trans('workData')}
-              fontSize={calcFont(17)}
-              fontFamily={FONTS.bold}
-              colorStart={COLORS.secondGradient}
-              colorEnd={COLORS.primaryGradient}
-            />
-            <AppInput
-              title={Trans('salary')}
-              value={time}
-              placeholder={'0'}
-              onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
-              containerStyle={{marginTop: calcHeight(12)}}
-            />
-            <AppInput
-              title={Trans('minimumNumberServices')}
-              value={time}
-              placeholder={'0'}
-              onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
-              containerStyle={{marginTop: calcHeight(12)}}
-            />
-            <AppInput
-              title={Trans('serviceCommission')}
-              value={time}
-              placeholder={'0'}
-              onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
-              containerStyle={{marginTop: calcHeight(12)}}
-            />
-            <AppInput
-              title={Trans('extraCommission')}
-              value={time}
-              placeholder={'0'}
-              onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
-              containerStyle={{marginTop: calcHeight(12)}}
-            />
-            <AppInput
-              title={Trans('minimumNumberProducts')}
-              value={time}
-              placeholder={'0'}
-              onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
-              containerStyle={{marginTop: calcHeight(12)}}
-            />
-            <AppInput
-              title={Trans('productCommission')}
-              value={time}
-              placeholder={'0'}
-              onChangeText={(text: string) => setTime(text)}
-              inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
-              containerStyle={{marginVertical: calcHeight(16)}}
-            />
-            <AppTextGradient
-              title={Trans('vacationAndRestData')}
-              fontSize={calcFont(17)}
-              fontFamily={FONTS.bold}
-              colorStart={COLORS.secondGradient}
-              colorEnd={COLORS.primaryGradient}
-            />
-            <AppPickerSelect
-              containerStyle={{width: calcWidth(343), marginTop: calcHeight(16)}}
-              touchContainerStyle={{width: calcWidth(343)}}
-              styleTitle={{}}
-              onPress={() => {}}
-              title={Trans('holiday')}
-              placeholder={Trans('holiday')}
-              icon={IMAGES.dropDown}
-            />
-            <AppPickerSelect
-              containerStyle={{width: calcWidth(343), marginTop: calcHeight(16)}}
-              touchContainerStyle={{width: calcWidth(343)}}
-              styleTitle={{}}
-              onPress={() => {}}
-              title={Trans('beginningOfRest')}
-              placeholder={Trans('endOfRest')}
-              icon={IMAGES.dropDown}
-            />
-            <AppPickerSelect
-              containerStyle={{width: calcWidth(343), marginTop: calcHeight(16)}}
-              touchContainerStyle={{width: calcWidth(343)}}
-              styleTitle={{}}
-              onPress={() => {}}
-              title={Trans('endOfRest')}
-              placeholder={Trans('endOfRest')}
-              icon={IMAGES.dropDown}
-            />
-          </ScrollView>
-          <View style={styles.modalActionContainer}>
-            <AppButtonDefault
-              title={Trans('save')}
-              onPress={() => {setVisibleSaveData(true); setVisibleEditEmployee(false)}}
-              colorStart={COLORS.primaryGradient}
-              colorEnd={COLORS.secondGradient}
-              buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
-            />
-            <AppButtonDefault
-              title={Trans('cancellation')}
-              onPress={() => setVisibleEditEmployee(false)}
-              colorStart={COLORS.primaryGradient}
-              colorEnd={COLORS.secondGradient}
-              buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
-              border
-            />
-          </View>
-        </View>
-      </Modal>
-    )
-  };
+  // const editEmployeeSection = () => {
+  //   return (
+  //     <Modal
+  //       style={{ margin: 0, justifyContent: 'flex-end', }}
+  //       hasBackdrop propagateSwipe={true}
+  //       animationIn= 'slideInUp'
+  //       animationInTiming= {600}
+  //       animationOutTiming= {600}
+  //       isVisible={visibleEditEmployee}
+  //       onBackdropPress={() => setVisibleEditEmployee(false)}
+  //       onBackButtonPress={() => setVisibleEditEmployee(false)}
+  //       deviceHeight={Dimensions.get('screen').height}
+  //       statusBarTranslucent
+  //     >
+  //       <View style={styles.modalAddContainer}>
+  //         <ScrollView showsVerticalScrollIndicator={false}>
+  //           <AppTextGradient
+  //             title={Trans('editEmployee')}
+  //             fontSize={calcFont(17)}
+  //             fontFamily={FONTS.bold}
+  //             colorStart={COLORS.secondGradient}
+  //             colorEnd={COLORS.primaryGradient}
+  //           />
+  //           <AppInput
+  //             title={Trans('name')}
+  //             value={nameAr}
+  //             placeholder={Trans('name')}
+  //             onChangeText={(text: string) => setNameAr(text)}
+  //             inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
+  //             containerStyle={{marginTop: calcHeight(8)}}
+  //           />
+  //           {/* <AppPickerSelect
+  //             containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
+  //             touchContainerStyle={{width: calcWidth(343)}}
+  //             styleTitle={{}}
+  //             onPress={() => {}}
+  //             title={Trans('nameOfSalon')}
+  //             placeholder={Trans('nameOfSalon')}
+  //             icon={IMAGES.dropDown}
+  //           /> */}
+  //           <AppPickerSelect
+  //             containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
+  //             touchContainerStyle={{width: calcWidth(343)}}
+  //             styleTitle={{}}
+  //             onPress={() => {}}
+  //             title={Trans('branch')}
+  //             placeholder={Trans('branch')}
+  //             icon={IMAGES.dropDown}
+  //           />
+  //           <AppPickerSelect
+  //             containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
+  //             touchContainerStyle={{width: calcWidth(343)}}
+  //             styleTitle={{}}
+  //             onPress={() => {}}
+  //             title={Trans('service')}
+  //             placeholder={Trans('service')}
+  //             icon={IMAGES.dropDown}
+  //           />
+  //           <AppInput
+  //             title={Trans('email')}
+  //             value={time}
+  //             placeholder={Trans('email')}
+  //             onChangeText={(text: string) => setTime(text)}
+  //             inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
+  //             containerStyle={{marginTop: calcHeight(12)}}
+  //           />
+  //           <AppInputPhone
+  //             containerStyle={{marginTop: calcHeight(20)}}
+  //             title={Trans('mobileNumber')}
+  //             image={IMAGES.authPhone}
+  //             placeholder={Trans('mobileNumber')}
+  //             value={phone}
+  //             keyboardType={'number-pad'}
+  //             onChangeText={(text: string) => setPhone(text)}
+  //             inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
+  //             // _textAligne={}
+  //             // error={}
+  //           />
+  //           <AppPickerSelect
+  //             containerStyle={{width: calcWidth(343), marginTop: calcHeight(12)}}
+  //             touchContainerStyle={{width: calcWidth(343)}}
+  //             styleTitle={{}}
+  //             onPress={() => {}}
+  //             title={Trans('nationality')}
+  //             placeholder={Trans('nationality')}
+  //             icon={IMAGES.dropDown}
+  //           />
+  //           <View style={{marginTop: calcHeight(16)}}>
+  //             <AppText
+  //               title={Trans('condition')}
+  //               fontFamily={FONTS.medium}
+  //               fontSize={calcFont(14)}
+  //               textAlign={'left'}
+  //               color={COLORS.textDark}
+  //             />
+  //             <View style={styles.conditionContainer}>
+  //               <TouchableOpacity
+  //                 style={styles.conditionView}
+  //                 onPress={() => setCondition(true)}
+  //               >
+  //                 <Image source={condition ? IMAGES.selectActive : IMAGES.selectUnActive} style={styles.conditionIcon}/>
+  //                 <AppTextViewGradient
+  //                   containerStyle={styles.conditionTextView}
+  //                   colorStart={'rgba(92, 190, 67, 0.2)'}
+  //                   colorEnd={'rgba(92, 190, 67, 0.2)'}
+  //                   title={Trans('activated')}
+  //                   fontFamily={FONTS.bold}
+  //                   fontSize={calcFont(14)}
+  //                   textAlign={'center'}
+  //                   textColorStart={COLORS.green2}
+  //                   textColorEnd={COLORS.green2}
+  //                 />
+  //               </TouchableOpacity>
+  //               <TouchableOpacity
+  //                 style={styles.conditionView}
+  //                 onPress={() => setCondition(false)}
+  //               >
+  //                 <Image source={condition ? IMAGES.selectUnActive : IMAGES.selectActive} style={styles.conditionIcon}/>
+  //                 <AppTextViewGradient
+  //                   containerStyle={styles.conditionTextView}
+  //                   colorStart={'rgba(239, 68, 68, 0.2)'}
+  //                   colorEnd={'rgba(239, 68, 68, 0.2)'}
+  //                   title={Trans('deactivated')}
+  //                   fontFamily={FONTS.bold}
+  //                   fontSize={calcFont(14)}
+  //                   textAlign={'center'}
+  //                   textColorStart={COLORS.red}
+  //                   textColorEnd={COLORS.red}
+  //                 />
+  //               </TouchableOpacity>
+  //             </View>
+  //           </View>
+  //           <View style={{marginVertical: calcHeight(16)}}>
+  //             <AppText
+  //               title={Trans('accessToSystem')}
+  //               fontFamily={FONTS.medium}
+  //               fontSize={calcFont(14)}
+  //               textAlign={'left'}
+  //               color={COLORS.textDark}
+  //             />
+  //             <View style={styles.conditionContainer}>
+  //               <TouchableOpacity
+  //                 style={styles.conditionView}
+  //                 onPress={() => setCondition(true)}
+  //               >
+  //                 <Image source={condition ? IMAGES.selectActive : IMAGES.selectUnActive} style={styles.conditionIcon}/>
+  //                 <AppTextViewGradient
+  //                   containerStyle={styles.conditionTextView}
+  //                   colorStart={'rgba(92, 190, 67, 0.2)'}
+  //                   colorEnd={'rgba(92, 190, 67, 0.2)'}
+  //                   title={Trans('yes')}
+  //                   fontFamily={FONTS.bold}
+  //                   fontSize={calcFont(14)}
+  //                   textAlign={'center'}
+  //                   textColorStart={COLORS.green2}
+  //                   textColorEnd={COLORS.green2}
+  //                 />
+  //               </TouchableOpacity>
+  //               <TouchableOpacity
+  //                 style={styles.conditionView}
+  //                 onPress={() => setCondition(false)}
+  //               >
+  //                 <Image source={condition ? IMAGES.selectUnActive : IMAGES.selectActive} style={styles.conditionIcon}/>
+  //                 <AppTextViewGradient
+  //                   containerStyle={styles.conditionTextView}
+  //                   colorStart={'rgba(239, 68, 68, 0.2)'}
+  //                   colorEnd={'rgba(239, 68, 68, 0.2)'}
+  //                   title={Trans('no')}
+  //                   fontFamily={FONTS.bold}
+  //                   fontSize={calcFont(14)}
+  //                   textAlign={'center'}
+  //                   textColorStart={COLORS.red}
+  //                   textColorEnd={COLORS.red}
+  //                 />
+  //               </TouchableOpacity>
+  //             </View>
+  //           </View>
+  //           <AppTextGradient
+  //             title={Trans('loginInformation')}
+  //             fontSize={calcFont(17)}
+  //             fontFamily={FONTS.bold}
+  //             colorStart={COLORS.secondGradient}
+  //             colorEnd={COLORS.primaryGradient}
+  //           />
+  //           <AppInput
+  //             title={Trans('userName')}
+  //             value={time}
+  //             placeholder={Trans('userName')}
+  //             onChangeText={(text: string) => setTime(text)}
+  //             inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
+  //             containerStyle={{marginTop: calcHeight(12)}}
+  //           />
+  //           <AppInput
+  //             title={Trans('password')}
+  //             value={time}
+  //             placeholder={Trans('password')}
+  //             onChangeText={(text: string) => setTime(text)}
+  //             inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
+  //             containerStyle={{marginTop: calcHeight(12)}}
+  //           />
+  //           <AppPickerSelect
+  //             containerStyle={{width: calcWidth(343), marginVertical: calcHeight(16)}}
+  //             touchContainerStyle={{width: calcWidth(343)}}
+  //             styleTitle={{}}
+  //             onPress={() => {}}
+  //             title={Trans('position')}
+  //             placeholder={Trans('choosePosition')}
+  //             icon={IMAGES.dropDown}
+  //           />
+  //           <AppTextGradient
+  //             title={Trans('workData')}
+  //             fontSize={calcFont(17)}
+  //             fontFamily={FONTS.bold}
+  //             colorStart={COLORS.secondGradient}
+  //             colorEnd={COLORS.primaryGradient}
+  //           />
+  //           <AppInput
+  //             title={Trans('salary')}
+  //             value={time}
+  //             placeholder={'0'}
+  //             onChangeText={(text: string) => setTime(text)}
+  //             inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
+  //             containerStyle={{marginTop: calcHeight(12)}}
+  //           />
+  //           <AppInput
+  //             title={Trans('minimumNumberServices')}
+  //             value={time}
+  //             placeholder={'0'}
+  //             onChangeText={(text: string) => setTime(text)}
+  //             inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
+  //             containerStyle={{marginTop: calcHeight(12)}}
+  //           />
+  //           <AppInput
+  //             title={Trans('serviceCommission')}
+  //             value={time}
+  //             placeholder={'0'}
+  //             onChangeText={(text: string) => setTime(text)}
+  //             inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
+  //             containerStyle={{marginTop: calcHeight(12)}}
+  //           />
+  //           <AppInput
+  //             title={Trans('extraCommission')}
+  //             value={time}
+  //             placeholder={'0'}
+  //             onChangeText={(text: string) => setTime(text)}
+  //             inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
+  //             containerStyle={{marginTop: calcHeight(12)}}
+  //           />
+  //           <AppInput
+  //             title={Trans('minimumNumberProducts')}
+  //             value={time}
+  //             placeholder={'0'}
+  //             onChangeText={(text: string) => setTime(text)}
+  //             inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
+  //             containerStyle={{marginTop: calcHeight(12)}}
+  //           />
+  //           <AppInput
+  //             title={Trans('productCommission')}
+  //             value={time}
+  //             placeholder={'0'}
+  //             onChangeText={(text: string) => setTime(text)}
+  //             inputContainer={{borderColor: 1 ? COLORS.red : COLORS.lightPrimary}}
+  //             containerStyle={{marginVertical: calcHeight(16)}}
+  //           />
+  //           <AppTextGradient
+  //             title={Trans('vacationAndRestData')}
+  //             fontSize={calcFont(17)}
+  //             fontFamily={FONTS.bold}
+  //             colorStart={COLORS.secondGradient}
+  //             colorEnd={COLORS.primaryGradient}
+  //           />
+  //           <AppPickerSelect
+  //             containerStyle={{width: calcWidth(343), marginTop: calcHeight(16)}}
+  //             touchContainerStyle={{width: calcWidth(343)}}
+  //             styleTitle={{}}
+  //             onPress={() => {}}
+  //             title={Trans('holiday')}
+  //             placeholder={Trans('holiday')}
+  //             icon={IMAGES.dropDown}
+  //           />
+  //           <AppPickerSelect
+  //             containerStyle={{width: calcWidth(343), marginTop: calcHeight(16)}}
+  //             touchContainerStyle={{width: calcWidth(343)}}
+  //             styleTitle={{}}
+  //             onPress={() => {}}
+  //             title={Trans('beginningOfRest')}
+  //             placeholder={Trans('endOfRest')}
+  //             icon={IMAGES.dropDown}
+  //           />
+  //           <AppPickerSelect
+  //             containerStyle={{width: calcWidth(343), marginTop: calcHeight(16)}}
+  //             touchContainerStyle={{width: calcWidth(343)}}
+  //             styleTitle={{}}
+  //             onPress={() => {}}
+  //             title={Trans('endOfRest')}
+  //             placeholder={Trans('endOfRest')}
+  //             icon={IMAGES.dropDown}
+  //           />
+  //         </ScrollView>
+  //         <View style={styles.modalActionContainer}>
+  //           <AppButtonDefault
+  //             title={Trans('save')}
+  //             onPress={() => {setVisibleSaveData(true); setVisibleEditEmployee(false)}}
+  //             colorStart={COLORS.primaryGradient}
+  //             colorEnd={COLORS.secondGradient}
+  //             buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
+  //           />
+  //           <AppButtonDefault
+  //             title={Trans('cancellation')}
+  //             onPress={() => setVisibleEditEmployee(false)}
+  //             colorStart={COLORS.primaryGradient}
+  //             colorEnd={COLORS.secondGradient}
+  //             buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
+  //             border
+  //           />
+  //         </View>
+  //       </View>
+  //     </Modal>
+  //   )
+  // };
 
   const onDoneSave = () => {
     setVisibleSaveData(false);
@@ -1338,12 +1351,84 @@ const Employees: React.FC = () => {
     )
   };
 
+  const modalNationalitySection = () => {
+    return (
+      <AppModalSelectItem
+        visible={visibleNationality}
+        onClose={() => {setVisibleNationality(false)}}
+        onSelectItem={(item: any) => {setSelectNationality(item); setVisibleNationality(false)}}
+        title={Trans('chooseEmployeeNationality')}
+        data={DUMMY_DATA.NATIONALITY}
+        itemSelected={selectNationality}
+        multiSelect={false}
+      />
+    )
+  };
+
+  const modalPositionSection = () => {
+    return (
+      <AppModalSelectItem
+        visible={visiblePosition}
+        onClose={() => {setVisiblePosition(false)}}
+        onSelectItem={(item: any) => {setSelectPosition(item); setVisiblePosition(false)}}
+        title={Trans('chooseEmployeePosition')}
+        data={DUMMY_DATA.POSITIONS}
+        itemSelected={selectPosition}
+        multiSelect={false}
+      />
+    )
+  };
+
+  const modalDaysSection = () => {
+    return (
+      <AppModalSelectItem
+        visible={visibleDay}
+        onClose={() => {setVisibleDay(false)}}
+        onSelectItem={(item: any) => {setSelectDayeOff(item); setVisibleDay(false)}}
+        title={Trans('chooseEmployeeDayeOff')}
+        data={DUMMY_DATA.DAYS}
+        itemSelected={selectDayeOff}
+        multiSelect={false}
+      />
+    )
+  };
+
   const loadingSection = () => {
     return (
       <AppLoading
         margin_top={calcHeight(440)}
         size={'large'}
         visible={employeesLoader && page == 1}
+      />
+    )
+  };
+
+  const timingsSectionWork = () => {
+    return (
+      <AppModalTimings
+        visible={visibleTimingsWork}
+        onClose={() => setvisibleTimingsRestWork(false)}
+        onSave={(item: any) => {setWorkStart(item.start); setWorkEnd(item.end)}}
+        // onSelectItem?: (item: any) => void;
+        // title?: string;
+        // data?: any[];
+        // itemSelected?: any;
+        // multiSelect?: boolean;
+      />
+    )
+  };
+
+  const timingsSectionRest = () => {
+    return (
+      <AppModalTimings
+        visible={visibleTimingsRest}
+        onClose={() => setvisibleTimingsRestRest(false)}
+        onSave={(item: any) => {setRestStart(item.start); setRestEnd(item.end)}}
+        // onSelectItem?: (item: any) => void;
+        // title?: string;
+        // data?: any[];
+        // itemSelected?: any;
+        // multiSelect?: boolean;
       />
     )
   };

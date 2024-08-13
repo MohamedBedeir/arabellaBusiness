@@ -1,6 +1,8 @@
 import {AxiosRequestConfig, AxiosRequestHeaders} from 'axios';
 import {api} from './networkInstance.config';
 import {client, clientFormData} from './apiClient';
+import { PlaceApiResponseModel, PlaceDetailsApiResponseModel } from '../components/MapAddress/Places';
+import { I18nManager } from 'react-native';
 
 const post = (url: string, data: unknown) =>
   api.post(url, JSON.stringify(data));
@@ -64,6 +66,34 @@ const init_lang = (lang: string) => {
     });
   }
 };
+
+const MAP_API_KEY = 'AIzaSyAbzST6gOX5cU-EZr4f6LlPlyH0crvaL0I';
+
+const get_laceDetails = (placeId: string) => {
+  // return api.get(url, {
+  //   params,
+  //   headers: {...headers},
+  // });
+    return api.get<PlaceDetailsApiResponseModel>(`https://maps.googleapis.com/maps/api/place/details/json?key=${MAP_API_KEY}&place_id=${placeId}&lenguage=${I18nManager.isRTL ? 'ar' : 'en'}`, {
+      params: {},
+      headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+    });
+  };
+
+const get_places = (name: string) => {
+    return api.get<PlaceApiResponseModel>(
+      `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${MAP_API_KEY}&input=${name}&language=${
+        I18nManager.isRTL ? 'ar' : 'en'
+      }`, {
+        params: {},
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+  };
 export {
   get,
   post,
@@ -72,4 +102,6 @@ export {
   putFormData,
   init_token,
   init_lang,
+  get_laceDetails,
+  get_places
 };

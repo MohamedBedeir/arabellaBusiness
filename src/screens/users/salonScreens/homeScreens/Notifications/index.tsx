@@ -1,20 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import AppText from '../../../../../components/AppText';
 import { Trans } from '../../../../../translation';
 import { COLORS, FONTS } from '../../../../../utils/theme';
-import { calcFont } from '../../../../../utils/sizes';
+import { calcFont, calcHeight } from '../../../../../utils/sizes';
 import { IMAGES } from '../../../../../assets/Images';
 import AppHeaderDefault from '../../../../../components/AppHeaderDefault';
 import NotificationItem from '../../../../../components/NotificationItem';
 import Modal_Warning from '../../../../../components/Modal_Warning';
-import { DUMMY_DATA } from '../../../../../utils/dummyData';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '../../../../../redux/store/store';
+import AppLoading from '../../../../../components/AppLoading';
+import { notifications_data, notifications_delete } from '../../../../../middleware/notifications/notifications';
+import messaging from '@react-native-firebase/messaging';
+import AppEmptyScreen from '../../../../../components/AppEmptyScreen/AppEmptyScreen';
 
 const Notifications: React.FC = () => {
   const navigation = useNavigation<any>();
+  const dispatch = useAppDispatch();
+  const { notificationsLoader, notificationsData } = useSelector((store: RootState) => store?.notifications);
   const [visibleDeleteAllNotification, setVisibleDeleteAllNotification] = useState<boolean>(false);
+
+  const testNewNoti = async () => {
+    messaging().onMessage(async message => getNotifications());
+  };
+
+  const getNotifications = () => {
+    dispatch(notifications_data({}));
+  };
+
+  useEffect(() => {
+    testNewNoti();
+    getNotifications();
+  }, []);
 
   const headerSection = () => {
     return (
@@ -50,7 +70,7 @@ const Notifications: React.FC = () => {
       return (
         <NotificationItem
           item={item}
-          onPress={() => {}}
+          onPress={() => navigation.navigate('SA_ReservationDetailsStack', {screen: 'SA_ReservationDetails', id: item.notificationTypeId})}
         />
       )
     };
@@ -59,7 +79,7 @@ const Notifications: React.FC = () => {
       <View>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={DUMMY_DATA.NOTIFICATIONS}
+          data={notificationsData}
           renderItem={renderItem}
           keyExtractor={item => `${item}`}
         />
@@ -72,7 +92,7 @@ const Notifications: React.FC = () => {
       <Modal_Warning
         visible={visibleDeleteAllNotification}
         onClose={() => setVisibleDeleteAllNotification(false)}
-        onPress1={() => setVisibleDeleteAllNotification(false)}
+        onPress1={() => {setVisibleDeleteAllNotification(false); dispatch(notifications_delete({}))}}
         onPress2={() => setVisibleDeleteAllNotification(false)}
         image={IMAGES.modalCancel}
         title={Trans('areSureCanDeleteAllNotifications')}
@@ -82,11 +102,31 @@ const Notifications: React.FC = () => {
     )
   };
 
+  const emptySection = () => {
+    return (
+      <AppEmptyScreen
+        image={IMAGES.empty_notification}
+        title={Trans('dontHaveAnyNotifications')}
+      />
+    )
+  };
+
+  const loadingSection = () => {
+    return (
+      <AppLoading
+        margin_top={calcHeight(440)}
+        size={'large'}
+        visible={notificationsLoader}
+      />
+    )
+  };
+
   return (
     <View style={styles.container}>
-      {/* <StatusBar barStyle={'dark-content'}/> */}
+      {loadingSection()}
       {headerSection()}
-      {deleteAllSection()}
+      {notificationsData?.length >= 1 && deleteAllSection()}
+      {(!notificationsLoader && notificationsData.length == 0) && emptySection()}
       {listSection()}
       {modalDelateAllSection()}
     </View>

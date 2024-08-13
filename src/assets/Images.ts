@@ -112,4 +112,22 @@ export const IMAGES = {
   chartTypeP: require('./icons/chartTypeP.png'),
   chartTypeS: require('./icons/chartTypeS.png'),
   mapMarker: require('./icons/mapMarker.png'),
+
+  //======================
+  empty_agent: require('./icons/empty_agent.png'),
+  empty_appointment: require('./icons/empty_appointment.png'),
+  empty_branch: require('./icons/empty_branch.png'),
+  empty_calculate: require('./icons/empty_calculate.png'),
+  empty_copon: require('./icons/empty_copon.png'),
+  empty_employee: require('./icons/empty_employee.png'),
+  empty_gift: require('./icons/empty_gift.png'),
+  empty_notification: require('./icons/empty_notification.png'),
+  empty_rate: require('./icons/empty_rate.png'),
+  empty_rememebr: require('./icons/empty_rememebr.png'),
+  empty_salon: require('./icons/empty_salon.png'),
+  empty_service: require('./icons/empty_service.png'),
+  empty_slider: require('./icons/empty_slider.png'),
+  empty_teckit: require('./icons/empty_teckit.png'),
+  empty_timing: require('./icons/empty_timing.png'),
+  empty_video: require('./icons/empty_video.png'),
 };

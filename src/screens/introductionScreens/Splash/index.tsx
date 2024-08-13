@@ -6,10 +6,58 @@ import I18n from '../../../translation';
 import { IMAGES } from '../../../assets/Images';
 import NetInfo, { NetInfoState } from "@react-native-community/netinfo";
 import { init_lang, init_token } from '../../../network';
+import { useAppDispatch } from '../../../redux/store/store';
+import { cities } from '../../../middleware/general/cities';
+// import messaging from '@react-native-firebase/messaging';
 
 const Splash: React.FC<{}> = (params: any) => {
+  const dispatch = useAppDispatch();
+  // const testNewNoti = async () => {
+  //   // messaging().onMessage(async message => this.getNotifications());
+  //   const authStatus = await messaging().requestPermission();
+  //   console.log("authStatus---------", authStatus);
+  //   const enabled =
+  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  //   if (enabled) {
+  //     console.log("Authorization status:-------------------", authStatus);
+  //   }
+  // };
+  // messaging().getInitialNotification().then(async (remoteMessage: any) => {
+  //   console.log('getInitialNotification-------tabs--------', remoteMessage);
+  //   if (remoteMessage.data.notificationType == 'appointment' || remoteMessage.data.notificationType == 'reviewService' && remoteMessage.data.notificationTypeId) {
+  //     // navigation.navigate('ReservationDetails', {appointmentId: remoteMessage.data.notificationTypeId});
+  //   } else if (remoteMessage.data.notificationType == 'serviceProvider' && remoteMessage.data.notificationTypeId) {
+  //     // navigation.navigate("AllBranches", { salonId: remoteMessage.data.id });
+  //   } else if (remoteMessage.data.notificationType == 'branch' && remoteMessage.data.notificationTypeId) {
+  //     // navigation.navigate("SalonDetails", {id: remoteMessage.data.notificationTypeId});
+  //   } else if (remoteMessage.data.notificationType == 'service' && remoteMessage.data.notificationTypeId) {
+  //     console.log('remoteMessage.data.notificationType == service && remoteMessage.data.notificationTypeId)');
+  //     // navigation.navigate('ServiceDetails', {
+  //     //   type: 'from branch',
+  //     //   serviceId: remoteMessage.data.notificationTypeId,
+  //     //   salonId: remoteMessage.data?.serviceProviderId,
+  //     //   branchId: remoteMessage.data?.params.item.id,
+  //     //   address: remoteMessage.data?.address,
+  //     //   location: remoteMessage.data?.location,
+  //     // });
+  //   } else if (remoteMessage.data.notificationType == 'offer' && remoteMessage.data.notificationTypeId) {
+  //     console.log('remoteMessage.data.notificationType == offer && remoteMessage.data.notificationTypeId');
+  //     // navigation.navigate('ServiceDetails', {
+  //     //   type: 'from offers',
+  //     //   serviceId: remoteMessage.data.notificationTypeId,
+  //     // });
+  //   } else if (remoteMessage.data.notificationType == 'coupon') {
+  //     // navigation.navigate('Notifications');
+  //   } else {
+  //     console.log('nullnullnullnullnullnullnullnullnull');
+  //     null;
+  //   }
+  // });
   useEffect(() => {
+    // testNewNoti();
     checkLanguage();
+    dispatch(cities({}));
   }, []);
 
   const checkInternet = async (): Promise<void> => {

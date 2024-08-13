@@ -1,11 +1,10 @@
-import {Dimensions, Platform, StyleSheet} from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { StyleSheet } from 'react-native';
 import { calcFont, calcHeight, calcWidth } from '../../utils/sizes';
 import { COLORS, FONTS } from '../../utils/theme';
 const styles = StyleSheet.create({
     modalContainer: {
         width: calcWidth(343),
-        backgroundColor: Colors.white,
+        backgroundColor: COLORS.white,
         borderRadius: calcWidth(16),
         justifyContent: 'center',
         alignItems: 'center',
@@ -21,14 +20,14 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: FONTS.bold,
         fontSize: calcFont(21),
-        color: COLORS.darkText,
+        color: COLORS.textDark,
         marginBottom: calcHeight(36),
         textAlign: 'left',
     },
     discription: {
         fontFamily: FONTS.medium,
         fontSize: calcFont(18),
-        color: COLORS.darkText,
+        color: COLORS.textDark,
     },
     buttonsView: {
         flexDirection: 'row',
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
         borderRadius: calcWidth(16),
     },
     buttonTitle2: {
-        color: COLORS.darkText,
+        color: COLORS.textDark,
         fontSize: calcFont(16),
     },
 });

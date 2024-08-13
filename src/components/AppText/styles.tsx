@@ -1,21 +1,21 @@
 import {StyleSheet} from 'react-native';
-import {scale} from 'react-native-size-matters';
-import {colors, fonts} from '../../../utils/theme';
+import { COLORS, FONTS } from '../../utils/theme';
+import { calcFont, calcHeight, calcWidth } from '../../utils/sizes';
 
 export const styles = StyleSheet.create({
   button: {
     alignSelf: 'stretch',
-    height: scale(50),
+    height: calcHeight(50),
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.primary,
+    backgroundColor: COLORS.primaryGradient,
     flexDirection: 'row',
-    borderRadius: scale(7),
+    borderRadius: calcWidth(7),
   },
   title: {
-    fontSize: scale(16),
-    color: colors.textBtnColor,
+    fontSize: calcFont(16),
+    color: COLORS.textDark,
     fontStyle: 'normal',
-    fontFamily: fonts.medium,
+    fontFamily: FONTS.medium,
   },
 });

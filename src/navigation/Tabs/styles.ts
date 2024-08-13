@@ -22,6 +22,7 @@ const styles = StyleSheet.create<Styles | any>({
     tabBarLabelStyle: {
         fontSize: calcFont(14),
         fontFamily: FONTS.medium,
+        textTransform: 'capitalize',
     },
     shipmentContainer: {
         width: calcHeight(118),

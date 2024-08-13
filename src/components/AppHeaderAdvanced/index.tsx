@@ -3,7 +3,7 @@ import { TouchableOpacity, ViewStyle, TextStyle, Image, ImageStyle, View, ImageB
 import LinearGradient from 'react-native-linear-gradient';
 import { styles } from './styles';
 import AppText from '../AppText';
-import { calcFont } from '../../utils/sizes';
+import { calcFont, calcHeight } from '../../utils/sizes';
 import { COLORS, FONTS } from '../../utils/theme';
 import { GradientBorderView } from '@good-react-native/gradient-border';
 import AppTextGradient from '../AppTextGradient';
@@ -12,7 +12,8 @@ import { Trans } from '../../translation';
 
 interface AppHeaderProps {
     user?: any;
-    onPress?: () => void;
+    onPress1?: () => void;
+    onPress2?: () => void;
     icon?: string | any;
     iconStyle?: ImageStyle;
     title?: string;
@@ -21,14 +22,18 @@ interface AppHeaderProps {
 
 const AppHeaderAdvanced: React.FC<AppHeaderProps> = ({
     user,
-    onPress,
+    onPress1,
+    onPress2,
     icon,
     title,
     logo,
 }) => (
     <View style={styles.container}>
         <View style={styles.view}>
-            <View style={styles.profileContainer}>
+            <TouchableOpacity
+                onPress={onPress2}
+                style={styles.profileContainer}
+            >
                 <ImageBackground source={user?.image} style={styles.profileImage} imageStyle={styles.profileImage}>
                     <View style={styles.statusBorder} >
                         <View style={styles.statusView}>
@@ -43,19 +48,20 @@ const AppHeaderAdvanced: React.FC<AppHeaderProps> = ({
                         fontSize={calcFont(14)}
                         textAlign={'left'}
                         color={COLORS.textDark}
+                        marginBottom={calcHeight(2)}
                     />
                     <AppText
                         title={user?.name}
-                        fontFamily={FONTS.light}
+                        fontFamily={FONTS.regular}
                         fontSize={calcFont(14)}
                         textAlign={'left'}
-                        color={COLORS.textLight}
+                        color={COLORS.textDark}
                     />
                 </View>
-            </View>
+            </TouchableOpacity>
             <Image source={IMAGES.logoColors} style={styles.icon}/>
             <View style={styles.notContainer}>
-                <TouchableOpacity onPress={onPress}>
+                <TouchableOpacity onPress={onPress1}>
                     <Image source={IMAGES.notificationsNew} style={styles.icon}/>
                 </TouchableOpacity>
             </View>

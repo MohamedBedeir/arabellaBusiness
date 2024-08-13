@@ -69,9 +69,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
                         />
                     </View>
                 </View>
-                <TouchableOpacity onPress={onPress}>
                     <Image source={IMAGES.openDetailsWhite} style={styles.dataIcon}/>
-                </TouchableOpacity>
             </LinearGradient>
         );
     };
@@ -106,7 +104,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
                 <AppDataLine
                     containerStyle={{}}
                     image={IMAGES.moreDate}
-                    title={`${moment(_item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}   ${moment(_item?.serviceBookings[0]?.scheduledAt).format('hh:mm')}`}
+                    title={`${Trans('day')}: ${moment(_item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  -  ${Trans('time')}: ${moment(_item?.serviceBookings[0]?.scheduledAt).format('hh:mm')}`}
                     fontSize={calcFont(14)}
                     fontFamily={FONTS.medium}
                     textColor={COLORS.textDark}
@@ -127,7 +125,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
         );
     }
     return (
-        <View style={styles.container}>
+        <TouchableOpacity onPress={onPress} style={styles.container}>
             {dataSection()}
             {detailsSection()}
             {/* <View style={styles.dataContainer}>
@@ -232,7 +230,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
                     textColorEnd={COLORS.primaryGradient}
                 />
             </View> */}
-        </View>
+        </TouchableOpacity>
     );
 }
 
