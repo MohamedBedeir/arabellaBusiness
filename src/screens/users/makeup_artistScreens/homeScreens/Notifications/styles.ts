@@ -21,8 +21,14 @@ const styles = StyleSheet.create({
     borderBlockColor: COLORS.red,
     borderBottomWidth: 1,
     width: calcWidth(100),
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  deleteIcon: {
+    width: calcWidth(18),
+    height: calcWidth(18),
+    marginHorizontal: calcWidth(4)
   },
 });
 export default styles;

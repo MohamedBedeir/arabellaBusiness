@@ -24,11 +24,14 @@ import AppModalCalendar from '../../../../../components/AppModalCalendar';
 import moment from 'moment';
 import messaging from '@react-native-firebase/messaging';
 import { notifications_data } from '../../../../../middleware/notifications/notifications';
+import endpoints from '../../../../../network/endpoints';
 
 const Home: React.FC = () => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
   const { statisticsLoader, statisticsData, statisticsData_TotalAppointments, statisticsData_TotalPaidAmount, statisticsData_TotalRefundAmount, statisticsData_Counts } : { statisticsLoader: boolean, statisticsData: any, statisticsData_TotalAppointments: any, statisticsData_TotalPaidAmount: any, statisticsData_TotalRefundAmount: any, statisticsData_Counts: any} = useSelector((store: RootState) => store?.statistics);
+  const {notificationsData } = useSelector((store: RootState) => store?.notifications);
+  const [notificationNew, setNotificationNew] = useState<any>(false);
   const [userData, setUserData] = useState<any>();
   const [visibleTimePeriod, setVisibleTimePeriod] = useState<boolean>(false);
   const [selectTimePeriod, setSelectTimePeriod] = useState<any>('');
@@ -43,7 +46,6 @@ const Home: React.FC = () => {
   const [barChart, setBarChart] = useState<number>(100);
   const [lineChart, setLineChart] = useState<number>(20000);
   
-
   const testNewNoti = async () => {
     messaging().onMessage(async message => dispatch(notifications_data({page: 1})));
   };
@@ -89,9 +91,20 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
+    for (let i = 0; i < notificationsData?.length; i++) {
+      console.log('--notificationsData[i]?.isRead----------', notificationsData[i]?.isRead);
+      
+      if (!notificationsData[i]?.isRead) {
+        setNotificationNew(true);
+      }
+    }
+  }, [notificationsData]);
+
+  useEffect(() => {
     testNewNoti();
     getUser();
     getStatistics();
+    dispatch(notifications_data({}));
   }, []);
 
   useEffect(() => {
@@ -104,15 +117,17 @@ const Home: React.FC = () => {
   }, [navigation]);
 
   const headerSection = () => {
+    const defaultImage = userData?.serviceProvider?.featuredImage ? {uri: `${endpoints.imageUrl}${userData?.serviceProvider?.featuredImage}`} : IMAGES.userTest;
     const user = {
       name: userData?.name,
-      image: IMAGES.userTest,
+      image: defaultImage,
     };
     return (
       <AppHeaderAdvanced
         user={user}
         onPress1={() => navigation.navigate('SA_HomeDetailsStack', {screen: 'SA_Notifications'})}
         onPress2={() => navigation.navigate('SA_MoreDetailsStack', {screen: 'SA_Profile'})}
+        image={notificationNew ? IMAGES.notificationsNew : IMAGES.notifications}
       />
     )
   };
@@ -169,7 +184,7 @@ const Home: React.FC = () => {
           <SearchByDate
             onPress={() => onStartTime()}
             containerStyle={{borderColor: timeFirstData ? COLORS.red : COLORS.borderLight}}
-            placeholder={selectTimePeriod?.id == 3 ? Trans('firstWeek') : Trans('first')}
+            placeholder={selectTimePeriod?.id == 3 ? Trans('firstWeek') : selectTimePeriod?.id == 2 ? Trans('selectMonth') : selectTimePeriod?.id == 1 ? Trans('selectYear') : Trans('first')}
             title={selectTimePeriod?.id == 1 ? selectYear.name : selectTimePeriod?.id == 2 ? selectMonth && `${moment(selectMonth).format('MM/YYYY')}` : selectTimePeriod?.id == 3 ? selectDay && `${moment(selectDay).format('DD/MM/YYYY')}` : ''}
           />
           <AppButtonDefault
@@ -429,7 +444,7 @@ const Home: React.FC = () => {
         visible={visibleYear}
           onClose={() => {setVisibleYear(false)}}
           onSelectItem={(item: any) => {setSelectYear(item); setTimeFirstData(false)}}
-          title={Trans('chooseYear')}
+          title={Trans('selectYear')}
           data={DUMMY_DATA.YEARS}
           itemSelected={selectYear}
           multiSelect={false}
@@ -445,6 +460,7 @@ const Home: React.FC = () => {
         onMonth={(item: any) => {setSelectMonth(item); setVisibleMonth(false); setTimeFirstData(false)}}
         initialView='months'
         buttons={false}
+        title={Trans('selectMonth')}
       />
     )
   };

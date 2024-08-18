@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, Image, View, TouchableOpacity } from 'react-native';
+import { ImageBackground, Image, View, TouchableOpacity, I18nManager } from 'react-native';
 import { styles } from './styles';
 import AppText from '../AppText';
 import { Trans } from '../../translation';
@@ -27,25 +27,25 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         return (
             <LinearGradient
                 style={styles.dataContainer}
-                colors={[COLORS.primaryGradient, COLORS.secondGradient]}
+                colors={[!item?.isRead ? COLORS.primaryGradient : COLORS.gray, !item?.isRead ? COLORS.secondGradient : COLORS.gray]}
                 locations={[0, 1]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
             >
                 <View>
                     <AppText
-                        title={item?.title}
+                        title={I18nManager.isRTL ? item?.title : item?.titleEn}
                         fontSize={calcFont(18)}
                         fontFamily={FONTS.extra_bold}
-                        color={COLORS.white}
+                        color={!item?.isRead ? COLORS.white : COLORS.primaryGradient}
                         textAlign={'left'}
                         marginBottom={calcHeight(8)}
                     />
                     <AppText
-                        title={item?.message}
+                        title={I18nManager.isRTL ? item?.message : item?.messageEn}
                         fontSize={calcFont(16)}
                         fontFamily={FONTS.regular}
-                        color={COLORS.white}
+                        color={!item?.isRead ? COLORS.white : COLORS.primaryGradient}
                         textAlign={'left'}
                         marginBottom={calcHeight(12)}
                         numberOfLines={3}
@@ -58,7 +58,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
                         textAlign={'left'}
                     />
                 </View>
-                <Image source={IMAGES.openDetailsWhite} style={styles.dataIcon}/>
+                <Image source={ !item?.isRead ? IMAGES.openDetailsWhite : IMAGES.nextDark} style={styles.dataIcon}/>
             </LinearGradient>
         );
     };
@@ -120,7 +120,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
     return (
         <TouchableOpacity
             onPress={onPress}
-            style={[styles.container, {backgroundColor: item?.isRead ? COLORS.borderLight : COLORS.white}]}
+            style={[styles.container, {backgroundColor: COLORS.white}]}
         >
             {dataSection()}
             {/* {detailsSection()} */}

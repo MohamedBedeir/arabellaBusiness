@@ -29,6 +29,8 @@ const LocationModal: React.FC<Props> = (params: any) => {
       onBackButtonPress={() => { params.onClose()}}
       deviceHeight={Dimensions.get('screen').height}
       statusBarTranslucent
+      animationInTiming= {800}
+      animationOutTiming= {800}
     >
       <View style={styles.modalView}>
         <AppText
@@ -49,14 +51,14 @@ const LocationModal: React.FC<Props> = (params: any) => {
         <View style={styles.buttonsView}>
           <AppButtonDefault
             title={params.titleButton1}
-            buttonStyle={styles.button(COLORS.primaryGradient)}
+            
             onPress={() => params.onPressButton1()}
             colorStart={COLORS.primaryGradient}
             colorEnd={COLORS.secondGradient}
           />
           <AppButtonDefault
             title={params.titleButton2}
-            buttonStyle={styles.button(COLORS.gray)}
+            
             onPress={() => params.onPressButton2()}
             colorStart={COLORS.primaryGradient}
             colorEnd={COLORS.secondGradient}

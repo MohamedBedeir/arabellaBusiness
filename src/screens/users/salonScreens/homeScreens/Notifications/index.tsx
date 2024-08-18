@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import AppText from '../../../../../components/AppText';
@@ -13,7 +13,7 @@ import Modal_Warning from '../../../../../components/Modal_Warning';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../../../../redux/store/store';
 import AppLoading from '../../../../../components/AppLoading';
-import { notifications_data, notifications_delete } from '../../../../../middleware/notifications/notifications';
+import { notifications_data, notifications_delete, notifications_read } from '../../../../../middleware/notifications/notifications';
 import messaging from '@react-native-firebase/messaging';
 import AppEmptyScreen from '../../../../../components/AppEmptyScreen/AppEmptyScreen';
 
@@ -54,6 +54,7 @@ const Notifications: React.FC = () => {
           style={styles.deleteTouch}
           onPress={() => setVisibleDeleteAllNotification(true)}
         >
+          <Image source={IMAGES.delete} style={styles.deleteIcon}/>
           <AppText
             title={Trans('deleteNotifications')}
             color={COLORS.red}
@@ -70,7 +71,10 @@ const Notifications: React.FC = () => {
       return (
         <NotificationItem
           item={item}
-          onPress={() => navigation.navigate('SA_ReservationDetailsStack', {screen: 'SA_ReservationDetails', id: item.notificationTypeId})}
+          onPress={() => {
+            navigation.navigate('SA_ReservationDetailsStack', {screen: 'SA_ReservationDetails', id: item.notificationTypeId});
+            dispatch(notifications_read({id: item?.id}));
+          }}
         />
       )
     };

@@ -70,6 +70,7 @@ export const IMAGES = {
   moreVideos: require('./icons/moreVideos.png'),
   nextDark: require('./icons/nextDark.png'),
   notificationsNew: require('./icons/notificationsNew.png'),
+  notifications: require('./icons/notifications.png'),
   notificationsOpen: require('./icons/notificationsOpen.png'),
   openBlue: require('./icons/openBlue.png'),
   openCircleWhite: require('./icons/openCircleWhite.png'),

@@ -1,4 +1,4 @@
-package com.arabella.arabellabusiness
+package com.arabella.business
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

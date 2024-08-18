@@ -84,17 +84,11 @@ const Splash: React.FC<{}> = (params: any) => {
     } else {
       console.log('locale----------', locale);
       if (locale) {
-        //-------test------
-        await AsyncStorage.setItem('user_lang', 'ar');
-        init_lang('ar');
-        I18n.locale = 'ar';
-        I18nManager.allowRTL('ar' === 'ar');
-        I18nManager.forceRTL('ar' === 'ar');
-        // await AsyncStorage.setItem('user_lang', locale);
-        // I18n.locale = locale;
-        // init_lang(locale);
-        // I18nManager.allowRTL(locale === 'ar');
-        // I18nManager.forceRTL(locale === 'ar');
+          await AsyncStorage.setItem('user_lang', locale);
+          init_lang(locale);
+          I18n.locale = locale;
+          I18nManager.allowRTL('ar' === locale);
+          I18nManager.forceRTL('ar' === locale);
       } else {
         await AsyncStorage.setItem('user_lang', 'ar');
         init_lang('ar');

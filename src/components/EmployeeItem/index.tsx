@@ -24,15 +24,18 @@ const EmployeeItem: React.FC<EmployeeItemProps> = ({
     onPressDelete,
     onUpdateState,
 }) => {
-    var myStateName: string = '';
-    var myStateColor: string = item?.stateId == 1 ? COLORS.green2 : COLORS.yellow;
+    console.log('item--->>>>>>>>>>>', item);
+    
+    var myStateName: string = item?.isActive ? (I18nManager.isRTL ? DUMMY_DATA.SERVICESTATUES[0].name : DUMMY_DATA.SERVICESTATUES[0].nameEn) : (I18nManager.isRTL ? DUMMY_DATA.SERVICESTATUES[1].name : DUMMY_DATA.SERVICESTATUES[1].nameEn);
+    var myStateColor: string = item?.isActive ? COLORS.green2 : COLORS.yellow;
     var myStateBackgroundColor: string = item?.stateId == 1 ?  COLORS.backgroundGreen : COLORS.backgroundYellow;
     var myStateIcon: string = item?.stateId == 1 ? IMAGES.openGreen : IMAGES.openYellow;
-    for (let i = 0; i < DUMMY_DATA.SERVICESTATUES.length; i++) {
-        if (DUMMY_DATA.SERVICESTATUES[i].id == item?.stateId) {
-            myStateName = I18nManager.isRTL ? DUMMY_DATA.SERVICESTATUES[i].name : DUMMY_DATA.SERVICESTATUES[i].nameEn;
-        }
-    };
+    // for (let i = 0; i < DUMMY_DATA.SERVICESTATUES.length; i++) {
+
+    //     if (DUMMY_DATA.SERVICESTATUES[i].id == item?.stateId) {
+    //         myStateName = I18nManager.isRTL ? DUMMY_DATA.SERVICESTATUES[i].name : DUMMY_DATA.SERVICESTATUES[i].nameEn;
+    //     }
+    // };
     return (
         <View style={styles.container}>
             <View style={styles.dataContainer}>

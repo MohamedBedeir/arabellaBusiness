@@ -57,6 +57,7 @@ const Profile: React.FC = () => {
       animationType: 'slide-in',
     });
   };
+  console.log('userData-------', userData);
 
   const getUser = async () => {
     const user: any = await AsyncStorage.getItem('user');
@@ -136,7 +137,8 @@ const Profile: React.FC = () => {
 
   const bodySection = () => {
     const imageSection = () => {
-      const image = base64 != '' ? { uri: `data:image/png;base64,${base64}` } : IMAGES.userTest;
+      const defaultImage = userData?.serviceProvider?.featuredImage ? {uri: `${endpoints.imageUrl}${userData?.serviceProvider?.featuredImage}`} : IMAGES.userTest;
+      const image = base64 != '' ? { uri: `data:image/png;base64,${base64}` } : defaultImage;
       return (
         <ProfileImageItem
           containerStyle={{}}
@@ -202,7 +204,7 @@ const Profile: React.FC = () => {
             />
             <TouchableOpacity
               style={styles.policiesTouch}
-              onPress={() => navigation.navigate('MA_TermsAndConditions')}
+              onPress={() => navigation.navigate('SA_TermsAndConditions')}
             >
               <AppText
                 title={Trans('arabellaPolicies')}

@@ -22,19 +22,21 @@ import AppInputPhone from '../../../../../components/AppInputPhone';
 import AppLoading from '../../../../../components/AppLoading';
 import { RootState, useAppDispatch } from '../../../../../redux/store/store';
 import { useSelector } from 'react-redux';
-import { employee_add, employee_data, employee_edit } from '../../../../../middleware/employees/employees';
+import { employee_add, employee_data, employee_delete, employee_edit } from '../../../../../middleware/employees/employees';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setEmployeeAddState, setEmployeeEditState } from '../../../../../redux/store/employees/employeesSlice';
 import AppModalTimings from '../../../../../components/AppModalTimings';
 import AppPickerMultiSelect from '../../../../../components/AppPickerMultiSelect';
 import { service_data } from '../../../../../middleware/services/services';
+import { branches_data } from '../../../../../middleware/branches/branches';
+import AppEmptyScreen from '../../../../../components/AppEmptyScreen/AppEmptyScreen';
 
 const Employees: React.FC = () => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
   const [userData, setUserData] = useState<any>();
   const { serviceData } = useSelector((store: RootState) => store?.services);
-
+  const { branchesLoader, branchesData, branchesCount,branchAddState, branchEditState, branchDeleteState } = useSelector((store: RootState) => store?.branches);
   const { employeesLoader, employeeData, employeeCount, employeeAddState, employeeEditState, employeeDeleteState } = useSelector((store: RootState) => store?.employees);
   const [selectEmployee, setSelectEmployee] = useState<any>({});
   const [employeeEditId, setEmployeeEditId] = useState<any>();
@@ -122,8 +124,9 @@ console.log('userData----------', userData);
     const user: any = await AsyncStorage.getItem('user');
     setUserData(JSON.parse(user));
   };
-
+  
   useEffect(() => {
+    dispatch(branches_data({page: 1}));
     getUser();
     getServices(1);
     getEmployees(1);
@@ -179,7 +182,7 @@ console.log('userData----------', userData);
       setRestEnd('');
       setWorkStart('');
       setWorkEnd('');
-      setServicesIds('');
+      setServicesIds([]);
       setIsActive(true);
     } else {
       setName('');
@@ -205,7 +208,7 @@ console.log('userData----------', userData);
       setRestEnd('');
       setWorkStart('');
       setWorkEnd('');
-      setServicesIds('');
+      setServicesIds([]);
       setIsActive(true);
     }
   };
@@ -241,6 +244,8 @@ console.log('userData----------', userData);
     }
   };
 
+  console.log('userData---------', userData);
+  
   const onAdd = () => {
     // setVisibleAddNewEmployee(false);
     if (name == '') {
@@ -312,7 +317,7 @@ console.log('userData----------', userData);
       
       const data = {
         serviceProviderId: userData.serviceProviderId,
-        branchId: userData.serviceProviderId,
+        branchId: branchesData[0]?.id,
         name,
         email,
         mobile: `+966${mobile}`,
@@ -475,7 +480,7 @@ console.log('userData----------', userData);
       return (
         <EmployeeItem
           item={item}
-          onPressDelete={() => setVisibleDeleteEmployee(true)}
+          onPressDelete={() => {setVisibleDeleteEmployee(true); setSelectEmployee(item)}}
           onPressEdit={() => setVisibleEditEmployee(true)}
           onUpdateState={() => setVisibleUpdateEmployeeState(true)}
         />
@@ -1349,12 +1354,14 @@ console.log('userData----------', userData);
     )
   };
   
+  console.log('selectEmployee---------', selectEmployee);
+  
   const modalDeleteSection = () => {
     return (
       <Modal_Warning
         visible={visibleDeleteEmployee}
         onClose={() => setVisibleDeleteEmployee(false)}
-        onPress1={() => setVisibleDeleteEmployee(false)}
+        onPress1={() => {setVisibleDeleteEmployee(false); dispatch(employee_delete({id: selectEmployee?.id}))}}
         onPress2={() => setVisibleDeleteEmployee(false)}
         image={IMAGES.modalCancel}
         title={Trans('doDeleteEmployeeFromEmployeesList')}
@@ -1432,6 +1439,15 @@ console.log('userData----------', userData);
     )
   };
 
+  const emptySection = () => {
+    return (
+      <AppEmptyScreen
+        image={IMAGES.empty_timing}
+        title={Trans('haveNotBlockedAnyAppointmentsYet')}
+      />
+    )
+  };
+
   const loadingSection = () => {
     return (
       <AppLoading
@@ -1477,6 +1493,7 @@ console.log('userData----------', userData);
       {loadingSection()}
       {headerSection()}
       {addSection()}
+      {(!employeesLoader && employeeData.length == 0) && emptySection()}
       {listSection()}
       {fillterSection()}
       {addNewEmployeeSection()}

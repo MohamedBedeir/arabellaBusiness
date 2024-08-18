@@ -92,7 +92,7 @@ const Definition: React.FC = () => {
               fontSize={calcFont(16)}
               color={COLORS.white}
             />
-            <Image source={I18nManager.isRTL ? IMAGES.languageAr : IMAGES.languageEn} style={styles.languageLangImage}/>
+            {/* <Image source={I18nManager.isRTL ? IMAGES.languageAr : IMAGES.languageEn} style={styles.languageLangImage}/> */}
           </TouchableOpacity>
         </View>
       )

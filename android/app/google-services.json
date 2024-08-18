@@ -77,6 +77,42 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773178006039:android:7c021fd612eb3773ef1a52",
+        "android_client_info": {
+          "package_name": "com.arabella.business"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773178006039-oebv9okaestgru8fsldnccjfn46ivo0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEV3ZJOxAK0THn6EvGBFZYGfobOVEwDCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773178006039-oebv9okaestgru8fsldnccjfn46ivo0t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "773178006039-vl207p0vj4qa00lh7b5jphupnbgtd2jo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.annz.arabella"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

@@ -1,4 +1,4 @@
-package com.arabella.arabellabusiness
+package com.arabella.business
 
 import android.app.Application
 import com.facebook.react.PackageList

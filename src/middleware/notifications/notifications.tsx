@@ -46,3 +46,25 @@ export const notifications_delete = createAsyncThunk(
     },
 );
 
+export const notifications_read = createAsyncThunk(
+    'NOTIFICATIONS_DELETE',
+    async (args: any, thunkApi) => {
+        thunkApi.dispatch(setNotificationsDeleteState(''));
+        thunkApi.dispatch(setNotificationsLoader(true));
+        try {
+            const response: any = await client.patch(`${endpoints.notifications}/${args?.id}`, {isRead: true});
+            if (response.status == 200 || response.status == 201) {
+                thunkApi.dispatch(notifications_data({}));
+                thunkApi.dispatch(setNotificationsDeleteState('done'));
+                thunkApi.dispatch(notifications_data({}))
+            } else {
+                thunkApi.dispatch(setNotificationsDeleteState('error'));
+                thunkApi.dispatch(setNotificationsLoader(false));
+            }
+        } catch (err) {
+            thunkApi.dispatch(setNotificationsDeleteState('error'));
+            thunkApi.dispatch(setNotificationsLoader(false));
+        }
+    },
+);
+

@@ -4,12 +4,12 @@ PODS:
     - React-Core
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.74.2)
-  - Firebase/CoreOnly (10.24.0):
-    - FirebaseCore (= 10.24.0)
-  - Firebase/Messaging (10.24.0):
+  - Firebase/CoreOnly (10.29.0):
+    - FirebaseCore (= 10.29.0)
+  - Firebase/Messaging (10.29.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 10.24.0)
-  - FirebaseCore (10.24.0):
+    - FirebaseMessaging (~> 10.29.0)
+  - FirebaseCore (10.29.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.12)
     - GoogleUtilities/Logger (~> 7.12)
@@ -22,7 +22,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
     - PromisesObjC (~> 2.1)
-  - FirebaseMessaging (10.24.0):
+  - FirebaseMessaging (10.29.0):
     - FirebaseCore (~> 10.0)
     - FirebaseInstallations (~> 10.0)
     - GoogleDataTransport (~> 9.3)
@@ -1288,11 +1288,11 @@ PODS:
     - React-Core
   - RNCMaskedView (0.3.1):
     - React-Core
-  - RNFBApp (19.3.0):
-    - Firebase/CoreOnly (= 10.24.0)
+  - RNFBApp (20.4.0):
+    - Firebase/CoreOnly (= 10.29.0)
     - React-Core
-  - RNFBMessaging (19.3.0):
-    - Firebase/Messaging (= 10.24.0)
+  - RNFBMessaging (20.4.0):
+    - Firebase/Messaging (= 10.29.0)
     - FirebaseCoreExtension
     - React-Core
     - RNFBApp
@@ -1618,12 +1618,12 @@ SPEC CHECKSUMS:
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
   FBLazyVector: 4bc164e5b5e6cfc288d2b5ff28643ea15fa1a589
-  Firebase: 91fefd38712feb9186ea8996af6cbdef41473442
-  FirebaseCore: 11dc8a16dfb7c5e3c3f45ba0e191a33ac4f50894
+  Firebase: cec914dab6fd7b1bd8ab56ea07ce4e03dd251c2d
+  FirebaseCore: 30e9c1cbe3d38f5f5e75f48bfcea87d7c358ec16
   FirebaseCoreExtension: 705ca5b14bf71d2564a0ddc677df1fc86ffa600f
   FirebaseCoreInternal: df84dd300b561c27d5571684f389bf60b0a5c934
   FirebaseInstallations: 913cf60d0400ebd5d6b63a28b290372ab44590dd
-  FirebaseMessaging: 4d52717dd820707cc4eadec5eb981b4832ec8d5d
+  FirebaseMessaging: 7b5d8033e183ab59eb5b852a53201559e976d366
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: fdfdfe5479092de0c4bdbebedd9056951f092c4f
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
@@ -1689,8 +1689,8 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNCClipboard: 0a720adef5ec193aa0e3de24c3977222c7e52a37
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
-  RNFBApp: de81f7eb68c1e6107574f2b102b0dee92a9862fa
-  RNFBMessaging: bcceb47d52080700672f4a46aa9096d9754a988f
+  RNFBApp: 10819a4f67d634fe34aa607c6d1e8a8aef019308
+  RNFBMessaging: 652aac21d91b8ddb85a5e25c0f04150ef60b5384
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 5538c370587d7e757667b9283ca867dd7635f154
   RNPermissions: 294531ede5a64d1528463e88fffef05675842042

@@ -2,18 +2,15 @@ import { StyleSheet } from 'react-native';
 import { calcFont, calcHeight, calcWidth } from '../../utils/sizes';
 import { COLORS, FONTS } from '../../utils/theme';
 
-interface Styles {
-    button: (color: string) => string;
-};
-
-const styles = StyleSheet.create<Styles | any>({
+const styles = StyleSheet.create({
     modalView: {
-        backgroundColor: COLORS.white,
+        backgroundColor: COLORS.red,
         borderTopLeftRadius: calcWidth(20),
         borderTopRightRadius: calcWidth(20),
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: calcHeight(20),
+        height: 400,
     },
     title: {
         fontFamily: FONTS.bold,
@@ -32,13 +29,5 @@ const styles = StyleSheet.create<Styles | any>({
     buttonsView: {
         marginTop: calcHeight(32),
     },
-    button: (color: string) => ({
-        backgroundColor: color,
-        borderRadius: calcWidth(4),
-        height: calcHeight(45),
-        width: calcWidth(335),
-        alignSelf: "center",
-        marginBottom: calcHeight(12),
-    })
 });
 export default styles;

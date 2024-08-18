@@ -36,7 +36,7 @@ const ReservationDetails: React.FC = (params: any) => {
   const refTimer = useRef();
   const [costTransfer, setCostTransfer] = useState<any>(0);
   const [costTransferState, setCostTransferState] = useState<boolean>(false);
-  const [count, setCount] = useState<number>(20);
+  const [count, setCount] = useState<number>(20 * 60);
   const [step, setStep] = useState<number>(1);
   const [OTPCode, setOTPCode] = useState<string>('');
   const [errors, setErrors] = useState<any>();
@@ -106,6 +106,8 @@ const ReservationDetails: React.FC = (params: any) => {
         </View>
       )
     };
+
+    console.log('--------->>>>>>>>>>>', parseInt(item?.invoice?.totalPriceAfterDiscount, 10), parseInt(item?.invoice?.totalPriceAfterDiscount, 10));
 
     const mainDataSection = () => {
       return (
@@ -200,7 +202,8 @@ const ReservationDetails: React.FC = (params: any) => {
                 textAlign={'left'}
               />
               <AppText
-                title={`${ costTransfer > 0 ? parseInt(costTransfer, 10) + parseInt(item?.invoice?.totalPriceAfterDiscount, 10) : parseInt(item?.invoice?.totalPriceAfterDiscount, 10)} ${Trans('rs')}`}
+                title={`${(costTransfer > 0 || (item?.appointmentFees && item?.appointmentFees[0]?.amount)) ? (parseInt(costTransfer, 10) + parseInt(item?.appointmentFees[0]?.amount, 10) + parseInt(item?.invoice?.totalPriceAfterDiscount, 10)) : parseInt(item?.invoice?.totalPriceAfterDiscount, 10)} ${Trans('rs')}`}
+                // title={`${ costTransfer > 0 ? (parseInt(costTransfer, 10) + parseInt(item?.invoice?.totalPriceAfterDiscount, 10)) : parseInt(item?.invoice?.totalPriceAfterDiscount, 10)} ${Trans('rs')}`}
                 fontSize={calcFont(16)}
                 fontFamily={FONTS.bold}
                 color={COLORS.white}
@@ -306,7 +309,7 @@ const ReservationDetails: React.FC = (params: any) => {
           <View style={styles.countDownContainer}>
             <CountDownTimer
               ref={refTimer}
-              timestamp={count}
+              timestamp={20 * 60}
               timerOnProgress={timerOnProgressFunc}
               timerCallback={timerCallbackFunc}
               containerStyle={styles.countDownView}

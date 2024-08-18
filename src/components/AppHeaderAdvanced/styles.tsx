@@ -52,6 +52,7 @@ export const styles = StyleSheet.create({
   icon: {
     width: calcHeight(24),
     height: calcHeight(24),
+    resizeMode: 'stretch',
   },
   notContainer: {
     width: calcWidth(136),

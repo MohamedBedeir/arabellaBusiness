@@ -5,7 +5,7 @@ import Profile from '../../../screens/users/makeup_artistScreens/moreScreens/Pro
 import Language from '../../../screens/users/makeup_artistScreens/moreScreens/Language';
 import BlockAppointments from '../../../screens/users/makeup_artistScreens/moreScreens/BlockAppointments';
 import Services from '../../../screens/users/makeup_artistScreens/moreScreens/Services';
-import TermsAndConditions from '../../../screens/users/makeup_artistScreens/moreScreens/TermsAndConditions';
+import { TermsAndConditions } from '../../../screens/users/makeup_artistScreens/moreScreens/TermsAndConditions';
 
 const MA_MoreDetails_Stack = createNativeStackNavigator<MA_MoreDetailsStackParam>();
 const MA_MoreDetailsStack: React.FC = () => (

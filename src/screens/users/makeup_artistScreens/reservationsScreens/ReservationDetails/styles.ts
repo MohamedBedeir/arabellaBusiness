@@ -1,4 +1,4 @@
-import {StyleSheet, I18nManager} from 'react-native';
+import {StyleSheet, I18nManager, Platform} from 'react-native';
 import { calcFont, calcHeight, calcWidth } from '../../../../../utils/sizes';
 import { COLORS, FONTS } from '../../../../../utils/theme';
 
@@ -61,10 +61,10 @@ const styles = StyleSheet.create({
     borderRadius: calcWidth(16),
     paddingHorizontal: calcWidth(12),
     paddingVertical: calcHeight(16),
-    marginBottom: calcHeight(16),
+    // marginBottom: calcHeight(16),
   },
   countDownContainer: {
-    marginTop: -calcHeight(144),
+    marginTop: Platform.OS == 'android' ? -calcHeight(144) : -calcHeight(104),
     marginBottom: calcHeight(96),
   },
   countDownView: {

@@ -18,6 +18,7 @@ interface AppHeaderProps {
     iconStyle?: ImageStyle;
     title?: string;
     logo?: boolean;
+    image?: boolean;
 };
 
 const AppHeaderAdvanced: React.FC<AppHeaderProps> = ({
@@ -27,6 +28,7 @@ const AppHeaderAdvanced: React.FC<AppHeaderProps> = ({
     icon,
     title,
     logo,
+    image,
 }) => (
     <View style={styles.container}>
         <View style={styles.view}>
@@ -45,10 +47,10 @@ const AppHeaderAdvanced: React.FC<AppHeaderProps> = ({
                     <AppText
                         title={Trans('welcome')}
                         fontFamily={FONTS.black}
-                        fontSize={calcFont(14)}
+                        fontSize={calcFont(16)}
                         textAlign={'left'}
                         color={COLORS.textDark}
-                        marginBottom={calcHeight(2)}
+                        // marginBottom={calcHeight(2)}
                     />
                     <AppText
                         title={user?.name}
@@ -62,7 +64,7 @@ const AppHeaderAdvanced: React.FC<AppHeaderProps> = ({
             <Image source={IMAGES.logoColors} style={styles.icon}/>
             <View style={styles.notContainer}>
                 <TouchableOpacity onPress={onPress1}>
-                    <Image source={IMAGES.notificationsNew} style={styles.icon}/>
+                    <Image source={image} style={styles.icon}/>
                 </TouchableOpacity>
             </View>
         </View>

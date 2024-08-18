@@ -31,7 +31,11 @@ export const confirmationCode = createAsyncThunk(
         await AsyncStorage.setItem('user', JSON.stringify(user));
         await AsyncStorage.setItem('token', `Bearer ${response.data.data.token}`);
         try {
-          await messaging().subscribeToTopic(`${endpoints.topik}${user?.id}`);
+          const token = await messaging().getToken();
+          if (token) {
+            console.log('token from message-------------------', token);
+          }
+          await messaging().subscribeToTopic(`${endpoints.topik}${user?.id}`).then((a) => console.log('----subscribeToTopic-----', a));
           console.log('===--->>>>>>>>>>>>>>>>>>>>>>');
         } catch (error) {
           console.error(`Error subscribing to topic-----------: ${error}`);
