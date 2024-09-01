@@ -48,6 +48,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
                         color={!item?.isRead ? COLORS.white : COLORS.primaryGradient}
                         textAlign={'left'}
                         marginBottom={calcHeight(12)}
+                        width={calcWidth(240)}
                         numberOfLines={3}
                     />
                     <AppText

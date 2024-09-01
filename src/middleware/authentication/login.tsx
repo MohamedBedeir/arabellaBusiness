@@ -20,6 +20,8 @@ export const login = createAsyncThunk(
         password: args.password,
       };
       const response: any = await client.post(endpoints.login, data);
+      console.log('response----login------', response);
+      
       if (response.status == 204) {
         thunkApi.dispatch(setAuthenticationLoader(false));
         thunkApi.dispatch(setLoginState(''));

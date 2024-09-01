@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     width: calcWidth(375),
     paddingHorizontal: calcWidth(16),
     paddingVertical: calcHeight(8),
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
   },
   deleteTouch: {
     height: calcHeight(40),

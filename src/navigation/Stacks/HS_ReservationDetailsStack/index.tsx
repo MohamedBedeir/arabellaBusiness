@@ -5,14 +5,14 @@ import Reservations from '../../../screens/users/makeup_artistScreens/reservatio
 import ReservationDetails from '../../../screens/users/makeup_artistScreens/reservationsScreens/ReservationDetails';
 
 const HS_ReservationDetails_Stack = createNativeStackNavigator<HS_ReservationDetailsStackParam>();
-const HS_ReservationDetailsStack: React.FC = () => (
+const HS_ReservationDetailsStack: React.FC = (route: any) => (
   <HS_ReservationDetails_Stack.Navigator
     initialRouteName="HS_ReservationDetails"
     screenOptions={{
       headerShown: false,
     }}
     >
-    <HS_ReservationDetails_Stack.Screen name="HS_ReservationDetails" component={ReservationDetails} />
+    <HS_ReservationDetails_Stack.Screen name="HS_ReservationDetails" component={ReservationDetails} initialParams={route.route.params}/>
   </HS_ReservationDetails_Stack.Navigator>
 );
 

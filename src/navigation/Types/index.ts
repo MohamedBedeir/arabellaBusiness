@@ -27,9 +27,6 @@ export type SA_HomeDetailsStackParam = {
 export type SA_MoreStackParam = {
   SA_More: undefined;
 };
-export type SA_ReservationsStackParam = {
-  SA_Reservations: undefined;
-};
 export type SA_MoreDetailsStackParam = {
   SA_Profile: undefined;
   SA_Branches: undefined;
@@ -44,7 +41,13 @@ export type SA_MoreDetailsStackParam = {
   SA_Ratings: undefined;
   SA_TermsAndConditions: undefined;
 };
-
+export type SA_ReservationsStackParam = {
+  SA_Reservations: undefined;
+};
+export type SA_ReservationDetailsStackParam = {
+  SA_ReservationDetails: undefined;
+};
+//================
 export type MA_TabsParam = {
   MA_HomeStack: undefined;
   MA_ReservationsStack: undefined;
@@ -73,8 +76,7 @@ export type MA_ReservationsStackParam = {
 export type MA_ReservationDetailsStackParam = {
   MA_ReservationDetails: undefined;
 };
-
-
+//================
 export type HS_TabsParam = {
   HS_HomeStack: undefined;
   HS_ReservationsStack: undefined;
@@ -89,9 +91,6 @@ export type HS_HomeDetailsStackParam = {
 export type HS_MoreStackParam = {
   HS_More: undefined;
 };
-export type HS_ReservationsStackParam = {
-  HS_Reservations: undefined;
-};
 export type HS_MoreDetailsStackParam = {
   HS_Profile: undefined;
   HS_Employees: undefined;
@@ -100,8 +99,9 @@ export type HS_MoreDetailsStackParam = {
   HS_Language: undefined;
   HS_TermsAndConditions: undefined;
 };
+export type HS_ReservationsStackParam = {
+  HS_Reservations: undefined;
+};
 export type HS_ReservationDetailsStackParam = {
   HS_ReservationDetails: undefined;
 };
-
-

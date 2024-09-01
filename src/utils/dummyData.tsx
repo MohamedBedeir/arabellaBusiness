@@ -360,8 +360,8 @@ export const DUMMY_DATA = {
     { id: 43, title: '21:30', hour: 21, minute: 30 },
     { id: 44, title: '22:00', hour: 22, minute: 0 }, 
     { id: 45, title: '22:30', hour: 22, minute: 30 },
-    { id: 46, title: '323:00', hour: 23, minute: 0 },
-    { id: 47, title: '323:30', hour: 23, minute: 30 },
+    { id: 46, title: '23:00', hour: 23, minute: 0 },
+    { id: 47, title: '23:30', hour: 23, minute: 30 },
     { id: 48, title: 'نهاية اليوم', hour: 24, min0ute: 0 }, 
   ],
   CATEGORIES: [
@@ -406,7 +406,7 @@ export const DUMMY_DATA = {
     },
     {
       key: 'scheduled',
-      name: 'المقرر',
+      name: 'تم الدفع',
       nameEn: 'scheduled',
     },
     {

@@ -44,8 +44,10 @@ const ReservationDetails: React.FC = (params: any) => {
   const [visibleRejection, setVisibleRejection] = useState<boolean>(false);
   const [visibleCancellation, setVisibleCancellation] = useState<boolean>(false);
 
+  console.log('params-------------', params.route);
+  
   const getReservationDetails = () => {
-    dispatch(appointment_details({id: params.route.params.id}))
+    dispatch(appointment_details({id: params?.route?.params?.id}))
   };
 
   useEffect(() => {
@@ -58,7 +60,7 @@ const ReservationDetails: React.FC = (params: any) => {
         onPress={() => navigation.goBack()}
         icon={IMAGES.back}
         title={Trans('reservationDetails')}
-        logo={IMAGES.logoColors}
+        // logo={IMAGES.logoColors}
       />
     )
   };
@@ -85,6 +87,7 @@ const ReservationDetails: React.FC = (params: any) => {
                 fontFamily={FONTS.regular}
                 color={COLORS.textDark}
                 textAlign={'left'}
+                width={calcWidth(160)}
               />
             )}
             {icon && (
@@ -202,7 +205,7 @@ const ReservationDetails: React.FC = (params: any) => {
                 textAlign={'left'}
               />
               <AppText
-                title={`${(costTransfer > 0 || (item?.appointmentFees && item?.appointmentFees[0]?.amount)) ? (parseInt(costTransfer, 10) + parseInt(item?.appointmentFees[0]?.amount, 10) + parseInt(item?.invoice?.totalPriceAfterDiscount, 10)) : parseInt(item?.invoice?.totalPriceAfterDiscount, 10)} ${Trans('rs')}`}
+                title={`${(costTransfer > 0 || (item?.appointmentFees && item?.appointmentFees[0]?.amount)) ? (parseInt(costTransfer, 10) + (item?.appointmentFees[0]?.amount && parseInt(item?.appointmentFees[0]?.amount, 10)) + parseInt(item?.invoice?.totalPriceAfterDiscount, 10)) : parseInt(item?.invoice?.totalPriceAfterDiscount, 10)} ${Trans('rs')}`}
                 // title={`${ costTransfer > 0 ? (parseInt(costTransfer, 10) + parseInt(item?.invoice?.totalPriceAfterDiscount, 10)) : parseInt(item?.invoice?.totalPriceAfterDiscount, 10)} ${Trans('rs')}`}
                 fontSize={calcFont(16)}
                 fontFamily={FONTS.bold}

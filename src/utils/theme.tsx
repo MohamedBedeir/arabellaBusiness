@@ -14,7 +14,7 @@ export const FONTS = {
 
 export const COLORS = {
   primaryGradient: 'rgba(237, 81, 155, 1)',
-  secondGradient: 'rgba(197, 122, 222, 1)',
+  secondGradient: 'rgba(251, 119, 182, 1)',
   backgroundLight: 'rgba(242, 246, 251, 1)',
   textDark: 'rgba(12, 12, 19, 1)',
   textLight: 'rgba(142, 146, 185, 1)',

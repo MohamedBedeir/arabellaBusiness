@@ -41,6 +41,7 @@ export const confirmationCode = createAsyncThunk(
           console.error(`Error subscribing to topic-----------: ${error}`);
         }
         init_token(`Bearer ${response.data.data.token}`);
+        console.log('user.type---------', user.type);
         if (user.type == 'super_admin' || user.type == 'admin') {
           args.navigation.navigate('AD_Tabs');
         } else if (user.type == 'salon_admin') {

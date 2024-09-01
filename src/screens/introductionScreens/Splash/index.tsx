@@ -111,6 +111,8 @@ const Splash: React.FC<{}> = (params: any) => {
           const _user = JSON.parse(user);
           init_token(token);
           const userData = JSON.parse(user);
+          console.log('userData--------', userData);
+          
           if (userData.type == 'super_admin' || userData.type == 'admin') {
             params.navigation.navigate('AD_Tabs');
           } else if (userData.type == 'salon_admin') {

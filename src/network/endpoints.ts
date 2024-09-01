@@ -1,16 +1,20 @@
 export default {
-  baseUrl: 'https://onaddress.net/api/client/mobile/',
-  topikAll: 'dev_user_all',
-  topik: 'dev_user_',
-  realtime: 'dev_',
-  imageUrl: 'https://araberlla-staging.s3.me-south-1.amazonaws.com/',
+  // baseUrl: 'https://api.arabella-test.com/',
+  // topikAll: 'dev_user_all',
+  // topik: 'dev_user_',
+  // realtime: 'dev_',
+  // imageUrl: 'https://araberlla-staging.s3.me-south-1.amazonaws.com/',
+  baseUrl: 'https://api.arabella.sa/',
+  topikAll: 'prod_user_all',
+  topik: 'prod_user_',
+  realtime: 'prod_',
+  imageUrl: 'https://arabella-production.s3.me-south-1.amazonaws.com/',
   //=========================
   login: 'auth/login/pnp',
   forgot_password: '/auth/forgot-password',
   verifyOTP: 'auth/otp',
   reset_password: 'auth/reset-password',
   cities: 'admins/cities',
-
 
   uploadFile: 'admins/files/upload',
   categories: 'categories',
@@ -24,7 +28,6 @@ export default {
   profiles: 'profiles',
   users: '/admins/users',
   notifications: 'admins/notifications',
-
 
   register: 'auth/register',
   confirm_code: 'auth/confirm',

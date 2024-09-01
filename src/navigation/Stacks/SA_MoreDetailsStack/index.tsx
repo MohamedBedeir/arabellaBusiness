@@ -12,7 +12,7 @@ import BlockAppointments from '../../../screens/users/salonScreens/moreScreens/B
 import Accounts from '../../../screens/users/salonScreens/moreScreens/Accounts';
 import Ratings from '../../../screens/users/salonScreens/moreScreens/Ratings';
 import Language from '../../../screens/users/salonScreens/moreScreens/Language';
-import TermsAndConditions from '../../../screens/users/salonScreens/moreScreens/TermsAndConditions';
+import { TermsAndConditions } from '../../../screens/users/salonScreens/moreScreens/TermsAndConditions';
 
 const SA_MoreDetails_Stack = createNativeStackNavigator<SA_MoreDetailsStackParam>();
 const SA_MoreDetailsStack: React.FC = () => (

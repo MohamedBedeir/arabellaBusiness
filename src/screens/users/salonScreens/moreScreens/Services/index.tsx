@@ -222,7 +222,7 @@ const Services: React.FC = () => {
           colorEnd={COLORS.secondGradient}
           border={false}
           onPress={() => {setVisibleAddNewService(true); setData()}}
-          title={Trans('addition')}
+          title={Trans('addService')}
           icon={IMAGES.plusCircleWhite}
           buttonStyle={{width: calcWidth(253), height: calcHeight(48)}}
         />

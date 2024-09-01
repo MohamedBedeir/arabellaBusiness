@@ -204,7 +204,7 @@ const Profile: React.FC = () => {
             />
             <TouchableOpacity
               style={styles.policiesTouch}
-              onPress={() => navigation.navigate('SA_TermsAndConditions')}
+              onPress={() => navigation.navigate('MA_TermsAndConditions')}
             >
               <AppText
                 title={Trans('arabellaPolicies')}
