@@ -1,11 +1,14 @@
 export default {
   // baseUrl: 'https://api.arabella-test.com/',
   // topikAll: 'dev_user_all',
+  // topikAllServiceProvider: 'dev_user_service_providers',
   // topik: 'dev_user_',
   // realtime: 'dev_',
   // imageUrl: 'https://araberlla-staging.s3.me-south-1.amazonaws.com/',
+  //=========================
   baseUrl: 'https://api.arabella.sa/',
   topikAll: 'prod_user_all',
+  topikAllServiceProvider: 'prod_user_service_providers',
   topik: 'prod_user_',
   realtime: 'prod_',
   imageUrl: 'https://arabella-production.s3.me-south-1.amazonaws.com/',
@@ -15,7 +18,7 @@ export default {
   verifyOTP: 'auth/otp',
   reset_password: 'auth/reset-password',
   cities: 'admins/cities',
-
+  mobileVersions: 'mobile-versions',
   uploadFile: 'admins/files/upload',
   categories: 'categories',
   brancheAction: 'admins/branches',

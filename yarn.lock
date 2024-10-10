@@ -4516,6 +4516,7 @@ __metadata:
     react-native-calendar-picker: ^8.0.4
     react-native-circular-progress-indicator: ^4.4.2
     react-native-countdown-timer-hooks: ^1.0.5
+    react-native-device-info: ^13.0.0
     react-native-document-picker: ^9.3.0
     react-native-fs: ^2.20.0
     react-native-geocoding: ^0.5.0
@@ -10024,6 +10025,15 @@ __metadata:
   version: 1.0.5
   resolution: "react-native-countdown-timer-hooks@npm:1.0.5"
   checksum: e0c661c3a725e09adfec0bdbc5454e0ee6507b3893b0e58a30a3daf8eca76ddb6d94abdd42920644bf05c2c6d586dce184e24148f9f2c6b4445b6c9691d8223c
+  languageName: node
+  linkType: hard
+
+"react-native-device-info@npm:^13.0.0":
+  version: 13.0.0
+  resolution: "react-native-device-info@npm:13.0.0"
+  peerDependencies:
+    react-native: "*"
+  checksum: c86822bcdad1bb9d3b93bd750e199964c562d83e076df2f0984e24cadd19db7f8258e125ddede102be2314ed8349d2da2b671c998f70571027b84449773c583a
   languageName: node
   linkType: hard
 

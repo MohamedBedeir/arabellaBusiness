@@ -15,6 +15,7 @@ interface AppDataLineProps {
     textColor?: string;
     textAlign?: string;
     textWidth?: number;
+    numberOfLines?: number;
 };
 
 const AppDataLine: React.FC<AppDataLineProps> = ({
@@ -27,6 +28,7 @@ const AppDataLine: React.FC<AppDataLineProps> = ({
     textColor,
     textAlign,
     textWidth,
+    numberOfLines,
 }) => (
     <View style={[styles.container, containerStyle]}>
         <Image source={image} style={[styles.image, imageStyle]}/>
@@ -38,6 +40,7 @@ const AppDataLine: React.FC<AppDataLineProps> = ({
                 color={textColor}
                 textAlign={textAlign}
                 width={textWidth}
+                numberOfLines={numberOfLines}
             />
         ) : (
             <AppTextGradient
@@ -47,6 +50,7 @@ const AppDataLine: React.FC<AppDataLineProps> = ({
                 colorStart={COLORS.primaryGradient}
                 colorEnd={COLORS.secondGradient}
                 textAlign={textAlign}
+                numberOfLines={numberOfLines}
             />
         )}
         

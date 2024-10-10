@@ -385,6 +385,10 @@ export default {
   selectFirstWeek: 'select start week',
   day: 'day',
   time: 'time',
+  updateApp: 'update app',
+  updateAppDescription: 'A new version of the application is available that contains additional features. To enjoy them, update the application.',
+  update: "update",
+  
   //====================================
   dontHaveAnyReservations: "You don't have any reservations",
   dontHaveAnyReservationsComplated: "don't have any reservations complated",

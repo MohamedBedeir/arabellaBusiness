@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { I18nManager, ScrollView, StatusBar, View } from 'react-native';
+import { I18nManager, Linking, Platform, ScrollView, StatusBar, View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import AppText from '../../../../../components/AppText';
@@ -25,12 +25,16 @@ import moment from 'moment';
 import messaging from '@react-native-firebase/messaging';
 import { notifications_data } from '../../../../../middleware/notifications/notifications';
 import endpoints from '../../../../../network/endpoints';
+import Modal_Warning from '../../../../../components/Modal_Warning';
+import DeviceInfo from 'react-native-device-info';
 
 const Home: React.FC = () => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
   const { statisticsLoader, statisticsData, statisticsData_TotalAppointments, statisticsData_TotalPaidAmount, statisticsData_TotalRefundAmount, statisticsData_Counts } : { statisticsLoader: boolean, statisticsData: any, statisticsData_TotalAppointments: any, statisticsData_TotalPaidAmount: any, statisticsData_TotalRefundAmount: any, statisticsData_Counts: any} = useSelector((store: RootState) => store?.statistics);
-  const {notificationsData } = useSelector((store: RootState) => store?.notifications);
+  const {notificationsData } : {notificationsData: any }  = useSelector((store: RootState) => store?.notifications);
+  const { appVersionsData } : { appVersionsData: any} = useSelector((store: RootState) => store?.appVersion);
+
   const [notificationNew, setNotificationNew] = useState<any>(false);
   const [userData, setUserData] = useState<any>();
   const [visibleTimePeriod, setVisibleTimePeriod] = useState<boolean>(false);
@@ -38,6 +42,8 @@ const Home: React.FC = () => {
   const [visibleYear, setVisibleYear] = useState<boolean>(false);
   const [visibleMonth, setVisibleMonth] = useState<boolean>(false);
   const [visibleDay, setVisibleDay] = useState<boolean>(false);
+  const [visible_update, setVisible_update] = useState<boolean>(false);
+
   const [selectYear, setSelectYear] = useState<any>('');
   const [selectMonth, setSelectMonth] = useState<any>('');
   const [selectDay, setSelectDay] = useState<any>('');
@@ -100,7 +106,19 @@ const Home: React.FC = () => {
     }
   }, [notificationsData]);
 
+  const getAppVersion = () => {
+    const buildNumber = DeviceInfo.getBuildNumber();
+    const version_code: any = Platform.OS == 'android' ? appVersionsData.businessAndroidVersion : appVersionsData.businessIosVersion;
+    if(Number.parseInt(buildNumber, 10) < (Number.parseInt(version_code, 10))) {
+      setVisible_update(true);
+    } else {
+      setVisible_update(false);
+      // getPermation();
+    }
+  };
+
   useEffect(() => {
+    getAppVersion();
     testNewNoti();
     getUser();
     getStatistics();
@@ -204,27 +222,27 @@ const Home: React.FC = () => {
           <ReservationsReport
             title={Trans('totalBookings')}
             image={IMAGES.reservationTotal}
-            count={statisticsData_Counts.totalAppointments}
+            count={statisticsData_Counts?.totalAppointments}
             duration={Trans('totalAmount')}
-            percent={statisticsData_Counts.totalAmount}
+            percent={statisticsData_Counts?.totalAmount?.toFixed(2)}
             indicatorIcon={IMAGES.reservationTop}
             indicatorColor={COLORS.green}
           />
           <ReservationsReport
             title={Trans('totalPaid')}
             image={IMAGES.reservationPaidUp}
-            count={statisticsData_Counts.paidAppointments}
+            count={statisticsData_Counts?.paidAppointments}
             duration={Trans('totalAmount')}
-            percent={statisticsData_Counts.totalPaidAmount}
+            percent={statisticsData_Counts?.totalPaidAmount?.toFixed(2)}
             indicatorIcon={IMAGES.reservationTop}
             indicatorColor={COLORS.green}
           />
           <ReservationsReport
             title={Trans('totalUnpaid')}
             image={IMAGES.reservationUnpaid}
-            count={statisticsData_Counts.unpaidAppointments}
+            count={statisticsData_Counts?.unpaidAppointments}
             duration={Trans('totalAmount')}
-            percent={statisticsData_Counts.totalRefundAmount}
+            percent={statisticsData_Counts?.totalRefundAmount?.toFixed(2)}
             indicatorIcon={IMAGES.reservationDown}
             indicatorColor={COLORS.red}
           />
@@ -477,6 +495,22 @@ const Home: React.FC = () => {
     )
   };
 
+  const updateApp = () => {
+    const url = Platform.OS === 'ios' ? 'https://apps.apple.com/eg/app/arabella-%D8%A7%D8%B1%D8%A7%D8%A8%D9%8A%D9%84%D8%A7/id6449732371' : 'https://play.google.com/store/apps/details?id=com.arabella.business';
+    return (
+      <Modal_Warning
+        visible={visible_update}
+        onPress={() => {Linking.openURL(url)}}
+        onClose={() => {}}
+        image={IMAGES.updateApp}
+        imageStyle={{width: calcWidth(120), height: calcWidth(120)}}
+        title={Trans('updateApp')}
+        description={Trans('updateAppDescription')}
+        buttonTitle={Trans('update')}
+      />
+    )
+  };
+
   const loadingSection = () => {
     return (
       <AppLoading
@@ -489,6 +523,7 @@ const Home: React.FC = () => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle={'dark-content'}/>
+      {updateApp()}
       {loadingSection()}
       {headerSection()}
       {bodySection()}

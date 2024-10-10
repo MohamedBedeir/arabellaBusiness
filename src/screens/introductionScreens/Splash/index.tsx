@@ -8,6 +8,8 @@ import NetInfo, { NetInfoState } from "@react-native-community/netinfo";
 import { init_lang, init_token } from '../../../network';
 import { useAppDispatch } from '../../../redux/store/store';
 import { cities } from '../../../middleware/general/cities';
+import { setAppointmentTimer } from '../../../redux/store/appointment_timer/appointment_timer';
+import { appVersions } from '../../../middleware/general/appVersion';
 // import messaging from '@react-native-firebase/messaging';
 
 const Splash: React.FC<{}> = (params: any) => {
@@ -58,6 +60,7 @@ const Splash: React.FC<{}> = (params: any) => {
     // testNewNoti();
     checkLanguage();
     dispatch(cities({}));
+    dispatch(appVersions({}));
   }, []);
 
   const checkInternet = async (): Promise<void> => {
@@ -104,7 +107,10 @@ const Splash: React.FC<{}> = (params: any) => {
     const skip: any = await AsyncStorage.getItem('skip');
     const user: any = await AsyncStorage.getItem('user');
     const token: any = await AsyncStorage.getItem('token');
-
+    const timer : any = await AsyncStorage.getItem('timer');
+    console.log('timer-------------', timer, parseInt(timer, 10));
+    
+    dispatch(setAppointmentTimer(parseInt(timer, 10)));
     setTimeout(() => {
       if (skip == 'done') {
         if (user && JSON.parse(user).id) {

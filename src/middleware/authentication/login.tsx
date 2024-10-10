@@ -18,6 +18,7 @@ export const login = createAsyncThunk(
       const data: any = {
         phoneNumber: args.phone,
         password: args.password,
+        // isCustomer: false,
       };
       const response: any = await client.post(endpoints.login, data);
       console.log('response----login------', response);

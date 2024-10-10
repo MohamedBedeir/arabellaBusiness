@@ -120,6 +120,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
                     textColor={COLORS.textDark}
                     textAlign={'left'}
                     textWidth={calcWidth(318 - 40)}
+                    numberOfLines={3}
                 />
             </View>
         );

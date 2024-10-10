@@ -113,6 +113,7 @@ export const IMAGES = {
   chartTypeP: require('./icons/chartTypeP.png'),
   chartTypeS: require('./icons/chartTypeS.png'),
   mapMarker: require('./icons/mapMarker.png'),
+  updateApp: require('./icons/updateApp.png'),
 
   //======================
   empty_agent: require('./icons/empty_agent.png'),

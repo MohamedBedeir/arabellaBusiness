@@ -25,6 +25,8 @@ import HS_MoreDetailsStack from './Stacks/HS_MoreDetailsStack';
 import HS_ReservationsStack from './Stacks/HS_ReservationsStack';
 import HS_ReservationDetailsStack from './Stacks/HS_ReservationDetailsStack';
 import HS_Tabs from './Tabs/HS_Tabs';
+import SA_ReservationsStack from './Stacks/SA_ReservationsStack';
+import SA_ReservationDetailsStack from './Stacks/SA_ReservationDetailsStack';
 
 export const navigationRef: React.RefObject<NavigationContainerRef> = React.createRef();
 
@@ -45,8 +47,8 @@ const RootNavigation = () => {
       <RootStack.Screen name="SA_HomeDetailsStack" component={SA_HomeDetailsStack} />
       <RootStack.Screen name="SA_MoreStack" component={SA_MoreStack} />
       <RootStack.Screen name="SA_MoreDetailsStack" component={SA_MoreDetailsStack} />
-      {/* <RootStack.Screen name="SA_ReservationsStack" component={SA_ReservationsStack} />
-      <RootStack.Screen name="SA_ReservationDetailsStack" component={SA_ReservationDetailsStack} /> */}
+      <RootStack.Screen name="SA_ReservationsStack" component={SA_ReservationsStack} />
+      <RootStack.Screen name="SA_ReservationDetailsStack" component={SA_ReservationDetailsStack} />
 
       <RootStack.Screen name="MA_Tabs" component={MA_Tabs}/>
       <RootStack.Screen name="MA_HomeStack" component={MA_HomeStack} />

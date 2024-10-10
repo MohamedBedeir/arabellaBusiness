@@ -11,6 +11,7 @@ import { IMAGES } from './assets/Images';
 import { COLORS, FONTS } from './utils/theme';
 import messaging from '@react-native-firebase/messaging';
 import I18n from 'i18n-js';
+import endpoints from './network/endpoints';
 
 const SuccessIcon = () => {
   return <Image source={IMAGES.accountsReturns} style={{width: calcWidth(32), height: calcWidth(32)}} />;
@@ -38,6 +39,8 @@ function App(): JSX.Element {
   };
 
   useEffect(() => {
+    messaging().subscribeToTopic(`${endpoints.topikAll}`).then(() => {});
+    messaging().subscribeToTopic(`${endpoints.topikAllServiceProvider}`).then(() => {});
     testNewNoti();
   }, []);
   return (

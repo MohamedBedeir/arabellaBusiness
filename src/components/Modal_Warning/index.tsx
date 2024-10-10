@@ -16,6 +16,7 @@ export interface Props {
   image?: string;
   imageStyle?: ImageStyle;
   title?: string;
+  description?: string;
   buttonTitle?: string;
   button1Title?: string;
   button2Title?: string;
@@ -47,6 +48,18 @@ const Modal_Warning: React.FC<Props> = (params: any) => {
           lineHeight={calcHeight(28)}
           numberOfLines={3}
         />
+        {params?.description && (
+          <AppText
+            title={params?.description}
+            fontFamily={FONTS.medium}
+            fontSize={calcFont(17)}
+            textAlign={'center'}
+            color={COLORS.textLight}
+            width={calcWidth(280)}
+            lineHeight={calcHeight(28)}
+            numberOfLines={3}
+          />
+        )}
         <View style={styles.buttonsView}>
           {params?.buttonTitle && (
             <AppButtonDefault

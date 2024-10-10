@@ -1,13 +1,14 @@
 import apisauce from 'apisauce';
+import endpoints from './endpoints';
 
 const client = apisauce.create({
-  baseURL: 'https://api.arabella.sa/',
+  baseURL: endpoints?.baseUrl,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 const clientFormData = apisauce.create({
-  baseURL: 'https://api.arabella.sa/',
+  baseURL: endpoints?.baseUrl,
   headers: {
     'Content-Type': 'multipart/form-data',
   },

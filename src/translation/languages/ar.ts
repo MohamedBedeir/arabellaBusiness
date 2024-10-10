@@ -385,6 +385,10 @@ export default {
   selectFirstWeek: 'حدد بداية الاسبوع',
   day: 'تاريخ الخدمة',
   time: 'موعد الخدمة',
+  updateApp: "تحديث التطبيق",
+  updateAppDescription: "تتوفر نسخة جديدة من التطبيق تحتوي علي مزايا اضافية، للاستمتاع بها قم بتحديث التطبيق",
+  update: "تحديث",
+  
   //======================================
   dontHaveAnyReservations: 'ليس لديك اي حجوزات',
   dontHaveAnyReservationsComplated: 'ليس لديك اي حجوزات مقبولة',

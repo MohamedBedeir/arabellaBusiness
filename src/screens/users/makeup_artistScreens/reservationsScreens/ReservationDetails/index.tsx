@@ -26,17 +26,20 @@ import { useSelector } from 'react-redux';
 import AppLoading from '../../../../../components/AppLoading';
 import moment from 'moment';
 import { appointment_otp, appointment_update } from '../../../../../middleware/appointments/update/update';
+import { setAppointmentTimer } from '../../../../../redux/store/appointment_timer/appointment_timer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ReservationDetails: React.FC = (params: any) => {
   const navigation = useNavigation<any>();
   const dispatch = useAppDispatch();
-  const { appointmentDetailsLoader, appointmentDetailsData } = useSelector((store: RootState) => store?.appointment_details);
+  const { appointmentDetailsLoader, appointmentDetailsData } : { appointmentDetailsLoader: boolean, appointmentDetailsData: any } = useSelector((store: RootState) => store?.appointment_details);
+  const { appointmentTimer } = useSelector((store: RootState) => store?.appointment_timer);
   const item: any = appointmentDetailsData;
   const status = item?.status;
   const refTimer = useRef();
   const [costTransfer, setCostTransfer] = useState<any>(0);
   const [costTransferState, setCostTransferState] = useState<boolean>(false);
-  const [count, setCount] = useState<number>(20 * 60);
+  const [count, setCount] = useState<any>(appointmentTimer || (20 * 60));
   const [step, setStep] = useState<number>(1);
   const [OTPCode, setOTPCode] = useState<string>('');
   const [errors, setErrors] = useState<any>();
@@ -44,11 +47,17 @@ const ReservationDetails: React.FC = (params: any) => {
   const [visibleRejection, setVisibleRejection] = useState<boolean>(false);
   const [visibleCancellation, setVisibleCancellation] = useState<boolean>(false);
 
-  console.log('params-------------', params.route);
-  
   const getReservationDetails = () => {
-    dispatch(appointment_details({id: params?.route?.params?.id}))
+    dispatch(appointment_details({id: params.route.params.id}))
   };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('appointmentTimer-------------', appointmentTimer);
+      setCount(appointmentTimer);
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     getReservationDetails();
@@ -110,8 +119,6 @@ const ReservationDetails: React.FC = (params: any) => {
       )
     };
 
-    console.log('--------->>>>>>>>>>>', parseInt(item?.invoice?.totalPriceAfterDiscount, 10), parseInt(item?.invoice?.totalPriceAfterDiscount, 10));
-
     const mainDataSection = () => {
       return (
         <LinearGradient
@@ -169,7 +176,7 @@ const ReservationDetails: React.FC = (params: any) => {
               textAlign={'left'}
             />
           </View>}
-            <View style={styles.mainDataItemOptionContainer}>
+            {appointmentDetailsData?.type != 'in_branch' &&  <View style={styles.mainDataItemOptionContainer}>
               {(status == 'scheduled' || status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed') && (
                 <View style={styles.mainDataItemOptionApprovedContainer}>
                   <Image source={IMAGES.notificationsOpen} style={styles.mainDataItemOptionIcon}/>
@@ -195,7 +202,7 @@ const ReservationDetails: React.FC = (params: any) => {
                   />
                 </View>
               )}
-            </View>
+            </View>}
             <View style={styles.mainDataItemContainer}>
               <AppText
                 title={Trans('total')}
@@ -273,14 +280,16 @@ const ReservationDetails: React.FC = (params: any) => {
             textColor={''}
             textAlign={'left'}
           />
-          {line(`${Trans('serviceDate')}:  `, item?.serviceBookings ? `${Trans('day')}: ${moment(item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  -  ${Trans('time')}: ${moment(item?.serviceBookings[0]?.scheduledAt).format('hh:mm')}` : '', null, null)}
+          {line(`${Trans('serviceDate')}:  `, item?.serviceBookings ? `${moment(item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  -  ${Trans('time')}: ${moment(item?.serviceBookings[0]?.scheduledAt).format('hh:mm')}` : '', null, null)}
         </View>
       )
     };
 
     const timerSection = () => {
-      const timerOnProgressFunc = (remainingTimeInSecs: any) => {
+      const timerOnProgressFunc = async (remainingTimeInSecs: any) => {
         console.log("On Progress tracker :", remainingTimeInSecs);
+        dispatch(setAppointmentTimer(remainingTimeInSecs));
+        await AsyncStorage.setItem('timer', `${remainingTimeInSecs}`);
       };
     
       const timerCallbackFunc = (timerFlag: any) => {
@@ -312,7 +321,7 @@ const ReservationDetails: React.FC = (params: any) => {
           <View style={styles.countDownContainer}>
             <CountDownTimer
               ref={refTimer}
-              timestamp={20 * 60}
+              timestamp={count}
               timerOnProgress={timerOnProgressFunc}
               timerCallback={timerCallbackFunc}
               containerStyle={styles.countDownView}
@@ -344,21 +353,21 @@ const ReservationDetails: React.FC = (params: any) => {
             textAlign={'left'}
           />
           {line(null, item?.address, null, null)}
-          {(item?.lat && item?.lng) && <TouchableOpacity
-            onPress={() =>  Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${parseInt(item?.lat)},${parseInt(item?.lng)}`)}
+          {(appointmentDetailsData?.type != 'in_branch' && (item?.lat && item?.lng)) && <TouchableOpacity
+            onPress={() => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${Number(item?.lat)},${Number(item?.lng)}`)}
           >
             <MapView
               style={styles.addressMapTest}
               region={{
-                latitude: parseInt(item?.lat, 10),
-                longitude: parseInt(item?.lng),
+                latitude: Number(item?.lat),
+                longitude: Number(item?.lng),
                 latitudeDelta: 0.222,
                 longitudeDelta: 0.221,
               }}
             >
               <Marker
                 key={1}
-                coordinate={{latitude: parseInt(item?.lat), longitude: parseInt(item?.lng)}}
+                coordinate={{latitude: Number(item?.lat), longitude: Number(item?.lng)}}
                 // title={'title'}
                 // description={'description'}
               >
@@ -367,136 +376,236 @@ const ReservationDetails: React.FC = (params: any) => {
             </MapView>
           </TouchableOpacity>}
           {/* <Image source={IMAGES.mapTest} style={styles.addressMapTest}/> */}
-          {(status == 'scheduled' || status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed') && (
-            <View style={styles.stepsContainer}>
-              <ReservationStepData
-                title={Trans('onWayPlaceDetention')}
-                active={(status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed')}
-              />
-              <ReservationStepLine
-                active={(status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed')}
-              />
-              <ReservationStepData
-                title={Trans('availablePlaceReservation')}
-                active={(status == 'arrived' || status == 'started' || status == 'completed')}
-              />
-              <ReservationStepLine
-                active={(status == 'arrived' || status == 'started' || status == 'completed')}
-              />
-              <ReservationStepData
-                title={Trans('startService')}
-                active={status == 'started' || status == 'completed'}
-              />
-              <ReservationStepLine
-                active={step == 2 && status == 'started' || status == 'completed'}
-              />
-              <ReservationStepData
-                title={Trans('serviceCompleted')}
-                active={status == 'completed'}
-              />
-            </View>
+          {appointmentDetailsData?.type != 'in_branch' ? (
+            <>
+              {(status == 'scheduled' || status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed') && (
+                <View style={styles.stepsContainer}>
+                  <ReservationStepData
+                    title={Trans('onWayPlaceDetention')}
+                    active={(status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed')}
+                  />
+                  <ReservationStepLine
+                    active={(status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed')}
+                  />
+                  <ReservationStepData
+                    title={Trans('availablePlaceReservation')}
+                    active={(status == 'arrived' || status == 'started' || status == 'completed')}
+                  />
+                  <ReservationStepLine
+                    active={(status == 'arrived' || status == 'started' || status == 'completed')}
+                  />
+                  <ReservationStepData
+                    title={Trans('startService')}
+                    active={status == 'started' || status == 'completed'}
+                  />
+                  <ReservationStepLine
+                    active={step == 2 && status == 'started' || status == 'completed'}
+                  />
+                  <ReservationStepData
+                    title={Trans('serviceCompleted')}
+                    active={status == 'completed'}
+                  />
+                </View>
+              )}
+            </>
+          ) : (
+            <>
+              {(status == 'scheduled' || status == 'started' || status == 'completed') && (
+                <View style={styles.stepsContainer}>
+                  {/* <ReservationStepData
+                    title={Trans('onWayPlaceDetention')}
+                    active={(status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed')}
+                  />
+                  <ReservationStepLine
+                    active={(status == 'en_route' || status == 'arrived' || status == 'started' || status == 'completed')}
+                  />
+                  <ReservationStepData
+                    title={Trans('availablePlaceReservation')}
+                    active={(status == 'arrived' || status == 'started' || status == 'completed')}
+                  />
+                  <ReservationStepLine
+                    active={(status == 'arrived' || status == 'started' || status == 'completed')}
+                  />
+                  <ReservationStepData
+                    title={Trans('startService')}
+                    active={status == 'started' || status == 'completed'}
+                  />
+                  <ReservationStepLine
+                    active={step == 2 && status == 'started' || status == 'completed'}
+                  /> */}
+                  <ReservationStepData
+                    title={Trans('serviceCompleted')}
+                    active={status == 'completed'}
+                  />
+                </View>
+              )}
+            </>
           )}
         </View>
       )
     };
 
     const actionSection = () => {
-      const onNext = () => {
-        if (status == 'reviewing') {
-          if (costTransfer == 0) {
-            setCostTransferState(true);
+      const onNext = async () => {
+        if (appointmentDetailsData?.type != 'in_branch') {
+          if (status == 'reviewing') {
+            if (costTransfer == 0) {
+              setCostTransferState(true);
+            } else {
+              setCostTransferState(false);
+              dispatch(appointment_update({id: item?.id, status: 'accepted_by_service_provider', fees: parseInt(costTransfer, 10), feeId: 1}));
+            };
+          } else if (status == 'scheduled') {
+            dispatch(appointment_update({id: item?.id, status: 'en_route', fees: parseInt(item?.appointmentFees[0]?.amount, 10), feeId: 1}));
+          } else if (status == 'en_route') {
+            dispatch(appointment_update({id: item?.id, status: 'arrived', fees: parseInt(item?.appointmentFees[0]?.amount, 10), feeId: 1}));
+          } else if (status == 'arrived') {
+            console.log('dispatch(setAppointmentTimer(20 * 60));');
+            dispatch(setAppointmentTimer(20 * 60));
+            await AsyncStorage.setItem('timer', `${20 * 60}`);
+            dispatch(appointment_update({id: item?.id, status: 'started', fees: parseInt(item?.appointmentFees[0]?.amount, 10), feeId: 1}));
+          } else if (status == 'started') {
+            if (step == 1) {
+              setStep(2);
+              dispatch(appointment_otp({id: item?.id}));
+            } else if (step == 2) {
+              dispatch(appointment_update({id: item?.id, otp: OTPCode, status: 'completed', fees: parseInt(item?.appointmentFees[0]?.amount, 10), feeId: 1}));
+            }
           } else {
-            setCostTransferState(false);
-            dispatch(appointment_update({id: item?.id, status: 'accepted_by_service_provider', fees: parseInt(costTransfer, 10)}));
-          };
-        } else if (status == 'scheduled') {
-          dispatch(appointment_update({id: item?.id, status: 'en_route', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
-        } else if (status == 'en_route') {
-          dispatch(appointment_update({id: item?.id, status: 'arrived', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
-        } else if (status == 'arrived') {
-          dispatch(appointment_update({id: item?.id, status: 'started', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
-        } else if (status == 'started') {
-          if (step == 1) {
-            setStep(2);
-            dispatch(appointment_otp({id: item?.id}));
-          } else if (step == 2) {
-            dispatch(appointment_update({id: item?.id, otp: OTPCode, status: 'completed', fees: parseInt(item?.appointmentFees[0]?.amount, 10)}));
+            null;
           }
         } else {
-          null;
+          if (status == 'scheduled') {
+            if (step == 1) {
+              setStep(2);
+              dispatch(appointment_otp({id: item?.id}));
+            } else if (step == 2) {
+              dispatch(appointment_update({id: item?.id, otp: OTPCode, status: 'completed'}));
+            }
+          } else {
+            null;
+          }
         }
       };
     
-      const onAction = () => {
+      const onAction = async () => {
         if (status == 'reviewing') {
           dispatch(appointment_update({id: item?.id, status: 'rejected_by_service_provider', fees: 0}));
         } else if (status == 'arrived') {
+          console.log('dispatch(setAppointmentTimer(20 * 60));');
+          dispatch(setAppointmentTimer(20 * 60));
+          await AsyncStorage.setItem('timer', `${20 * 60}`);
           dispatch(appointment_update({id: item?.id, status: 'cancelled', fees: 0}));
         }
       };
 
       var title1: string = '';
       var title2: string = '';
-      switch (status) {
-        case 'reviewing':
-          title1 = Trans('sendOffer');
-          title2 = Trans('reservationRefused');
-          break;
-        case 'accepted_by_service_provider':
-          title1 = '';
-          title2 = '';
-          break;
-        case 'confirmed_by_customer':
-          title1 = Trans('onWayPlaceDetention');
-          title2 = '';
-          break;
-        case 'scheduled':
-          title1 = Trans('onWayPlaceDetention');
-          title2 = '';
-          break;
-        case 'en_route':
-          title1 = Trans('availablePlaceReservation');
-          title2 = '';
-          break;
-        case 'arrived':
-          title1 = Trans('startService');
-          title2 = Trans('reservationCanceled');
-          break;
-        case 'started':
-          title1 = step == 1 ? Trans('requestCompletionCode') : Trans('serviceCompleted');
-          title2 = '';
-          break;
-        case 'cancelled':
-          title1 = '';
-          title2 = '';
-          break;
-        case 'rejected_by_service_provider':
-          title1 = '';
-          title2 = '';
-          break;
-      };
+      if (appointmentDetailsData?.type != 'in_branch') {
+        switch (status) {
+          case 'reviewing':
+            title1 = Trans('sendOffer');
+            title2 = Trans('reservationRefused');
+            break;
+          case 'accepted_by_service_provider':
+            title1 = '';
+            title2 = '';
+            break;
+          case 'confirmed_by_customer':
+            title1 = Trans('onWayPlaceDetention');
+            title2 = '';
+            break;
+          case 'scheduled':
+            title1 = Trans('onWayPlaceDetention');
+            title2 = '';
+            break;
+          case 'en_route':
+            title1 = Trans('availablePlaceReservation');
+            title2 = '';
+            break;
+          case 'arrived':
+            title1 = Trans('startService');
+            title2 = Trans('reservationCanceled');
+            break;
+          case 'started':
+            title1 = step == 1 ? Trans('requestCompletionCode') : Trans('serviceCompleted');
+            title2 = '';
+            break;
+          case 'cancelled':
+            title1 = '';
+            title2 = '';
+            break;
+          case 'rejected_by_service_provider':
+            title1 = '';
+            title2 = '';
+            break;
+        };
+      } else {
+        switch (status) {
+          case 'scheduled':
+            title1 = step == 1 ? Trans('requestCompletionCode') : Trans('serviceCompleted');
+            title2 = '';
+            break;
+          case 'cancelled':
+            title1 = '';
+            title2 = '';
+            break;
+          case 'rejected_by_service_provider':
+            title1 = '';
+            title2 = '';
+            break;
+        };
+      }
       return (
         <View style={styles.actionContainer}>
-          {step == 2 && status == 'started' && (
-            <View style={styles.otpContainer}>
-              <OtpInputs
-                autofillFromClipboard
-                handleChange={code => {
-                  setErrors('');
-                  setOTPCode(code);
-                }}
-                style={{
-                  flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
-                  justifyContent: 'space-between',
-                }}
-                numberOfInputs={5}
-                inputStyles={
-                  !errors
-                    ? [styles.otpInput, {borderColor: focused ? COLORS.primaryGradient : COLORS.borderLight}]
-                    : [styles.otpInput, {borderColor: 'red'}]
-                }
-              />
-            </View>
+          {appointmentDetailsData?.type != 'in_branch' ? (
+            <>
+              {step == 2 && status == 'started' && (
+                <View style={styles.otpContainer}>
+                  <OtpInputs
+                    autofillFromClipboard
+                    handleChange={code => {
+                      setErrors('');
+                      setOTPCode(code);
+                    }}
+                    style={{
+                      flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
+                      justifyContent: 'space-between',
+                    }}
+                    numberOfInputs={5}
+                    inputStyles={
+                      !errors
+                        ? [styles.otpInput, {borderColor: focused ? COLORS.primaryGradient : COLORS.borderLight}]
+                        : [styles.otpInput, {borderColor: 'red'}]
+                    }
+                  />
+                </View>
+              )}
+            </>
+          ) : (
+            <>
+              {step == 2 && status == 'scheduled' && (
+                <View style={styles.otpContainer}>
+                  <OtpInputs
+                    autofillFromClipboard
+                    handleChange={code => {
+                      setErrors('');
+                      setOTPCode(code);
+                    }}
+                    style={{
+                      flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
+                      justifyContent: 'space-between',
+                    }}
+                    numberOfInputs={5}
+                    inputStyles={
+                      !errors
+                        ? [styles.otpInput, {borderColor: focused ? COLORS.primaryGradient : COLORS.borderLight}]
+                        : [styles.otpInput, {borderColor: 'red'}]
+                    }
+                  />
+                </View>
+              )}
+            </>
           )}
           {status == 'accepted_by_service_provider' && (
             <AppTextViewGradient
@@ -542,10 +651,18 @@ const ReservationDetails: React.FC = (params: any) => {
             {customerNameSection()}
             {servicesDetailsSection()}
             {dateSection()}
-            {status == 'arrived' && timerSection()}
+            {appointmentDetailsData?.type != 'in_branch' && status == 'arrived' && timerSection()}
             {addressSection()}
           </View>
-          {step == 2 && status == 'started' && actionSection()}
+          {appointmentDetailsData?.type != 'in_branch' ? (
+            <>
+              {step == 2 && status == 'started' && actionSection()}
+            </>
+          ) : (
+            <>
+              {step == 2 && status == 'scheduled' && actionSection()}
+            </>
+          )}
         </ScrollView>
         {step == 1 && actionSection()}
       </>
@@ -604,7 +721,6 @@ const ReservationDetails: React.FC = (params: any) => {
       />
     )
   };
-
   return (
     <View style={styles.container}>
       {loadingSection()}

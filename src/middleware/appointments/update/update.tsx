@@ -9,19 +9,24 @@ interface AppointmentUpdate {
     status: string;
     fees?: number;
     note?: string;
+    feeId?: any;
     otp?: any;
 };
 
 export const appointment_update = createAsyncThunk(
     'PERVIOUS_DATA',
     async (args: AppointmentUpdate, thunkApi) => {
+        console.log('args----------------', args);
+        
         thunkApi.dispatch(setAppointmentDetailsLoader(true));
         try {
-            const data = {
+            var data = {
                 status: args.status,
                 fees: args.fees,
-                feeId:1,
                 otp: args.otp,
+            };
+            if (args?.feeId) {
+                data = {...data, ...{feeId: args?.feeId}}
             }
             const response: any = await client.patch(`${endpoints.appointments}/${args.id}/status-transition`, data);
             console.log('response-------appointment_update---------', response);
