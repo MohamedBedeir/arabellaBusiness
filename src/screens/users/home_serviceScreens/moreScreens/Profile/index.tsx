@@ -226,6 +226,7 @@ const Profile: React.FC = () => {
         </>
       )
     };
+    
     const onUpdatePassword = () => {
       if (passwordCurrent == '') {
         setPasswordCurrentError(true);
@@ -248,6 +249,7 @@ const Profile: React.FC = () => {
         dispatch(password_update(data));
       }
     };
+
     const passwordSection = () => {
       return (
         <>
@@ -296,32 +298,6 @@ const Profile: React.FC = () => {
       )
     };
 
-    const modalUpdateData = () => {
-      return (
-        <Modal_Warning
-          visible={visibleUpdateData}
-          onClose={() => setVisibleUpdateData(false)}
-          onPress={() => setVisibleUpdateData(false)}
-          image={IMAGES.modalDone}
-          title={Trans('dataUpdateSuccessfully')}
-          buttonTitle={Trans('done')}
-        />
-      )
-    };
-
-    const modalUpdatePassword = () => {
-      return (
-        <Modal_Warning
-          visible={visibleUpdatePassword}
-          onClose={() => setVisibleUpdatePassword(false)}
-          onPress={() => setVisibleUpdatePassword(false)}
-          image={IMAGES.modalDone}
-          title={Trans('passwordUpdateSuccessfully')}
-          buttonTitle={Trans('done')}
-        />
-      )
-    };
-
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.body}>
@@ -330,8 +306,6 @@ const Profile: React.FC = () => {
           <View style={styles.line}/>
           {passwordSection()}
         </View>
-        {modalUpdateData()}
-        {modalUpdatePassword()}
       </ScrollView>
     )
   };
@@ -346,11 +320,39 @@ const Profile: React.FC = () => {
     )
   };
 
+  const modalUpdateData = () => {
+    return (
+      <Modal_Warning
+        visible={visibleUpdateData}
+        onClose={() => setVisibleUpdateData(false)}
+        onPress={() => setVisibleUpdateData(false)}
+        image={IMAGES.modalDone}
+        title={Trans('dataUpdateSuccessfully')}
+        buttonTitle={Trans('done')}
+      />
+    )
+  };
+
+  const modalUpdatePassword = () => {
+    return (
+      <Modal_Warning
+        visible={visibleUpdatePassword}
+        onClose={() => setVisibleUpdatePassword(false)}
+        onPress={() => setVisibleUpdatePassword(false)}
+        image={IMAGES.modalDone}
+        title={Trans('passwordUpdateSuccessfully')}
+        buttonTitle={Trans('done')}
+      />
+    )
+  };
+
   return (
     <View style={styles.container}>
       {loadingSection()}
       {headerSection()}
       {bodySection()}
+      {modalUpdateData()}
+      {modalUpdatePassword()}
     </View>
   );
 };

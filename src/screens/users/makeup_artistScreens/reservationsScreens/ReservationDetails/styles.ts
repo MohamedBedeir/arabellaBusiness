@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     borderRadius: calcWidth(16),
     paddingHorizontal: calcWidth(12),
     paddingVertical: calcHeight(16),
-    // marginBottom: calcHeight(16),
+    marginBottom: calcHeight(16),
   },
   countDownContainer: {
     marginTop: Platform.OS == 'android' ? -calcHeight(144) : -calcHeight(104),
@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
     width: calcWidth(375),
     backgroundColor: COLORS.white,
     alignItems: 'center',
-    paddingBottom: calcHeight(16),
   },
   waitingContainer: {
     width: calcWidth(343),

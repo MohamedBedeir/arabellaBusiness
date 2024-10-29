@@ -24,6 +24,8 @@ export const slot_add = createAsyncThunk(
         thunkApi.dispatch(setslotsLoader(true));
         try {
             const response: any = await client.post(endpoints.slotAction, args.data);
+            console.log('response----slot_add------', response);
+            
             if (response.status == 200 || response.status == 201) {
                 thunkApi.dispatch(setslotAddState('done'));
                 thunkApi.dispatch(setslotsLoader(false));

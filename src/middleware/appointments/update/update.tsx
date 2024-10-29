@@ -6,6 +6,7 @@ import { appointment_details } from '../details/details';
 
 interface AppointmentUpdate {
     id: number;
+    serviceBookId?: number;
     status: string;
     fees?: number;
     note?: string;
@@ -28,7 +29,14 @@ export const appointment_update = createAsyncThunk(
             if (args?.feeId) {
                 data = {...data, ...{feeId: args?.feeId}}
             }
-            const response: any = await client.patch(`${endpoints.appointments}/${args.id}/status-transition`, data);
+            var url: string = '';
+            if (args?.serviceBookId) {
+                url = `${endpoints.appointments}/${args.id}/service-bookings/${args?.serviceBookId}/status-transition`;
+            } else {
+                url = `${endpoints.appointments}/${args.id}/status-transition`;
+            };
+
+            const response: any = await client.patch(`${url}`, data);
             console.log('response-------appointment_update---------', response);
             if (response.status == 200 || response.status == 201) {
                 thunkApi.dispatch(appointment_details({id: args.id}))

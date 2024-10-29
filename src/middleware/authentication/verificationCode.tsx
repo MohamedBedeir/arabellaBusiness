@@ -50,6 +50,8 @@ export const confirmationCode = createAsyncThunk(
           args.navigation.navigate('MA_Tabs');
         } else if (user.type == 'home_service_provider') {
           args.navigation.navigate('HS_Tabs');
+        } else if (user.type == 'trainer') {
+          args.navigation.navigate('TR_Tabs');
         };
       } else {
         thunkApi.dispatch(setConfirmationCodeState('error'));

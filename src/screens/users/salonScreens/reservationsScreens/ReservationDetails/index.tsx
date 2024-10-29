@@ -153,7 +153,7 @@ const ReservationDetails: React.FC = (params: any) => {
               textAlign={'left'}
             />
             <AppText
-              title={`${parseInt(item?.invoice?.totalPriceAfterDiscount, 10)} ${Trans('rs')}`}
+              title={`${parseFloat(item?.invoice?.totalPriceAfterDiscount)} ${Trans('rs')}`}
               fontSize={calcFont(16)}
               fontFamily={FONTS.bold}
               color={COLORS.white}
@@ -212,8 +212,8 @@ const ReservationDetails: React.FC = (params: any) => {
                 textAlign={'left'}
               />
               <AppText
-                title={`${(costTransfer > 0 || (item?.appointmentFees && item?.appointmentFees[0]?.amount)) ? (parseInt(costTransfer, 10) + (item?.appointmentFees[0]?.amount && parseInt(item?.appointmentFees[0]?.amount, 10)) + parseInt(item?.invoice?.totalPriceAfterDiscount, 10)) : parseInt(item?.invoice?.totalPriceAfterDiscount, 10)} ${Trans('rs')}`}
-                // title={`${ costTransfer > 0 ? (parseInt(costTransfer, 10) + parseInt(item?.invoice?.totalPriceAfterDiscount, 10)) : parseInt(item?.invoice?.totalPriceAfterDiscount, 10)} ${Trans('rs')}`}
+                title={`${costTransfer > 0 ? (parseFloat(costTransfer) + parseFloat(item?.invoice?.totalPriceAfterDiscount)) : parseFloat(item?.invoice?.totalPriceAfterDiscount)} ${Trans('rs')}`}
+                // title={`${ costTransfer > 0 ? (parseFloat(costTransfer) + parseFloat(item?.invoice?.totalPriceAfterDiscount)) : parseFloat(item?.invoice?.totalPriceAfterDiscount)} ${Trans('rs')}`}
                 fontSize={calcFont(16)}
                 fontFamily={FONTS.bold}
                 color={COLORS.white}
@@ -453,23 +453,23 @@ const ReservationDetails: React.FC = (params: any) => {
               setCostTransferState(true);
             } else {
               setCostTransferState(false);
-              dispatch(appointment_update({id: item?.id, status: 'accepted_by_service_provider', fees: parseInt(costTransfer, 10), feeId: 1}));
+              dispatch(appointment_update({id: item?.id, status: 'accepted_by_service_provider', fees: parseFloat(costTransfer), feeId: 1}));
             };
           } else if (status == 'scheduled') {
-            dispatch(appointment_update({id: item?.id, status: 'en_route', fees: parseInt(item?.appointmentFees[0]?.amount, 10), feeId: 1}));
+            dispatch(appointment_update({id: item?.id, status: 'en_route', fees: parseFloat(item?.appointmentFees[0]?.amount), feeId: 1}));
           } else if (status == 'en_route') {
-            dispatch(appointment_update({id: item?.id, status: 'arrived', fees: parseInt(item?.appointmentFees[0]?.amount, 10), feeId: 1}));
+            dispatch(appointment_update({id: item?.id, status: 'arrived', fees: parseFloat(item?.appointmentFees[0]?.amount), feeId: 1}));
           } else if (status == 'arrived') {
             console.log('dispatch(setAppointmentTimer(20 * 60));');
             dispatch(setAppointmentTimer(20 * 60));
             await AsyncStorage.setItem('timer', `${20 * 60}`);
-            dispatch(appointment_update({id: item?.id, status: 'started', fees: parseInt(item?.appointmentFees[0]?.amount, 10), feeId: 1}));
+            dispatch(appointment_update({id: item?.id, status: 'started', fees: parseFloat(item?.appointmentFees[0]?.amount), feeId: 1}));
           } else if (status == 'started') {
             if (step == 1) {
               setStep(2);
               dispatch(appointment_otp({id: item?.id}));
             } else if (step == 2) {
-              dispatch(appointment_update({id: item?.id, otp: OTPCode, status: 'completed', fees: parseInt(item?.appointmentFees[0]?.amount, 10), feeId: 1}));
+              dispatch(appointment_update({id: item?.id, otp: OTPCode, status: 'completed', fees: parseFloat(item?.appointmentFees[0]?.amount), feeId: 1}));
             }
           } else {
             null;
@@ -557,7 +557,7 @@ const ReservationDetails: React.FC = (params: any) => {
         };
       }
       return (
-        <View style={styles.actionContainer}>
+        <View style={[styles.actionContainer, {paddingBottom: (status == 'reviewing' || (step == 2 && status == 'started')) ? calcHeight(280) : calcHeight(16)}]}>
           {appointmentDetailsData?.type != 'in_branch' ? (
             <>
               {step == 2 && status == 'started' && (
@@ -652,7 +652,7 @@ const ReservationDetails: React.FC = (params: any) => {
             {servicesDetailsSection()}
             {dateSection()}
             {appointmentDetailsData?.type != 'in_branch' && status == 'arrived' && timerSection()}
-            {addressSection()}
+            {appointmentDetailsData?.type != 'in_branch' && addressSection()}
           </View>
           {appointmentDetailsData?.type != 'in_branch' ? (
             <>
@@ -663,8 +663,8 @@ const ReservationDetails: React.FC = (params: any) => {
               {step == 2 && status == 'scheduled' && actionSection()}
             </>
           )}
+          {step == 1 && actionSection()}
         </ScrollView>
-        {step == 1 && actionSection()}
       </>
     )
   };

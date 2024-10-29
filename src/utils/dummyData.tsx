@@ -362,7 +362,7 @@ export const DUMMY_DATA = {
     { id: 45, title: '22:30', hour: 22, minute: 30 },
     { id: 46, title: '23:00', hour: 23, minute: 0 },
     { id: 47, title: '23:30', hour: 23, minute: 30 },
-    { id: 48, title: 'نهاية اليوم', hour: 24, min0ute: 0 }, 
+    { id: 48, title: 'نهاية اليوم', hour: 23, minute: 59 }, 
   ],
   CATEGORIES: [
     { id: 1, nameAr: 'العناية بالبشرة', nameEn: 'skin care' },

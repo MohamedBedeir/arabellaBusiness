@@ -16,6 +16,7 @@ export const profile_updateUser = createAsyncThunk(
     async (args: ProfileUpdate, thunkApi) => {
         thunkApi.dispatch(setProfileUpdateState(''));
         thunkApi.dispatch(setProfileLoader(true));
+        console.log('args------profile_updateUser------', args);
         try {
             const data = {
                 name: args?.data?.name,

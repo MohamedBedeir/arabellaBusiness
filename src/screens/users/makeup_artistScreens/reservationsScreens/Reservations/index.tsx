@@ -51,6 +51,7 @@ const Reservations: React.FC = () => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      setSelectFillter(selectFillter);
       getPervious(1);
       getUpcoming(1);
       setPage_pervious(1);
@@ -151,7 +152,7 @@ const Reservations: React.FC = () => {
       return (
         <ReservationItem
           item={item}
-          onPress={() => navigation.navigate('MA_ReservationDetailsStack', {screen: 'MA_ReservationDetails', id: item.id})}
+          onPress={() => navigation.navigate('MA_ReservationDetailsStack', {screen: 'MA_ReservationDetails', id: item?.id})}
         />
       )
     };
@@ -198,7 +199,7 @@ const Reservations: React.FC = () => {
       return (
         <ReservationItem
           item={item}
-          onPress={() => navigation.navigate('MA_ReservationDetailsStack', {screen: 'MA_ReservationDetails', id: item.id})}
+          onPress={() => navigation.navigate('MA_ReservationDetailsStack', {screen: 'MA_ReservationDetails', id: item?.id})}
         />
       )
     };

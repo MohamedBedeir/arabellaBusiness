@@ -16,11 +16,13 @@ import moment from 'moment';
 
 interface ReservationItemProps {
     item?: any;
+    type?: string;
     onPress?: () => void;
 };
 
 const ReservationItem: React.FC<ReservationItemProps> = ({
     item,
+    type,
     onPress,
 }) => {
     console.log('item-------------', item);
@@ -76,9 +78,14 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
 
     const detailsSection = () => {
         var services: string = '';
-        for (let i = 0; i < _item?.serviceBookings?.length; i++) {
-            services = `${_item?.serviceBookings[i]?.service?.name}${_item?.serviceBookings?.length == i+1 ? '' : ','} ${services}`;
-        }
+        if (type == 'training') {
+            services = I18nManager.isRTL ? _item?.serviceBookings[0]?.service?.name : _item?.serviceBookings[0]?.service?.nameEn;
+        } else {
+            for (let i = 0; i < _item?.serviceBookings?.length; i++) {
+                services = `${I18nManager.isRTL ? _item?.serviceBookings[i]?.service?.name : _item?.serviceBookings[i]?.service?.nameEn}${_item?.serviceBookings?.length == i+1 ? '' : ','} ${services}`;
+            }
+        };
+        
         return (
             <View>
                 <AppDataLine

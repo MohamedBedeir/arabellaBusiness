@@ -12,7 +12,7 @@ export type AuthenticationStackParam = {
   ResetPassword: undefined;
   TermsAndConditions: undefined;
 };
-
+//================
 export type SA_TabsParam = {
   SA_HomeStack: undefined;
   SA_ReservationsStack: undefined;
@@ -104,4 +104,39 @@ export type HS_ReservationsStackParam = {
 };
 export type HS_ReservationDetailsStackParam = {
   HS_ReservationDetails: undefined;
+};
+//================
+export type TR_TabsParam = {
+  TR_HomeStack: undefined;
+  TR_ReservationsStack: undefined;
+  TR_MoreStack: undefined;
+};
+export type TR_HomeStackParam = {
+  TR_Home: undefined;
+};
+export type TR_HomeDetailsStackParam = {
+  TR_Notifications: undefined;
+};
+export type TR_MoreStackParam = {
+  TR_More: undefined;
+};
+export type TR_MoreDetailsStackParam = {
+  TR_Profile: undefined;
+  TR_Branches: undefined;
+  TR_Employees: undefined;
+  TR_Services: undefined;
+  TR_Offers: undefined;
+  TR_Coupons: undefined;
+  TR_Tickets: undefined;
+  TR_BlockAppointments: undefined;
+  TR_Accounts: undefined;
+  TR_Language: undefined;
+  TR_Ratings: undefined;
+  TR_TermsAndConditions: undefined;
+};
+export type TR_ReservationsStackParam = {
+  TR_Reservations: undefined;
+};
+export type TR_ReservationDetailsStackParam = {
+  TR_ReservationDetails: undefined;
 };

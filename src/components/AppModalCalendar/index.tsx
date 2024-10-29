@@ -73,13 +73,12 @@ const AppModalCalendar: React.FC<Props> = ({
           selectedDayColor={COLORS.primaryGradient}
           selectedDayTextColor="#FFFFFF"
           onDateChange={(date: any) => onSave(date)}
-          onMonthChange={(date: any) => onMonth(date)}
+          onMonthChange={(date: any) => onMonth ?  onMonth(date) : null}
           initialView={initialView || 'days'}
-          // minDate={minDate}
+          minDate={new Date()}
           // maxDate={maxDate}
           // selectedStartDate={new Date(2024, 7, 20)}
           // selectedEndDate={new Date(2024, 7, 23)}
-
         />
         {buttons && (
           <View style={styles.modalActionContainer}>
@@ -99,7 +98,7 @@ const AppModalCalendar: React.FC<Props> = ({
               border
             />
           </View>
-          )}
+        )}
       </View>
     </Modal>
     )
