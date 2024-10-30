@@ -17,7 +17,7 @@ export default {
   forgotPasswordQ: 'forgot your password?',
   rememberMe: 'remember me',
   verificationCodeSent: 'verification code has been sent',
-  enterOTPCodeSent: 'enter the 6-digit OTP code sent to',
+  enterOTPCodeSent: 'enter the 5-digit OTP code sent to',
   youReceiveVerificationCodeQ: 'you did not receive the verification code?',
   reTransmitter: 're-transmitter',
   forgotPassword: 'forgot your password',

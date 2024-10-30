@@ -55,7 +55,7 @@ const BlockAppointmentsItem: React.FC<BlockAppointmentsItemProps> = ({
                         />
                         {date && (
                             <AppText
-                                title={moment(item.from).format('hh:mm')}
+                                title={moment(item.from).format('LT')}
                                 fontSize={calcFont(14)}
                                 fontFamily={FONTS.extra_bold}
                                 color={COLORS.textDark}
@@ -101,7 +101,7 @@ const BlockAppointmentsItem: React.FC<BlockAppointmentsItemProps> = ({
                         />
                         {date && (
                             <AppText
-                                title={moment(item.to).format('hh:mm')}
+                                title={moment(item.to).format('LT')}
                                 fontSize={calcFont(14)}
                                 fontFamily={FONTS.extra_bold}
                                 color={COLORS.textDark}
