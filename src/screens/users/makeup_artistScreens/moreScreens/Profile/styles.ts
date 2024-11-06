@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     marginVertical: calcHeight(24),
     width: calcWidth(375),
     alignItems: 'center',
-    paddingBottom: calcHeight(280),
   },
   policiesView: {
     width: calcWidth(343),

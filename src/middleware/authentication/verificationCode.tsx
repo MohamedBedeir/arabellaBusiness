@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {init_lang, init_token} from '../../network';
+import {init_token} from '../../network';
 import endpoints from '../../network/endpoints';
 import {setAuthenticationLoader, setConfirmationCodeState} from '../../redux/store/auth/authenticationSlice';
 import {client} from '../../network/apiClient';
@@ -52,7 +52,9 @@ export const confirmationCode = createAsyncThunk(
           args.navigation.navigate('HS_Tabs');
         } else if (user.type == 'trainer') {
           args.navigation.navigate('TR_Tabs');
-        };
+        } else if (user.type == 'sports_club_manager') {
+          args.navigation.navigate('SC_Tabs');
+        }
       } else {
         thunkApi.dispatch(setConfirmationCodeState('error'));
       }

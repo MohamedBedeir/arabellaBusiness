@@ -32,6 +32,13 @@ import TR_MoreDetailsStack from './Stacks/TR_MoreDetailsStack';
 import TR_HomeDetailsStack from './Stacks/TR_HomeDetailsStack';
 import TR_ReservationsStack from './Stacks/TR_ReservationsStack';
 import TR_ReservationDetailsStack from './Stacks/TR_ReservationDetailsStack';
+import SC_HomeStack from './Stacks/SC_HomeStack';
+import SC_HomeDetailsStack from './Stacks/SC_HomeDetailsStack';
+import SC_MoreStack from './Stacks/SC_MoreStack';
+import SC_MoreDetailsStack from './Stacks/SC_MoreDetailsStack';
+import SC_ReservationsStack from './Stacks/SC_ReservationsStack';
+import SC_ReservationDetailsStack from './Stacks/SC_ReservationDetailsStack';
+import SC_Tabs from './Tabs/SC_Tabs';
 
 export const navigationRef: React.RefObject<NavigationContainerRef> = React.createRef();
 
@@ -78,6 +85,14 @@ const RootNavigation = () => {
       <RootStack.Screen name="TR_MoreDetailsStack" component={TR_MoreDetailsStack} />
       <RootStack.Screen name="TR_ReservationsStack" component={TR_ReservationsStack} />
       <RootStack.Screen name="TR_ReservationDetailsStack" component={TR_ReservationDetailsStack} />
+
+      <RootStack.Screen name="SC_Tabs" component={SC_Tabs}/>
+      <RootStack.Screen name="SC_HomeStack" component={SC_HomeStack} />
+      <RootStack.Screen name="SC_HomeDetailsStack" component={SC_HomeDetailsStack} />
+      <RootStack.Screen name="SC_MoreStack" component={SC_MoreStack} />
+      <RootStack.Screen name="SC_MoreDetailsStack" component={SC_MoreDetailsStack} />
+      <RootStack.Screen name="SC_ReservationsStack" component={SC_ReservationsStack} />
+      <RootStack.Screen name="SC_ReservationDetailsStack" component={SC_ReservationDetailsStack} />
     </RootStack.Navigator>
   );
 };

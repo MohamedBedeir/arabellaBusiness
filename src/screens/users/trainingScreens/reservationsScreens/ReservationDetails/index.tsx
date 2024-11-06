@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { I18nManager, Image, Linking, ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
+import { I18nManager, Image, Keyboard, Linking, ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import AppText from '../../../../../components/AppText';
@@ -35,8 +35,6 @@ const ReservationDetails: React.FC = (params: any) => {
   const { appointmentDetailsLoader, appointmentDetailsData } : { appointmentDetailsLoader: boolean, appointmentDetailsData: any } = useSelector((store: RootState) => store?.appointment_details);
   const { appointmentTimer } = useSelector((store: RootState) => store?.appointment_timer);
   const item: any = appointmentDetailsData;
-  console.log('appointmentDetailsData------------', appointmentDetailsData);
-  
   const status = item?.nextServiceBooking?.status;
   const refTimer = useRef();
   const [costTransfer, setCostTransfer] = useState<any>(0);
@@ -48,6 +46,7 @@ const ReservationDetails: React.FC = (params: any) => {
   const [focused, setFocused] = useState<boolean>(false);
   const [visibleRejection, setVisibleRejection] = useState<boolean>(false);
   const [visibleCancellation, setVisibleCancellation] = useState<boolean>(false);
+  const [isKeyboardShow, setIsKeyboardShow] = useState<boolean>(false);
 
   const getReservationDetails = () => {
     dispatch(appointment_details({id: params.route.params.id}))
@@ -63,6 +62,17 @@ const ReservationDetails: React.FC = (params: any) => {
 
   useEffect(() => {
     getReservationDetails();
+    const showKeyboardSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setIsKeyboardShow(true);
+    });
+    const hideKeyboardSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setIsKeyboardShow(false);
+    });
+
+    return () => {
+      showKeyboardSubscription.remove();
+      hideKeyboardSubscription.remove();
+    }
   }, []);
   
   const headerSection = () => {
@@ -562,7 +572,7 @@ const ReservationDetails: React.FC = (params: any) => {
         };
       }
       return (
-        <View style={[styles.actionContainer, {paddingBottom: (status == 'reviewing' || (step == 2 && status == 'started')) ? calcHeight(280) : calcHeight(16)}]}>
+        <View style={[styles.actionContainer, {paddingBottom: (status == 'reviewing' || (step == 2 && status == 'started') && isKeyboardShow) ? calcHeight(280) : calcHeight(16)}]}>
           {appointmentDetailsData?.type != 'in_branch' ? (
             <>
               {step == 2 && status == 'started' && (

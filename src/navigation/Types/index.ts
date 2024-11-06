@@ -140,3 +140,38 @@ export type TR_ReservationsStackParam = {
 export type TR_ReservationDetailsStackParam = {
   TR_ReservationDetails: undefined;
 };
+//================
+export type SC_TabsParam = {
+  SC_HomeStack: undefined;
+  SC_ReservationsStack: undefined;
+  SC_MoreStack: undefined;
+};
+export type SC_HomeStackParam = {
+  SC_Home: undefined;
+};
+export type SC_HomeDetailsStackParam = {
+  SC_Notifications: undefined;
+};
+export type SC_MoreStackParam = {
+  SC_More: undefined;
+};
+export type SC_MoreDetailsStackParam = {
+  SC_Profile: undefined;
+  SC_Branches: undefined;
+  SC_Employees: undefined;
+  SC_Services: undefined;
+  SC_Offers: undefined;
+  SC_Coupons: undefined;
+  SC_Tickets: undefined;
+  SC_BlockAppointments: undefined;
+  SC_Accounts: undefined;
+  SC_Language: undefined;
+  SC_Ratings: undefined;
+  SC_TermsAndConditions: undefined;
+};
+export type SC_ReservationsStackParam = {
+  SC_Reservations: undefined;
+};
+export type SC_ReservationDetailsStackParam = {
+  SC_ReservationDetails: undefined;
+};

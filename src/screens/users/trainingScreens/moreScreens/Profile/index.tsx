@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { I18nManager, TouchableOpacity, View } from 'react-native';
+import { Alert, I18nManager, Keyboard, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import AppText from '../../../../../components/AppText';
@@ -47,6 +47,7 @@ const Profile: React.FC = () => {
   const [passwordConvertError, setPasswordConvertError] = useState<boolean>(false);
   const [visibleUpdateData, setVisibleUpdateData] = useState<boolean>(false);
   const [visibleUpdatePassword, setVisibleUpdatePassword] = useState<boolean>(false);
+  const [isKeyboardShow, setIsKeyboardShow] = useState<boolean>(false);
   
   const toast = useToast();
   const _toast = (type: string, body: string) => {
@@ -74,11 +75,26 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     getUser();
+    const showKeyboardSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setIsKeyboardShow(true);
+    });
+    const hideKeyboardSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setIsKeyboardShow(false);
+    });
+
+    return () => {
+      showKeyboardSubscription.remove();
+      hideKeyboardSubscription.remove();
+    }
   }, []);
 
   useEffect(() => {
     if (profileUpdateState == 'done') {
-      setVisibleUpdateData(true);
+      Alert.alert(
+        Trans('done'),
+        Trans('dataUpdateSuccessfully')
+      );
+      // setVisibleUpdateData(true);
       dispatch(setProfileUpdateState(''));
     }
   }, [profileUpdateState]);
@@ -88,7 +104,11 @@ const Profile: React.FC = () => {
       setPasswordCurrent('');
       setPassword('');
       setPasswordConvert('');
-      setVisibleUpdatePassword(true);
+      Alert.alert(
+        Trans('done'),
+        Trans('passwordUpdateSuccessfully')
+      );
+      // setVisibleUpdatePassword(true);
       dispatch(setPasswordUpdateState(''));
     } else if (passwordUpdateState == 'error') {
       _toast('danger', Trans('incorrectPasswordPleaseTryAgain'));
@@ -300,7 +320,7 @@ const Profile: React.FC = () => {
 
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.body}>
+        <View style={[styles.body, {paddingBottom: isKeyboardShow ? calcHeight(280) : calcHeight(16)}]}>
           {imageSection()}
           {dataSection()}
           <View style={styles.line}/>

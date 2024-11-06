@@ -129,6 +129,8 @@ const Splash: React.FC<{}> = (params: any) => {
             params.navigation.navigate('HS_Tabs');
           } else if (userData.type == 'trainer') {
             params.navigation.navigate('TR_Tabs');
+          } else if (userData.type == 'sports_club_manager') {
+            params.navigation.navigate('SC_Tabs');
           };
         } else {
           params.navigation.navigate('AuthenticationStack', {screen: 'Login'});

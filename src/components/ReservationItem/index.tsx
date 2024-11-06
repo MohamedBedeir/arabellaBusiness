@@ -88,16 +88,18 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
         
         return (
             <View>
-                <AppDataLine
-                    containerStyle={{}}
-                    image={IMAGES.moreAddress}
-                    title={`${_item?.address}`}
-                    fontSize={calcFont(14)}
-                    fontFamily={FONTS.medium}
-                    textColor={COLORS.textDark}
-                    textAlign={'left'}
-                    textWidth={calcWidth(318 - 40)}
-                />
+                {(type != 'training' && type != 'sports_club_manager') && (
+                    <AppDataLine
+                        containerStyle={{}}
+                        image={IMAGES.moreAddress}
+                        title={`${_item?.address}`}
+                        fontSize={calcFont(14)}
+                        fontFamily={FONTS.medium}
+                        textColor={COLORS.textDark}
+                        textAlign={'left'}
+                        textWidth={calcWidth(318 - 40)}
+                    />
+                )}
                 <AppDataLine
                     containerStyle={{}}
                     image={IMAGES.moreAccount2}
