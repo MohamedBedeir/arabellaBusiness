@@ -390,6 +390,7 @@ export default {
   updateApp: "تحديث التطبيق",
   updateAppDescription: "تتوفر نسخة جديدة من التطبيق تحتوي علي مزايا اضافية، للاستمتاع بها قم بتحديث التطبيق",
   update: "تحديث",
+  costSharedTransfers: '(تكلفة انتقالات مشتركة)',
   
   //======================================
   dontHaveAnyReservations: 'ليس لديك اي حجوزات',
@@ -401,6 +402,7 @@ export default {
   haveNotAddedAnyServicesYet: 'لم تقم بإضافة اي خدمات حتي الان',
   haveNotAddedAnyBranchesYet: 'لم تقم بإضافة اي افرع حتي الان',
   haveNotAddedAnyEmployeesYet: 'لم تقم بإضافة اي موظفين حتي الان',
+  imageSizeLarge: 'حجم الصورة كبير جدًا. الرجاء اختيار صورة أصغر.',
   //=====================================
   //===============Terms And Conditions======================
   //==Makup Artist===================================

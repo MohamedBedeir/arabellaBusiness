@@ -85,14 +85,14 @@ const More: React.FC = () => {
             containerStyle={styles.moreItemContainer}
             iconStyle={{}}
           /> */}
-          {/* <MoreItem
+          <MoreItem
             onPress={() => navigation.navigate('SC_MoreDetailsStack', {screen: 'SC_Services'})}
             image={IMAGES.moreService}
             title={Trans('services')}
             icon={IMAGES.dropDown}
             containerStyle={styles.moreItemContainer}
             iconStyle={{}}
-          /> */}
+          />
           {/* <MoreItem
             onPress={() => navigation.navigate('SC_MoreDetailsStack', {screen: 'SC_Offers'})}
             image={IMAGES.moreOffers}

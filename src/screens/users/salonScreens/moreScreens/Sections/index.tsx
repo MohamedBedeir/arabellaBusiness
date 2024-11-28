@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions, FlatList, Image, ImageBackground, ScrollView, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, FlatList, Image, ImageBackground, ScrollView, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { Trans } from '../../../../../translation';
@@ -89,15 +89,35 @@ const Sections: React.FC = () => {
     )
   };
 
+  // const selectImage = async () => {
+  //   try {
+  //     DocumentPicker.pick({
+  //       type: [DocumentPicker.types.images],
+  //     }).then(image => {
+  //       setImageFile(JSON.stringify(image));
+  //       RNFS.readFile(image[0].uri, 'base64').then((result: any) => {
+  //         setBase64(result);
+  //       });
+  //     });
+  //   } catch (error) {
+  //     setImageFile('');
+  //   }
+  // };
   const selectImage = async () => {
     try {
       DocumentPicker.pick({
         type: [DocumentPicker.types.images],
-      }).then(image => {
-        setImageFile(JSON.stringify(image));
-        RNFS.readFile(image[0].uri, 'base64').then((result: any) => {
-          setBase64(result);
-        });
+      }).then((image: any) => {
+        const maxSize = 2 * 1024 * 1024;
+        if (image[0].size > maxSize) {
+          Alert.alert(Trans('imageSizeLarge'));
+          return;
+        } else {
+          setImageFile(JSON.stringify(image));
+          RNFS.readFile(image[0].uri, 'base64').then((result: any) => {
+            setBase64(result);
+          });
+        }
       });
     } catch (error) {
       setImageFile('');

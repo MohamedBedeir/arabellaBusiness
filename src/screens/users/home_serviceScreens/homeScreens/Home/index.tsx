@@ -520,6 +520,7 @@ const Home: React.FC = () => {
       />
     )
   };
+  
   return (
     <View style={styles.container}>
       <StatusBar barStyle={'dark-content'}/>

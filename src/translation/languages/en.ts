@@ -390,6 +390,7 @@ export default {
   updateApp: 'update app',
   updateAppDescription: 'A new version of the application is available that contains additional features. To enjoy them, update the application.',
   update: "update",
+  costSharedTransfers: '(shared transportation cost)',
   
   //====================================
   dontHaveAnyReservations: "You don't have any reservations",
@@ -401,6 +402,7 @@ export default {
   haveNotAddedAnyServicesYet: "You haven't added any services yet",
   haveNotAddedAnyBranchesYet: 'You have not added any branches yet',
   haveNotAddedAnyEmployeesYet: 'You have not added any employees yet',
+  imageSizeLarge: 'the image size is too large. Please choose a smaller image.',
   //=====================================
   //===============Terms And Conditions======================
   //==Makup Artist===================================

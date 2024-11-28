@@ -110,8 +110,6 @@ const Home: React.FC = () => {
   const getAppVersion = () => {
     const buildNumber = DeviceInfo.getBuildNumber();
     const version_code: any = Platform.OS == 'android' ? appVersionsData.businessAndroidVersion : appVersionsData.businessIosVersion;
-    console.log('===========>>>>>>>>>>>>>>>>>>', buildNumber, version_code);
-    
     if(Number.parseInt(buildNumber, 10) < (Number.parseInt(version_code, 10))) {
       setVisible_update(true);
     } else {

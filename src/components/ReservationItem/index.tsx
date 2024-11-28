@@ -25,7 +25,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
     type,
     onPress,
 }) => {
-    console.log('item-------------', item);
+    console.log('item-------ReservationItem------', item);
     
     const _item = item;
     const _status: any = DUMMY_DATA.APPOINTMENT_STATUS;
@@ -54,7 +54,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
                         marginBottom={calcHeight(8)}
                     />
                     <AppText
-                        title={`${_item?.invoice?.totalPriceAfterDiscount} ${Trans('rs')}`}
+                        title={`${_item?.priceAfterDiscount} ${Trans('rs')}`}
                         fontSize={calcFont(24)}
                         fontFamily={FONTS.extra_bold}
                         color={COLORS.white}

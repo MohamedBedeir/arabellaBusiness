@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, I18nManager, Image, ImageBackground, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Dimensions, FlatList, I18nManager, Image, ImageBackground, Keyboard, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { Trans } from '../../../../../translation';
@@ -69,6 +69,7 @@ const Services: React.FC = () => {
   const [visibleUpdateServiceState, setVisibleUpdateServiceState] = useState<boolean>(false);
   const [selectServiceState, setSelectServiceState] = useState<any>({});
   const [visibleCategories, setVisibleCategories] = useState<boolean>(false);
+  const [isKeyboardShow, setIsKeyboardShow] = useState<boolean>(false);
 
   const getServices = (page: number) => {
     dispatch(service_data({page}));
@@ -83,7 +84,19 @@ const Services: React.FC = () => {
     getUser();
     dispatch(categories({}));
     getServices(1);
+    const showKeyboardSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setIsKeyboardShow(true);
+    });
+    const hideKeyboardSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setIsKeyboardShow(false);
+    });
+
+    return () => {
+      showKeyboardSubscription.remove();
+      hideKeyboardSubscription.remove();
+    }
   }, []);
+
 
   const setData = (item?: any) => {
     setNameArError(false);
@@ -376,15 +389,35 @@ const Services: React.FC = () => {
     )
   };
 
+  // const selectImage = async () => {
+  //   try {
+  //     DocumentPicker.pick({
+  //       type: [DocumentPicker.types.images],
+  //     }).then(image => {
+  //       setImageFile(JSON.stringify(image));
+  //       RNFS.readFile(image[0].uri, 'base64').then((result: any) => {
+  //         setBase64(result);
+  //       });
+  //     });
+  //   } catch (error) {
+  //     setImageFile('');
+  //   }
+  // };
   const selectImage = async () => {
     try {
       DocumentPicker.pick({
         type: [DocumentPicker.types.images],
-      }).then(image => {
-        setImageFile(JSON.stringify(image));
-        RNFS.readFile(image[0].uri, 'base64').then((result: any) => {
-          setBase64(result);
-        });
+      }).then((image: any) => {
+        const maxSize = 2 * 1024 * 1024;
+        if (image[0].size > maxSize) {
+          Alert.alert(Trans('imageSizeLarge'));
+          return;
+        } else {
+          setImageFile(JSON.stringify(image));
+          RNFS.readFile(image[0].uri, 'base64').then((result: any) => {
+            setBase64(result);
+          });
+        }
       });
     } catch (error) {
       setImageFile('');
@@ -535,7 +568,7 @@ const Services: React.FC = () => {
         deviceHeight={Dimensions.get('screen').height}
         statusBarTranslucent
       >
-        <View style={styles.modalAddContainer}>
+        <View style={[styles.modalAddContainer, {paddingBottom: isKeyboardShow ? calcHeight(280) : calcHeight(16)}]}>
           {modalCategoriesSection()}
           <AppTextGradient
             title={Trans('addService')}
@@ -664,24 +697,24 @@ const Services: React.FC = () => {
                 </ImageBackground>
               </TouchableOpacity>
             </View>
+            <View style={styles.modalActionContainer}>
+              <AppButtonDefault
+                title={Trans('save')}
+                onPress={() => onAdd()}
+                colorStart={COLORS.primaryGradient}
+                colorEnd={COLORS.secondGradient}
+                buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
+              />
+              <AppButtonDefault
+                title={Trans('cancellation')}
+                onPress={() => {setVisibleAddNewService(false); setData()}}
+                colorStart={COLORS.primaryGradient}
+                colorEnd={COLORS.secondGradient}
+                buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
+                border
+              />
+            </View>
           </ScrollView>
-          <View style={styles.modalActionContainer}>
-            <AppButtonDefault
-              title={Trans('save')}
-              onPress={() => onAdd()}
-              colorStart={COLORS.primaryGradient}
-              colorEnd={COLORS.secondGradient}
-              buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
-            />
-            <AppButtonDefault
-              title={Trans('cancellation')}
-              onPress={() => {setVisibleAddNewService(false); setData()}}
-              colorStart={COLORS.primaryGradient}
-              colorEnd={COLORS.secondGradient}
-              buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
-              border
-            />
-          </View>
         </View>
       </Modal>
     )
@@ -704,7 +737,7 @@ const Services: React.FC = () => {
         deviceHeight={Dimensions.get('screen').height}
         statusBarTranslucent
       >
-        <View style={styles.modalAddContainer}>
+        <View style={[styles.modalAddContainer, {paddingBottom: isKeyboardShow ? calcHeight(280) : calcHeight(16)}]}>
           {modalCategoriesSection()}
           <AppTextGradient
             title={Trans('editService')}
@@ -833,24 +866,24 @@ const Services: React.FC = () => {
                 </ImageBackground>
               </TouchableOpacity>
             </View>
+            <View style={styles.modalActionContainer}>
+              <AppButtonDefault
+                title={Trans('save')}
+                onPress={() => onEdit()}
+                colorStart={COLORS.primaryGradient}
+                colorEnd={COLORS.secondGradient}
+                buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
+              />
+              <AppButtonDefault
+                title={Trans('cancellation')}
+                onPress={() => {setVisibleEditService(false); setData()}}
+                colorStart={COLORS.primaryGradient}
+                colorEnd={COLORS.secondGradient}
+                buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
+                border
+              />
+            </View>
           </ScrollView>
-          <View style={styles.modalActionContainer}>
-            <AppButtonDefault
-              title={Trans('save')}
-              onPress={() => onEdit()}
-              colorStart={COLORS.primaryGradient}
-              colorEnd={COLORS.secondGradient}
-              buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
-            />
-            <AppButtonDefault
-              title={Trans('cancellation')}
-              onPress={() => {setVisibleEditService(false); setData()}}
-              colorStart={COLORS.primaryGradient}
-              colorEnd={COLORS.secondGradient}
-              buttonStyle={{width: calcWidth(164), height: calcHeight(48)}}
-              border
-            />
-          </View>
         </View>
       </Modal>
     )

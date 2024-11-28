@@ -72,6 +72,7 @@ export const AppInput: React.FC<Props> = ({
           numberOfLines={numberOfLines || 1}
           secureTextEntry={secret && hidePass ? true : false}
           editable={editable}
+          // textContentType=""
           onFocus={onFocus}
           onEndEditing={onEndEditing}
           maxLength={maxLength || undefined}

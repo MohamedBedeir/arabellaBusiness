@@ -75,6 +75,7 @@ const Reservations: React.FC = () => {
     getPervious(1);
     setPage_pervious(1);
   };
+  
   const _loadMore_Upcoming = () => {
     if((appointmentsUpcomingData.length < appointmentsUpcomingCount)) {
       getUpcoming(page_upcoming + 1);

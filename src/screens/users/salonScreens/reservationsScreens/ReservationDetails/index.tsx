@@ -108,7 +108,7 @@ const ReservationDetails: React.FC = (params: any) => {
                 fontFamily={FONTS.regular}
                 color={COLORS.textDark}
                 textAlign={'left'}
-                width={calcWidth(160)}
+                width={calcWidth(190)}
               />
             )}
             {icon && (
@@ -165,7 +165,7 @@ const ReservationDetails: React.FC = (params: any) => {
               textAlign={'left'}
             />
             <AppText
-              title={`${parseFloat(item?.invoice?.totalPriceAfterDiscount)} ${Trans('rs')}`}
+              title={`${item?.priceAfterDiscount} ${Trans('rs')}`}
               fontSize={calcFont(16)}
               fontFamily={FONTS.bold}
               color={COLORS.white}
@@ -181,7 +181,7 @@ const ReservationDetails: React.FC = (params: any) => {
               textAlign={'left'}
             />
             <AppText
-              title={`${costTransfer || item?.appointmentFees[0]?.amount} ${Trans('rs')}`}
+              title={`${costTransfer || item?.priceAfterDiscount} ${Trans('rs')}`}
               fontSize={calcFont(16)}
               fontFamily={FONTS.bold}
               color={COLORS.white}
@@ -217,14 +217,14 @@ const ReservationDetails: React.FC = (params: any) => {
             </View>}
             <View style={styles.mainDataItemContainer}>
               <AppText
-                title={Trans('total')}
+                title={`${Trans('total')} ${item?.order?.id ? Trans('costSharedTransfers') : ''}`}
                 fontSize={calcFont(16)}
                 fontFamily={FONTS.regular}
                 color={COLORS.white}
                 textAlign={'left'}
               />
               <AppText
-                title={`${costTransfer > 0 ? (parseFloat(costTransfer) + parseFloat(item?.invoice?.totalPriceAfterDiscount)) : parseFloat(item?.invoice?.totalPriceAfterDiscount)} ${Trans('rs')}`}
+                title={`${costTransfer > 0 ? (parseFloat(costTransfer) + item?.priceAfterDiscount) : (item?.priceAfterDiscount + item?.transportationFee)} ${Trans('rs')}`}
                 // title={`${ costTransfer > 0 ? (parseFloat(costTransfer) + parseFloat(item?.invoice?.totalPriceAfterDiscount)) : parseFloat(item?.invoice?.totalPriceAfterDiscount)} ${Trans('rs')}`}
                 fontSize={calcFont(16)}
                 fontFamily={FONTS.bold}

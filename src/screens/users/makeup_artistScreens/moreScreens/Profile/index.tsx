@@ -140,15 +140,35 @@ const Profile: React.FC = () => {
     )
   };
 
+  // const selectImage = async () => {
+  //   try {
+  //     DocumentPicker.pick({
+  //       type: [DocumentPicker.types.images],
+  //     }).then(image => {
+  //       setFeaturedImage(JSON.stringify(image));
+  //       RNFS.readFile(image[0].uri, 'base64').then((result: any) => {
+  //         setBase64(result);
+  //       });
+  //     });
+  //   } catch (error) {
+  //     setFeaturedImage('');
+  //   }
+  // };
   const selectImage = async () => {
     try {
       DocumentPicker.pick({
         type: [DocumentPicker.types.images],
-      }).then(image => {
-        setFeaturedImage(JSON.stringify(image));
-        RNFS.readFile(image[0].uri, 'base64').then((result: any) => {
-          setBase64(result);
-        });
+      }).then((image: any) => {
+        const maxSize = 2 * 1024 * 1024;
+        if (image[0].size > maxSize) {
+          Alert.alert(Trans('imageSizeLarge'));
+          return;
+        } else {
+          setFeaturedImage(JSON.stringify(image));
+          RNFS.readFile(image[0].uri, 'base64').then((result: any) => {
+            setBase64(result);
+          });
+        }
       });
     } catch (error) {
       setFeaturedImage('');
