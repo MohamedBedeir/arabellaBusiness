@@ -19,6 +19,7 @@ export interface Props {
   onMonth?: (item: any) => void;
   initialView?: 'years' | 'months' | 'days';
   buttons?: boolean;
+  _minDate?: any;
 }
 
 const AppModalCalendar: React.FC<Props> = ({
@@ -29,6 +30,7 @@ const AppModalCalendar: React.FC<Props> = ({
   onMonth,
   initialView,
   buttons,
+  _minDate,
 }) => {
   const [selectSingleDate, setSelectSingleDate] = useState<any>('');
   const [selectSingleMonth, setSelectSingleMonth] = useState<any>('');
@@ -75,7 +77,7 @@ const AppModalCalendar: React.FC<Props> = ({
           onDateChange={(date: any) => onSave(date)}
           onMonthChange={(date: any) => onMonth ?  onMonth(date) : null}
           initialView={initialView || 'days'}
-          minDate={new Date()}
+          minDate={_minDate || new Date()}
           // maxDate={maxDate}
           // selectedStartDate={new Date(2024, 7, 20)}
           // selectedEndDate={new Date(2024, 7, 23)}
@@ -101,7 +103,7 @@ const AppModalCalendar: React.FC<Props> = ({
         )}
       </View>
     </Modal>
-    )
+  )
 };
 
 export default AppModalCalendar;

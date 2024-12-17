@@ -80,8 +80,8 @@ android {
         applicationId "com.arabella.business"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 13
-        versionName "1.1.13"
+        versionCode 18
+        versionName "1.1.18"
     }
     signingConfigs {
         debug {

@@ -87,7 +87,7 @@ const ReservationDetails: React.FC = (params: any) => {
   };
 
   const bodySection = () => {
-    const date = item?.serviceBookings ? `${moment(item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  -  ${moment(item?.serviceBookings[0]?.scheduledAt).format('hh:mm')}` : '';
+    const date = item?.serviceBookings ? `${moment(item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  -  ${moment(item?.serviceBookings[0]?.scheduledAt).format('LT')}` : '';
     const line = (title?: string | any, description?: string | any, icon?: string | any, option?: string | any) => {
       return (
         <View style={styles.lineContainer}>
@@ -272,7 +272,7 @@ const ReservationDetails: React.FC = (params: any) => {
             const backgroundColor = item?.id == appointmentDetailsData?.nextServiceBooking?.id ? 'rgba(242, 166, 19, 0.2)' : item?.status == 'completed' ? 'rgba(92, 190, 67, 0.2)' : item?.status == 'cancelled' ? 'rgba(239, 68, 68, 0.2)' : COLORS.white
             return (
               <View style={{width: calcWidth(319 + 16), alignItems: 'center', borderRadius: calcWidth(6), paddingTop: calcHeight(10), backgroundColor: backgroundColor}}>
-                {line(``, `${I18nManager.isRTL ? item?.service?.name : item?.service?.nameEn} :   ${moment(item?.scheduledAt).format('DD/MM/YYYY')} - ${moment(item?.scheduledAt).format('hh:mm')}`, null, `${item?.service?.estimatedTime} ${Trans('minute')}`)}
+                {line(``, `${I18nManager.isRTL ? item?.service?.name : item?.service?.nameEn} :   ${moment(item?.scheduledAt).format('DD/MM/YYYY')} - ${moment(item?.scheduledAt).format('LT')}`, null, `${item?.service?.estimatedTime} ${Trans('minute')}`)}
               </View>
             )
           })}
@@ -295,7 +295,7 @@ const ReservationDetails: React.FC = (params: any) => {
             textColor={''}
             textAlign={'left'}
           />
-          {line(`${Trans('date')}:  `, item?.serviceBookings ? `${moment(item?.nextServiceBooking?.scheduledAt).format('DD/MM/YYYY')}  -  ${Trans('time')}: ${moment(item?.nextServiceBooking?.scheduledAt).format('hh:mm')}` : '', null, null)}
+          {line(`${Trans('date')}:  `, item?.serviceBookings ? `${moment(item?.nextServiceBooking?.scheduledAt).format('DD/MM/YYYY')}  -  ${Trans('time')}: ${moment(item?.nextServiceBooking?.scheduledAt).format('LT')}` : '', null, null)}
         </View>
       )
     };

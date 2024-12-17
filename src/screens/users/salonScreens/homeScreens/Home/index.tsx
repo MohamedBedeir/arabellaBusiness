@@ -480,6 +480,7 @@ const Home: React.FC = () => {
         initialView='months'
         buttons={false}
         title={Trans('selectMonth')}
+        _minDate={'2024-12-01T0:0:1.0Z'}
       />
     )
   };
@@ -492,12 +493,13 @@ const Home: React.FC = () => {
         onClose={() => setVisibleDay(false)}
         onSave={(item: any) => {setSelectDay(item); setVisibleDay(false); setTimeFirstData(false)}}
         buttons={false}
+        _minDate={'2024-12-01T0:0:1.0Z'}
       />
     )
   };
 
   const updateApp = () => {
-    const url = Platform.OS === 'ios' ? 'https://apps.apple.com/eg/app/arabella-%D8%A7%D8%B1%D8%A7%D8%A8%D9%8A%D9%84%D8%A7/id6449732371' : 'https://play.google.com/store/apps/details?id=com.arabella.business';
+    const url = Platform.OS === 'ios' ? 'https://apps.apple.com/us/app/arabella-business/id6615087914' : 'https://play.google.com/store/apps/details?id=com.arabella.business';
     return (
       <Modal_Warning
         visible={visible_update}

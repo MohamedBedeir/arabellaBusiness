@@ -15,6 +15,7 @@ export const DUMMY_DATA = {
       nameEn: 'Saudi',
     },
   ],
+
   POSITIONS: [
     {
       id: 1,
@@ -22,6 +23,7 @@ export const DUMMY_DATA = {
       nameEn: 'Employee',
     },
   ],
+
   DAYS: [
     {
       id: 1,
@@ -59,6 +61,7 @@ export const DUMMY_DATA = {
       nameEn: 'friday',
     },
   ],
+
   TIMING: [
     {
       id: 1,
@@ -79,6 +82,7 @@ export const DUMMY_DATA = {
       key: 'isWeek',
     },
   ],
+
   YEARS: [
     {
       id: 0,
@@ -118,6 +122,7 @@ export const DUMMY_DATA = {
     },
 
   ],
+
   CHART1: [
     {value: 80, frontColor: COLORS.secondGradient, gradientColor: COLORS.primaryGradient, spacing: 26, label: Trans('saturday')},
     {value: 30, frontColor: COLORS.borderLight, gradientColor: COLORS.borderLight},
@@ -140,6 +145,7 @@ export const DUMMY_DATA = {
     {value: 77, frontColor: COLORS.secondGradient, gradientColor: COLORS.primaryGradient, spacing: 26, label: Trans('friday')},
     {value: 38, frontColor: COLORS.borderLight, gradientColor: COLORS.borderLight},
   ],
+
   CHART2_DATA1: [
     {value: 630, label: Trans('saturday'), showXAxisIndex: true},
     {value: 330, label: Trans('sunday'), showXAxisIndex: true},
@@ -149,6 +155,7 @@ export const DUMMY_DATA = {
     {value: 790, label: Trans('thursday'), showXAxisIndex: true},
     {value: 280, label: Trans('friday'), showXAxisIndex: true},
   ],
+
   CHART2_DATA2: [
     {value: 550, label: Trans('saturday'), showXAxisIndex: true},
     {value: 450, label: Trans('sunday'), showXAxisIndex: true},
@@ -158,12 +165,14 @@ export const DUMMY_DATA = {
     {value: 470, label: Trans('thursday'), showXAxisIndex: true},
     {value: 350, label: Trans('friday'), showXAxisIndex: true},
   ],
+
   NOTIFICATIONS: [
     { title: 'طلب جديد' },
     { title: 'قبول عرض' },
     { title: 'رفض عرض' },
     { title: 'اقتراب موعد حجز' },
   ],
+  
   BLOCKAPPOINTMENTS: [
     {
       id: 1,
@@ -255,6 +264,7 @@ export const DUMMY_DATA = {
     },
 
   ],
+
   SERVICESTATUES: [
     {
       id: 1,
@@ -267,6 +277,7 @@ export const DUMMY_DATA = {
       nameEn: 'deactivated',
     }
   ],
+
   EMPLOYEES: [
     {
       id: 123,
@@ -313,6 +324,7 @@ export const DUMMY_DATA = {
       stateId: 2,
     },
   ],
+
   TIMINGS: [
     { id: 0, title: 'بداية اليوم', hour: 0, minute: 0 }, 
     { id: 1, title: '00:30', hour: 0, minute: 30 }, 
@@ -364,6 +376,7 @@ export const DUMMY_DATA = {
     { id: 47, title: '23:30', hour: 23, minute: 30 },
     { id: 48, title: 'نهاية اليوم', hour: 23, minute: 59 }, 
   ],
+
   CATEGORIES: [
     { id: 1, nameAr: 'العناية بالبشرة', nameEn: 'skin care' },
     { id: 2, nameAr: 'الاظافر', nameEn: 'nails' },
@@ -373,6 +386,7 @@ export const DUMMY_DATA = {
     { id: 6, nameAr: 'ثقب', nameEn: 'hole' },
     { id: 7, nameAr: 'مجموعة خدمات', nameEn: 'service group' },
   ],
+
   APPOINTMENT_STATUS: [
     {
       key: 'initiated',
@@ -410,6 +424,16 @@ export const DUMMY_DATA = {
       nameEn: 'scheduled',
     },
     {
+      key: 'preparing', // card
+      name: 'قيد التجهيز',
+      nameEn: 'in preparation',
+    },
+    {
+      key: 'ready', // 1
+      name: 'تم التجهيز',
+      nameEn: 'prepared',
+    },
+    {
       key: 'en_route',
       name: 'في الطريق',
       nameEn: 'in route',
@@ -440,6 +464,7 @@ export const DUMMY_DATA = {
       nameEn: 'pending payment',
     },
   ],
+
   APPOINTMENT: {
     id: 203,
     createdAt: "2024-07-24T09:54:36.556Z",
@@ -648,6 +673,7 @@ export const DUMMY_DATA = {
         }
       },
     ],
+
     appointmentFees: [],
   },
 };

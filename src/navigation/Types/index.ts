@@ -175,3 +175,39 @@ export type SC_ReservationsStackParam = {
 export type SC_ReservationDetailsStackParam = {
   SC_ReservationDetails: undefined;
 };
+//=====================
+export type SM_TabsParam = {
+  SM_HomeStack: undefined;
+  SM_OrdersStack: undefined;
+  SM_MoreStack: undefined;
+};
+export type SM_HomeStackParam = {
+  SM_Home: undefined;
+};
+export type SM_HomeDetailsStackParam = {
+  SM_Notifications: undefined;
+};
+export type SM_MoreStackParam = {
+  SM_More: undefined;
+};
+export type SM_MoreDetailsStackParam = {
+  SM_Profile: undefined;
+  SM_Branches: undefined;
+  SM_Employees: undefined;
+  SM_Services: undefined;
+  SM_Offers: undefined;
+  SM_Coupons: undefined;
+  SM_Tickets: undefined;
+  SM_BlockAppointments: undefined;
+  SM_Accounts: undefined;
+  SM_Language: undefined;
+  SM_Ratings: undefined;
+  SM_TermsAndConditions: undefined;
+};
+export type SM_OrdersStackParam = {
+  SM_Orders: undefined;
+};
+export type SM_OrderDetailsStackParam = {
+  SM_OrderDetails: undefined;
+};
+//================

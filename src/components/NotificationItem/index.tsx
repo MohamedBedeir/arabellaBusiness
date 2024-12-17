@@ -52,7 +52,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
                         numberOfLines={3}
                     />
                     <AppText
-                        title={`${moment(item.createdAt).format('DD/MM/YYYY')}   ${moment(item.createdAt).format('hh:mm')}`}
+                        title={`${moment(item.createdAt).format('DD/MM/YYYY')}   ${moment(item.createdAt).format('LT')}`}
                         fontSize={calcFont(14)}
                         fontFamily={FONTS.medium}
                         color={COLORS.textDark}

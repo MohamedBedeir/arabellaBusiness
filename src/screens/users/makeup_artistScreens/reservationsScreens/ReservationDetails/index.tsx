@@ -87,7 +87,7 @@ const ReservationDetails: React.FC = (params: any) => {
   };
 
   const bodySection = () => {
-    const date = item?.serviceBookings ? `${moment(item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  -  ${moment(item?.serviceBookings[0]?.scheduledAt).format('hh:mm')}` : '';
+    const date = item?.serviceBookings ? `${moment(item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  -  ${moment(item?.serviceBookings[0]?.scheduledAt).format('LT')}` : '';
     const line = (title?: string | any, description?: string | any, icon?: string | any, option?: string | any) => {
       return (
         <View style={styles.lineContainer}>
@@ -292,7 +292,7 @@ const ReservationDetails: React.FC = (params: any) => {
             textColor={''}
             textAlign={'left'}
           />
-          {line(`${Trans('serviceDate')}:  `, item?.serviceBookings ? `${moment(item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  -  ${Trans('time')}: ${moment(item?.serviceBookings[0]?.scheduledAt).format('hh:mm')}` : '', null, null)}
+          {line(`${Trans('serviceDate')}:  `, item?.serviceBookings ? `${moment(item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  -  ${Trans('time')}: ${moment(item?.serviceBookings[0]?.scheduledAt).format('LT')}` : '', null, null)}
         </View>
       )
     };

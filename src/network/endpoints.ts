@@ -26,6 +26,7 @@ export default {
   employeeAction: 'admins/employees',
   slotAction: 'admins/occupied-slots',
   appointments: 'admins/appointments',
+  product_orders: 'admins/product-orders',
   statistics: 'admins/statistics',
   service_providers: '/admins/service_providers',
   profiles: 'profiles',
@@ -52,6 +53,7 @@ export default {
   allProperties: 'all-properties',
   properties: 'properties',
   requests: 'requests-properties',
+
   request_change_state: 'requests-properties/change-status',
   all_requests: 'public-all-properties-requests',
   agents: 'all-clients',

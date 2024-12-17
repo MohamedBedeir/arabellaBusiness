@@ -54,6 +54,8 @@ export const confirmationCode = createAsyncThunk(
           args.navigation.navigate('TR_Tabs');
         } else if (user.type == 'sports_club_manager') {
           args.navigation.navigate('SC_Tabs');
+        } else if (user.type == 'stock_manager') {
+          args.navigation.navigate('SM_Tabs');
         }
       } else {
         thunkApi.dispatch(setConfirmationCodeState('error'));

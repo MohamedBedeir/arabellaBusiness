@@ -6,9 +6,6 @@ import { Trans } from '../../translation';
 import { calcFont, calcHeight, calcWidth } from '../../utils/sizes';
 import { COLORS, FONTS } from '../../utils/theme';
 import { IMAGES } from '../../assets/Images';
-import AppTextGradient from '../AppTextGradient';
-import AppButtonDefault from '../AppButtonDefault';
-import AppTextViewGradient from '../AppTextViewGradient';
 import AppDataLine from '../AppDataLine';
 import LinearGradient from 'react-native-linear-gradient';
 import { DUMMY_DATA } from '../../utils/dummyData';
@@ -113,7 +110,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({
                 <AppDataLine
                     containerStyle={{}}
                     image={IMAGES.moreDate}
-                    title={`${Trans('day')}: ${moment(_item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  -  ${Trans('time')}: ${moment(_item?.serviceBookings[0]?.scheduledAt).format('hh:mm')}`}
+                    title={`${Trans('day')}: ${moment(_item?.serviceBookings[0]?.scheduledAt).format('DD/MM/YYYY')}  -  ${Trans('time')}: ${moment(_item?.serviceBookings[0]?.scheduledAt).format('LT')}`}
                     fontSize={calcFont(14)}
                     fontFamily={FONTS.medium}
                     textColor={COLORS.textDark}
